@@ -1,4 +1,4 @@
-package com.angel.clocordinadores.data.remote.connectivity
+package com.bakery.bakeryapp.data.remote.connectivity
 
 import kotlinx.coroutines.flow.Flow
 

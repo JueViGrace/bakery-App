@@ -1,7 +1,7 @@
 package com.bakery.bakeryapp.di
 
 import android.content.Context
-import com.angel.clocordinadores.data.remote.connectivity.ConnectivityObserver
+import com.bakery.bakeryapp.data.remote.connectivity.ConnectivityObserver
 import com.angel.clocordinadores.data.remote.connectivity.NetworkConnectivityObserver
 import com.bakery.bakeryapp.data.local.LocalDataSource
 import com.bakery.bakeryapp.data.remote.Api
