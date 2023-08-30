@@ -1,8 +1,8 @@
 package com.bakery.bakeryapp.data.remote
 
-import com.bakery.bakeryapp.data.remote.model.auth.Login
-import com.bakery.bakeryapp.data.remote.model.auth.Register
-import com.bakery.bakeryapp.data.remote.model.auth.UserResponse
+import com.bakery.bakeryapp.data.remote.model.auth.LoginResponse
+import com.bakery.bakeryapp.data.remote.model.auth.RegisterResponse
+import com.bakery.bakeryapp.data.remote.model.auth.AuthResponse
 import com.bakery.bakeryapp.data.remote.model.cart.CartResponse
 import com.bakery.bakeryapp.data.remote.model.categories.CategoryResponse
 import com.bakery.bakeryapp.data.remote.model.pedido.PedidoResponse
@@ -20,13 +20,13 @@ interface Api {
 
     @POST("auth/login")
     suspend fun login(
-        @Body login: Login
-    ): NetworkResponse<UserResponse, ErrorResponse>
+        @Body login: LoginResponse
+    ): NetworkResponse<AuthResponse, ErrorResponse>
 
     @POST("auth/register")
     suspend fun register(
-        @Body register: Register
-    ): NetworkResponse<UserResponse, ErrorResponse>
+        @Body register: RegisterResponse
+    ): NetworkResponse<AuthResponse, ErrorResponse>
 
     @GET("product/all")
     suspend fun getProducts(
@@ -45,7 +45,7 @@ interface Api {
 
     @GET("pedido")
     suspend fun getPedidos(
-        @Query("pedido") pedido: Pedido
+        @Query("access_token") apiKey: String,
     ): NetworkResponse<PedidoResponse, ErrorResponse>
 
     @PUT("cart/update")

@@ -13,7 +13,6 @@ data class UserEntity(
     @ColumnInfo(name = "fullName") val fullName: String,
     @ColumnInfo(name = "lastName") val lastName: String,
     @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "password") val password: String,
     @ColumnInfo(name = "phone") val phone: String,
     @ColumnInfo(name = "role") val role: String
 )

@@ -7,6 +7,6 @@ data class Pedido(
     val _id: String,
     val cart: Cart,
     val createdAt: String,
-    val status: Int,
+    val status: Int?,
     val user: User
 )

@@ -1,6 +1,6 @@
 package com.bakery.bakeryapp.data.remote.model.auth
 
-data class Register(
+data class RegisterResponse(
     val birthDate: String,
     val createdAt: String,
     val email: String,

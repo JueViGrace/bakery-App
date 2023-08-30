@@ -10,11 +10,11 @@ import kotlinx.coroutines.flow.Flow
 interface CartDao {
 
     @Upsert
-    suspend fun upsertCart(cart: CartEntity)
+    suspend fun upsertCart(cart: List<CartEntity>)
 
     @Query("DELETE FROM cart")
     suspend fun deleteCart()
 
     @Query("SELECT * FROM cart")
-    fun getCart(): Flow<CartEntity>
+    fun getCart(): Flow<List<CartEntity>>
 }

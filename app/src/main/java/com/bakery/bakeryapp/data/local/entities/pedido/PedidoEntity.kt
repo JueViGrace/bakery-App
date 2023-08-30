@@ -11,6 +11,6 @@ data class PedidoEntity(
     @PrimaryKey val _id: String,
     @ColumnInfo(name = "cart") val cart: CartEntity,
     @ColumnInfo(name = "createdAt") val createdAt: String,
-    @ColumnInfo(name = "status") val status: Int,
+    @ColumnInfo(name = "status") val status: Int?,
     @ColumnInfo(name = "user") val user: UserEntity
 )
