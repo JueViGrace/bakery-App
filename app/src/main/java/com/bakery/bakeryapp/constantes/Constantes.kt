@@ -8,8 +8,8 @@ object Constantes {
     const val build: String = BuildConfig.BUILD_TYPE
     const val BASE_URL = "https://localhost:3000/api/"
     const val UPDATE_APP_REQUEST_CODE: Int = 200
-    const val DATABASE_VERSION_OLD: Int = 1
-    const val DATABASE_VERSION_NEW: Int = 2
+    const val DATABASE_VERSION_OLD: Int = 0
+    const val DATABASE_VERSION_NEW: Int = 1
     const val DATABASE_NAME: String = "bakery_db"
     const val DATASTORE_NAME = "PREFERECES"
 

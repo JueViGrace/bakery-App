@@ -22,6 +22,9 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
+        }
     }
 
     buildTypes {
@@ -44,7 +47,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = "1.5.0"
     }
     packaging {
         resources {
@@ -71,16 +74,16 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
 
     // Retrofit
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation ("com.github.haroldadmin:NetworkResponseAdapter:5.0.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.github.haroldadmin:NetworkResponseAdapter:5.0.0")
 
     // Play core
-    implementation ("com.google.android.play:core-ktx:1.8.1")
+    implementation("com.google.android.play:core-ktx:1.8.1")
 
     // define a BOM and its version
     implementation(platform("com.squareup.okhttp3:okhttp-bom:5.0.0-alpha.11"))
@@ -89,33 +92,33 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
 
-    //Dependency Injection
-    implementation("com.google.dagger:hilt-android:2.47")
-    kapt("com.google.dagger:hilt-android-compiler:2.47")
+    // Dependency Injection
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-android-compiler:2.48")
     kapt("androidx.hilt:hilt-compiler:1.0.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0-alpha01")
 
-    //Coroutines
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
-    //Room
-    implementation ("androidx.room:room-ktx:2.5.2")
+    // Room
+    implementation("androidx.room:room-ktx:2.5.2")
     implementation("androidx.room:room-runtime:2.5.2")
 
     // To use Kotlin annotation processing tool (kapt)
-    ksp ("androidx.room:room-compiler:2.5.2")
+    ksp("androidx.room:room-compiler:2.5.2")
 
     // optional - Test helpers
-    testImplementation ("androidx.room:room-testing:2.5.2")
+    testImplementation("androidx.room:room-testing:2.5.2")
 
     // optional - Paging 3 Integration
-    implementation ("androidx.room:room-paging:2.5.2")
+    implementation("androidx.room:room-paging:2.5.2")
 
-    //Detekt
-    detekt ("io.gitlab.arturbosch.detekt:detekt-cli:1.23.1")
+    // Detekt
+    detekt("io.gitlab.arturbosch.detekt:detekt-cli:1.23.1")
 
-    //Preferences DataStore
+    // Preferences DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 }
 

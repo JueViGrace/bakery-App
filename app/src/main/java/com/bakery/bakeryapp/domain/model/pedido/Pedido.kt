@@ -5,8 +5,8 @@ import com.bakery.bakeryapp.domain.model.cart.Cart
 
 data class Pedido(
     val _id: String,
-    val cart: Cart,
+    val cart: String,
     val createdAt: String,
     val status: Int?,
-    val user: User
+    val user: String
 )

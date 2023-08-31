@@ -1,20 +1,50 @@
 package com.bakery.bakeryapp.common
 
-import com.bakery.bakeryapp.data.local.entities.pedido.PedidoEntity as RoomPedido
-import com.bakery.bakeryapp.data.remote.model.pedido.PedidoResponseItem as ServerPedido
-import com.bakery.bakeryapp.data.local.entities.cart.CartEntity as RoomCart
 import com.bakery.bakeryapp.domain.model.cart.Cart
-import com.bakery.bakeryapp.data.remote.model.cart.CartResponseItem as ServerCart
 import com.bakery.bakeryapp.domain.model.category.Category
 import com.bakery.bakeryapp.domain.model.pedido.Pedido
 import com.bakery.bakeryapp.domain.model.product.Product
+import com.bakery.bakeryapp.domain.model.user.Auth
+import com.bakery.bakeryapp.domain.model.user.Login
+import com.bakery.bakeryapp.domain.model.user.Register
 import com.bakery.bakeryapp.domain.model.user.User
+import com.bakery.bakeryapp.data.local.entities.cart.CartEntity as RoomCart
 import com.bakery.bakeryapp.data.local.entities.categories.CategoryEntity as RoomCategory
+import com.bakery.bakeryapp.data.local.entities.pedido.PedidoEntity as RoomPedido
 import com.bakery.bakeryapp.data.local.entities.product.ProductEntity as RoomProduct
 import com.bakery.bakeryapp.data.local.entities.users.UserEntity as RoomUser
+import com.bakery.bakeryapp.data.remote.model.auth.AuthResponse as ServerAuth
+import com.bakery.bakeryapp.data.remote.model.auth.LoginResponse as ServerLogin
+import com.bakery.bakeryapp.data.remote.model.auth.RegisterResponse as ServerRegister
 import com.bakery.bakeryapp.data.remote.model.auth.UserCloud as ServerUser
+import com.bakery.bakeryapp.data.remote.model.cart.CartResponseItem as ServerCart
 import com.bakery.bakeryapp.data.remote.model.categories.CategoryResponseItem as ServerCategory
+import com.bakery.bakeryapp.data.remote.model.pedido.PedidoResponseItem as ServerPedido
 import com.bakery.bakeryapp.data.remote.model.product.ProductResponseItem as ServerProduct
+
+fun ServerLogin.toDomainLogin() = Login(
+    email, password
+)
+
+fun Login.toServerLogin() = ServerLogin(
+    email, password
+)
+
+fun ServerRegister.toDomainRegister() = Register(
+    birthDate, createdAt, email, fullName, lastName, name, password, phone, role
+)
+
+fun Register.toServerRegister() = ServerRegister(
+    birthDate, createdAt, email, fullName, lastName, name, password, phone, role
+)
+
+fun ServerAuth.toDomainAuth() = Auth(
+    access_token, user.toDomainUser()
+)
+
+fun Auth.toServerAuth() = ServerAuth(
+    access_token, user.toServerUser()
+)
 
 fun ServerUser.toDomainUser() = User(
     _id, birthDate, createdAt, email, fullName, lastName, name, phone, role
@@ -26,6 +56,10 @@ fun User.toRoomUser() = RoomUser(
 
 fun RoomUser.toDomainUser() = User(
     _id, birthDate, createdAt, email, fullName, lastName, name, phone, role
+)
+
+fun User.toServerUser() = ServerUser(
+    null, _id, birthDate, createdAt, email, fullName, lastName, name, phone, role
 )
 
 fun ServerCategory.toDomainCategory() = Category(
@@ -64,26 +98,15 @@ fun RoomCart.toDomainCart() = Cart(
     _id, createdAt, products, status
 )
 
-fun ServerPedido.toDomainPedido(): Pedido {
-    val cart = Cart(cart._id, cart.createdAt, cart.products, cart.status)
-    val user = User(
-        user._id,
-        user.birthDate,
-        user.createdAt,
-        user.email,
-        user.fullName,
-        user.lastName,
-        user.name,
-        user.phone,
-        user.role
-    )
-    return Pedido(_id, cart, createdAt, status, user)
-}
+fun ServerPedido.toDomainPedido() = Pedido(
+    _id, cart._id, createdAt, status, user._id
+)
+
 
 fun Pedido.toRoomPedido() = RoomPedido(
-    _id, cart.toRoomCart(), createdAt, status, user.toRoomUser()
+    _id, cart, createdAt, status, user
 )
 
 fun RoomPedido.toDomainPedido() = Pedido(
-    _id, cart.toDomainCart(), createdAt, status, user.toDomainUser()
+    _id, cart, createdAt, status, user
 )

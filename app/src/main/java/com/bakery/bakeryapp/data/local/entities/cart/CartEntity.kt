@@ -8,6 +8,6 @@ import androidx.room.PrimaryKey
 data class CartEntity(
     @PrimaryKey val _id: String,
     @ColumnInfo(name = "createdAt") val createdAt: String,
-    @ColumnInfo(name = "products") val products: List<String>,
+    @ColumnInfo(name = "products") val products: String,
     @ColumnInfo(name = "status") val status: Int?
 )

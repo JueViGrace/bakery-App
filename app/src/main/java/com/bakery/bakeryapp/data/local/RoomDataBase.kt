@@ -16,11 +16,11 @@ import com.bakery.bakeryapp.data.local.entities.users.UserEntity
 
 @Database(
     entities = [
-    CartEntity::class,
-    CategoryEntity::class,
-    PedidoEntity::class,
-    ProductEntity::class,
-    UserEntity::class
+        CartEntity::class,
+        CategoryEntity::class,
+        PedidoEntity::class,
+        ProductEntity::class,
+        UserEntity::class
     ],
     version = DATABASE_VERSION_NEW,
     exportSchema = true

@@ -4,6 +4,6 @@ data class CartResponseItem(
     val __v: Int?,
     val _id: String,
     val createdAt: String,
-    val products: List<String>,
+    val products: String,
     val status: Int?
 )

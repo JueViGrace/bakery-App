@@ -1,8 +1,10 @@
 package com.bakery.bakeryapp.domain.model.product
 
+import com.bakery.bakeryapp.domain.model.category.Category
+
 data class Product(
     val _id: String,
-    val categories: List<String>,
+    val categories: String,
     val createdAt: String,
     val haveStock: Boolean,
     val name: String,
