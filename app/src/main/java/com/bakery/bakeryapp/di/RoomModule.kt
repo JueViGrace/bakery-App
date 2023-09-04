@@ -9,6 +9,7 @@ import com.bakery.bakeryapp.data.local.RoomDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -18,8 +19,10 @@ object RoomModule {
 
     @Singleton
     @Provides
-    fun provideRoom(context: Context) =
+    fun provideRoom(@ApplicationContext context: Context) =
         Room.databaseBuilder(context, RoomDataBase::class.java, DATABASE_NAME)
+            .fallbackToDestructiveMigration()
+            .build()
 
     @Singleton
     @Provides
