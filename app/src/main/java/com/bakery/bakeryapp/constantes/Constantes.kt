@@ -2,6 +2,8 @@ package com.bakery.bakeryapp.constantes
 
 import com.google.android.play.core.ktx.BuildConfig
 import java.text.DecimalFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 object Constantes {
     const val version: String = BuildConfig.VERSION_NAME
@@ -12,7 +14,9 @@ object Constantes {
     const val DATABASE_VERSION_NEW: Int = 1
     const val DATABASE_NAME: String = "bakery_db"
     const val DATASTORE_NAME = "PREFERECES"
-
+    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
+    val date = LocalDateTime.now()
+    val formattedDate = formatter.format(date)
     // variables para dar formato a los numeros
     val formato = DecimalFormat("#,##0.00")
     val formato2 = DecimalFormat("#,##0")

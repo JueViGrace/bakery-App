@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.bakery.bakeryapp"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         compileSdk = 34
         versionCode = 1
@@ -124,7 +124,11 @@ dependencies {
     // Preferences DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
-    //Acompanist
+    // DatePicker
+    implementation("io.github.vanpra.compose-material-dialogs:datetime:0.9.0")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
+
+    // Acompanist
     implementation("com.google.accompanist:accompanist-navigation-animation:0.33.1-alpha")
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
 }

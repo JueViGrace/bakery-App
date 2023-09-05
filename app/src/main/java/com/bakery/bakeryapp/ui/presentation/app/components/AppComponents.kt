@@ -1,7 +1,10 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.bakery.bakeryapp.ui.presentation.app.components
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -18,23 +21,33 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -50,6 +63,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bakery.bakeryapp.R
+import com.bakery.bakeryapp.constantes.Constantes.date
+import com.bakery.bakeryapp.constantes.Constantes.formatter
 
 @Composable
 fun NormalTextComponent(value: String) {
@@ -89,7 +104,8 @@ fun HeadingTextComponent(value: String) {
 fun OutlinedTextFieldComponent(
     labelValue: String,
     painterResource: Painter,
-    onTextSelected: (String) -> Unit
+    onTextSelected: (String) -> Unit,
+    errorStatus: Boolean = false
 ) {
     val textValue = remember {
         mutableStateOf("")
@@ -116,7 +132,8 @@ fun OutlinedTextFieldComponent(
             Icon(painter = painterResource, contentDescription = "")
         },
         singleLine = true,
-        maxLines = 1
+        maxLines = 1,
+        isError = !errorStatus
     )
 }
 
@@ -124,7 +141,8 @@ fun OutlinedTextFieldComponent(
 fun EmailTextFieldComponent(
     labelValue: String,
     painterResource: Painter,
-    onTextSelected: (String) -> Unit
+    onTextSelected: (String) -> Unit,
+    errorStatus: Boolean = false
 ) {
     val emailValue = remember {
         mutableStateOf("")
@@ -154,7 +172,8 @@ fun EmailTextFieldComponent(
             Icon(painter = painterResource, contentDescription = "")
         },
         singleLine = true,
-        maxLines = 1
+        maxLines = 1,
+        isError = !errorStatus
     )
 }
 
@@ -162,7 +181,8 @@ fun EmailTextFieldComponent(
 fun PasswordTextFieldComponent(
     labelValue: String,
     painterResource: Painter,
-    onTextSelected: (String) -> Unit
+    onTextSelected: (String) -> Unit,
+    errorStatus: Boolean = false
 ) {
     val localFocusManager = LocalFocusManager.current
 
@@ -219,12 +239,179 @@ fun PasswordTextFieldComponent(
         },
         visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
         singleLine = true,
-        maxLines = 1
+        maxLines = 1,
+        isError = !errorStatus
     )
 }
 
 @Composable
-fun CheckBoxComponent(value: String, onTextSelected: (String) -> Unit) {
+fun DatePickerComponent(
+    value: String,
+    painterResource: Painter,
+    onTextSelected: (String) -> Unit,
+    errorStatus: Boolean = false
+) {
+    val openDialog = remember { mutableStateOf(false) }
+
+    val datePickerState = rememberDatePickerState()
+    val confirmEnabled = remember { derivedStateOf { datePickerState.selectedDateMillis != null } }
+
+    Box {
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.background)
+                .clickable(
+                    enabled = true,
+                    role = Role.Button,
+                    onClick = {
+                        openDialog.value = true
+                    },
+                ),
+            value = formatter.format(date),
+            onValueChange = {
+                onTextSelected(it)
+            },
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Next
+            ),
+            label = { Text(text = value) }, leadingIcon = {
+                Icon(
+                    painter = painterResource,
+                    contentDescription = "",
+                    modifier = Modifier.clickable(
+                        enabled = true,
+                        role = Role.Button,
+                        onClick = {
+                            openDialog.value = true
+                        },
+                    )
+                )
+            },
+            singleLine = true, maxLines = 1, isError = !errorStatus
+        )
+        Box(
+            modifier = Modifier
+                .matchParentSize()
+                .alpha(0f)
+                .clickable(onClick = { openDialog.value = true }),
+        )
+    }
+
+    if (openDialog.value) {
+        DatePickerDialog(
+            onDismissRequest = {
+                // Dismiss the dialog when the user clicks outside the dialog or on the back
+                // button. If you want to disable that functionality, simply use an empty
+                // onDismissRequest.
+                openDialog.value = false
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        openDialog.value = false
+                    },
+                    enabled = confirmEnabled.value
+                ) {
+                    Text("OK")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        openDialog.value = false
+                    }
+                ) {
+                    Text("Cancel")
+                }
+            }
+        ) {
+            DatePicker(state = datePickerState)
+        }
+    }
+
+    /*val dateDialogState = rememberMaterialDialogState()
+
+    val pickedDate = remember {
+        mutableStateOf(LocalDate.now())
+    }
+
+    val formattedDate = remember {
+        derivedStateOf {
+            DateTimeFormatter
+                .ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+                .format(pickedDate.value)
+        }
+    }
+
+    Box {
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.background)
+                .clickable(
+                    enabled = true,
+                    role = Role.Button,
+                    onClick = {
+                        dateDialogState.show()
+                    },
+                ),
+            value = formattedDate.value,
+            onValueChange = {
+                onTextSelected(it)
+            },
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Next
+            ),
+            label = { Text(text = value) }, leadingIcon = {
+                Icon(
+                    painter = painterResource,
+                    contentDescription = "",
+                    modifier = Modifier.clickable(
+                        enabled = true,
+                        role = Role.Button,
+                        onClick = {
+                            dateDialogState.show()
+                        },
+                    )
+                )
+            },
+            singleLine = true, maxLines = 1, isError = !errorStatus
+        )
+        Box(
+            modifier = Modifier
+                .matchParentSize()
+                .alpha(0f)
+                .clickable(onClick = { dateDialogState.show() }),
+        )
+    }
+    MaterialDialog(
+        dialogState = dateDialogState,
+        properties = DialogProperties(
+            dismissOnBackPress = true,
+            dismissOnClickOutside = true
+        ),
+        backgroundColor = MaterialTheme.colorScheme.background,
+        buttons = {
+            positiveButton(text = stringResource(id = R.string.ok))
+            negativeButton(text = stringResource(id = R.string.cancel))
+        }
+    ) {
+        datepicker(
+            initialDate = LocalDate.now(),
+            title = stringResource(id = R.string.pick_date),
+        ) {
+            pickedDate.value = it
+        }
+    }*/
+}
+
+@Composable
+fun CheckBoxComponent(
+    value: String,
+    onTextSelected: (String) -> Unit,
+    onCheckedChanged: (Boolean) -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -235,10 +422,10 @@ fun CheckBoxComponent(value: String, onTextSelected: (String) -> Unit) {
             mutableStateOf(false)
         }
 
-        Checkbox(
-            checked = checkedState.value,
-            onCheckedChange = { checkedState.value != checkedState.value }
-        )
+        Checkbox(checked = checkedState.value, onCheckedChange = {
+            checkedState.value != checkedState.value
+            onCheckedChanged.invoke(it)
+        })
 
         ClickableTextComponent(value = value, onTextSelected = onTextSelected)
     }
@@ -277,7 +464,7 @@ fun ClickableTextComponent(value: String, onTextSelected: (String) -> Unit) {
 }
 
 @Composable
-fun ButtonComponent(value: String, onButtonClicked: () -> Unit) {
+fun ButtonComponent(value: String, onButtonClicked: () -> Unit, isEnabled: Boolean = false) {
     Button(
         onClick = { onButtonClicked.invoke() },
         modifier = Modifier
@@ -285,7 +472,8 @@ fun ButtonComponent(value: String, onButtonClicked: () -> Unit) {
             .heightIn(48.dp),
         contentPadding = PaddingValues(),
         colors = ButtonDefaults.buttonColors(Color.Transparent),
-        shape = RoundedCornerShape(50.dp)
+        shape = RoundedCornerShape(50.dp),
+        enabled = isEnabled
     ) {
         Box(
             modifier = Modifier

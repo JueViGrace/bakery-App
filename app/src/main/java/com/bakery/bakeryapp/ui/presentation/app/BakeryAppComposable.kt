@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.bakery.bakeryapp.ui.presentation.app.navigation.AppRouter
 import com.bakery.bakeryapp.ui.presentation.app.navigation.Screen
+import com.bakery.bakeryapp.ui.presentation.app.screens.home.HomeScreen
 import com.bakery.bakeryapp.ui.presentation.app.screens.login.LoginScreen
 import com.bakery.bakeryapp.ui.presentation.app.screens.signup.SingUpScreen
 import com.bakery.bakeryapp.ui.presentation.app.screens.terms.TermsAndConditionsScreen
@@ -23,11 +24,17 @@ fun BakeryAppComposable() {
                 is Screen.SingUpScreen -> {
                     SingUpScreen()
                 }
+
                 is Screen.TermsAndConditionsScreen -> {
                     TermsAndConditionsScreen()
                 }
+
                 is Screen.LoginScreen -> {
                     LoginScreen()
+                }
+
+                is Screen.HomeScreen -> {
+                    HomeScreen()
                 }
             }
         }

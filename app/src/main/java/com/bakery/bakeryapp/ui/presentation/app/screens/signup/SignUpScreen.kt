@@ -22,6 +22,7 @@ import com.bakery.bakeryapp.data.viewmodel.login.event.UIEvent
 import com.bakery.bakeryapp.ui.presentation.app.components.ButtonComponent
 import com.bakery.bakeryapp.ui.presentation.app.components.CheckBoxComponent
 import com.bakery.bakeryapp.ui.presentation.app.components.ClickableLoginTextComponent
+import com.bakery.bakeryapp.ui.presentation.app.components.DatePickerComponent
 import com.bakery.bakeryapp.ui.presentation.app.components.DividerTextComponent
 import com.bakery.bakeryapp.ui.presentation.app.components.EmailTextFieldComponent
 import com.bakery.bakeryapp.ui.presentation.app.components.HeadingTextComponent
@@ -54,7 +55,8 @@ fun SingUpScreen(loginViewModel: LoginViewModel = viewModel()) {
                 painterResource(id = R.drawable.ic_profile),
                 onTextSelected = {
                     loginViewModel.onEvent(UIEvent.FirstNameChanged(it))
-                }
+                },
+                errorStatus = loginViewModel.state.value.firstNameError
             )
 
             OutlinedTextFieldComponent(
@@ -62,7 +64,17 @@ fun SingUpScreen(loginViewModel: LoginViewModel = viewModel()) {
                 painterResource(id = R.drawable.ic_profile),
                 onTextSelected = {
                     loginViewModel.onEvent(UIEvent.LastNameChanged(it))
-                }
+                },
+                errorStatus = loginViewModel.state.value.lastNameError
+            )
+
+            DatePickerComponent(
+                value = stringResource(id = R.string.date_pick),
+                painterResource(id = R.drawable.ic_calendar),
+                onTextSelected = {
+                    loginViewModel.onEvent(UIEvent.BirthDayChanged(it))
+                },
+                errorStatus = loginViewModel.state.value.birthDayError
             )
 
             EmailTextFieldComponent(
@@ -70,7 +82,8 @@ fun SingUpScreen(loginViewModel: LoginViewModel = viewModel()) {
                 painterResource(id = R.drawable.ic_email),
                 onTextSelected = {
                     loginViewModel.onEvent(UIEvent.EmailChanged(it))
-                }
+                },
+                errorStatus = loginViewModel.state.value.emailError
             )
 
             PasswordTextFieldComponent(
@@ -78,13 +91,17 @@ fun SingUpScreen(loginViewModel: LoginViewModel = viewModel()) {
                 painterResource(id = R.drawable.ic_lock),
                 onTextSelected = {
                     loginViewModel.onEvent(UIEvent.PasswordChanged(it))
-                }
+                },
+                errorStatus = loginViewModel.state.value.passwordError
             )
 
             CheckBoxComponent(
                 value = stringResource(id = R.string.terms_and_conditions),
                 onTextSelected = {
                     AppRouter.navigateTo(Screen.TermsAndConditionsScreen)
+                },
+                onCheckedChanged = {
+                    loginViewModel.onEvent(UIEvent.PrivacyPolicyCheckBoxClicked(it))
                 }
             )
 
@@ -94,7 +111,8 @@ fun SingUpScreen(loginViewModel: LoginViewModel = viewModel()) {
                 value = stringResource(id = R.string.register),
                 onButtonClicked = {
                     loginViewModel.onEvent(UIEvent.RegisterButtonClicked)
-                }
+                },
+                isEnabled = loginViewModel.allValidationsPassed.value
             )
 
             Spacer(modifier = Modifier.height(20.dp))

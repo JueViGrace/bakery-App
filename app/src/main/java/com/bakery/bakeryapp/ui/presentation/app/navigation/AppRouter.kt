@@ -7,6 +7,8 @@ sealed class Screen {
     data object SingUpScreen : Screen()
     data object TermsAndConditionsScreen : Screen()
     data object LoginScreen : Screen()
+
+    data object HomeScreen : Screen()
 }
 
 object AppRouter {

@@ -15,4 +15,8 @@
     <string name="or">or</string>
     <string name="login">Login</string>
     <string name="forgot_password">Forgot your password?</string>
+    <string name="date_pick">Birth Day</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="pick_date">Pick a date</string>
 </resources>
