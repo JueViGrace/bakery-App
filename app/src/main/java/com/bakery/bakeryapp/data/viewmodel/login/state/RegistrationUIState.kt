@@ -17,7 +17,6 @@ data class RegistrationUIState(
     var lastNameError: Boolean = false,
     var birthDayError: Boolean = false,
     var emailError: Boolean = false,
-    var fullNameError: Boolean = false,
     val phoneError: Boolean = false,
     var passwordError: Boolean = false,
     var privacyPolicyError: Boolean = false,

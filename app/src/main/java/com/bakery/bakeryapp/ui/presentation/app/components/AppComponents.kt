@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.bakery.bakeryapp.ui.presentation.app.components
 
 import android.util.Log
@@ -36,6 +34,7 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -63,8 +62,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bakery.bakeryapp.R
-import com.bakery.bakeryapp.constantes.Constantes.date
 import com.bakery.bakeryapp.constantes.Constantes.formatter
+import java.time.LocalDate.now
+import java.time.ZoneId
+import java.util.Date
 
 @Composable
 fun NormalTextComponent(value: String) {
@@ -123,7 +124,7 @@ fun OutlinedTextFieldComponent(
             focusedLabelColor = MaterialTheme.colorScheme.primary,
             cursorColor = MaterialTheme.colorScheme.primary,
         ),
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         onValueChange = {
             textValue.value = it
             onTextSelected(it)
@@ -245,71 +246,85 @@ fun PasswordTextFieldComponent(
 }
 
 @Composable
+fun PhoneTextFieldComponent(
+    labelValue: String,
+    painterResource: Painter,
+    onTextSelected: (String) -> Unit,
+    errorStatus: Boolean
+) {
+    val localFocusManager = LocalFocusManager.current
+
+    val phoneNumber = remember {
+        mutableStateOf("")
+    }
+
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.background),
+        // .clip(MaterialTheme.shapes.small),
+        label = { Text(text = labelValue) },
+        value = phoneNumber.value,
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            focusedLabelColor = MaterialTheme.colorScheme.primary,
+            cursorColor = MaterialTheme.colorScheme.primary,
+        ),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Phone,
+            imeAction = ImeAction.Next
+        ),
+        keyboardActions = KeyboardActions {
+            localFocusManager.clearFocus()
+        },
+        onValueChange = {
+            phoneNumber.value = it
+            onTextSelected(it)
+        },
+        leadingIcon = {
+            Icon(painter = painterResource, contentDescription = "")
+        },
+        singleLine = true,
+        maxLines = 1,
+        isError = !errorStatus
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
 fun DatePickerComponent(
     value: String,
     painterResource: Painter,
     onTextSelected: (String) -> Unit,
     errorStatus: Boolean = false
 ) {
-    val openDialog = remember { mutableStateOf(false) }
+    var openDialog by remember { mutableStateOf(false) }
 
-    val datePickerState = rememberDatePickerState()
-    val confirmEnabled = remember { derivedStateOf { datePickerState.selectedDateMillis != null } }
-
-    Box {
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.background)
-                .clickable(
-                    enabled = true,
-                    role = Role.Button,
-                    onClick = {
-                        openDialog.value = true
-                    },
-                ),
-            value = formatter.format(date),
-            onValueChange = {
-                onTextSelected(it)
-            },
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Next
-            ),
-            label = { Text(text = value) }, leadingIcon = {
-                Icon(
-                    painter = painterResource,
-                    contentDescription = "",
-                    modifier = Modifier.clickable(
-                        enabled = true,
-                        role = Role.Button,
-                        onClick = {
-                            openDialog.value = true
-                        },
-                    )
-                )
-            },
-            singleLine = true, maxLines = 1, isError = !errorStatus
-        )
-        Box(
-            modifier = Modifier
-                .matchParentSize()
-                .alpha(0f)
-                .clickable(onClick = { openDialog.value = true }),
-        )
+    val date = remember {
+        mutableStateOf(now())
     }
 
-    if (openDialog.value) {
+    val datePickerState = rememberDatePickerState()
+
+    val confirmEnabled = remember { derivedStateOf { datePickerState.selectedDateMillis != null } }
+
+    var selectedDate by remember {
+        mutableLongStateOf(date.value.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli())
+    }
+
+    if (openDialog) {
         DatePickerDialog(
             onDismissRequest = {
                 // Dismiss the dialog when the user clicks outside the dialog or on the back
                 // button. If you want to disable that functionality, simply use an empty
                 // onDismissRequest.
-                openDialog.value = false
+                openDialog = false
             },
             confirmButton = {
                 TextButton(
                     onClick = {
-                        openDialog.value = false
+                        openDialog = false
+                        selectedDate = datePickerState.selectedDateMillis!!
                     },
                     enabled = confirmEnabled.value
                 ) {
@@ -317,32 +332,22 @@ fun DatePickerComponent(
                 }
             },
             dismissButton = {
-                TextButton(
-                    onClick = {
-                        openDialog.value = false
-                    }
-                ) {
+                TextButton(onClick = {
+                    openDialog = false
+                }) {
                     Text("Cancel")
                 }
             }
         ) {
-            DatePicker(state = datePickerState)
+            DatePicker(
+                state = datePickerState,
+            )
         }
     }
 
-    /*val dateDialogState = rememberMaterialDialogState()
+    var dateSelected = formatter.format(Date(selectedDate.plus(86400000)))
 
-    val pickedDate = remember {
-        mutableStateOf(LocalDate.now())
-    }
-
-    val formattedDate = remember {
-        derivedStateOf {
-            DateTimeFormatter
-                .ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
-                .format(pickedDate.value)
-        }
-    }
+    onTextSelected.invoke(dateSelected)
 
     Box {
         OutlinedTextField(
@@ -353,12 +358,13 @@ fun DatePickerComponent(
                     enabled = true,
                     role = Role.Button,
                     onClick = {
-                        dateDialogState.show()
+                        openDialog = true
                     },
                 ),
-            value = formattedDate.value,
+            value = dateSelected,
             onValueChange = {
-                onTextSelected(it)
+                dateSelected = it
+                onTextSelected.invoke(it)
             },
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next
@@ -371,39 +377,19 @@ fun DatePickerComponent(
                         enabled = true,
                         role = Role.Button,
                         onClick = {
-                            dateDialogState.show()
+                            openDialog = true
                         },
                     )
                 )
-            },
-            singleLine = true, maxLines = 1, isError = !errorStatus
+            }, singleLine = true, maxLines = 1, isError = !errorStatus
         )
         Box(
             modifier = Modifier
                 .matchParentSize()
                 .alpha(0f)
-                .clickable(onClick = { dateDialogState.show() }),
+                .clickable(onClick = { openDialog = true }),
         )
     }
-    MaterialDialog(
-        dialogState = dateDialogState,
-        properties = DialogProperties(
-            dismissOnBackPress = true,
-            dismissOnClickOutside = true
-        ),
-        backgroundColor = MaterialTheme.colorScheme.background,
-        buttons = {
-            positiveButton(text = stringResource(id = R.string.ok))
-            negativeButton(text = stringResource(id = R.string.cancel))
-        }
-    ) {
-        datepicker(
-            initialDate = LocalDate.now(),
-            title = stringResource(id = R.string.pick_date),
-        ) {
-            pickedDate.value = it
-        }
-    }*/
 }
 
 @Composable
@@ -423,7 +409,7 @@ fun CheckBoxComponent(
         }
 
         Checkbox(checked = checkedState.value, onCheckedChange = {
-            checkedState.value != checkedState.value
+            checkedState.value = !checkedState.value
             onCheckedChanged.invoke(it)
         })
 
@@ -481,10 +467,17 @@ fun ButtonComponent(value: String, onButtonClicked: () -> Unit, isEnabled: Boole
                 .heightIn(48.dp)
                 .background(
                     brush = Brush.horizontalGradient(
-                        listOf(
-                            MaterialTheme.colorScheme.secondary,
-                            MaterialTheme.colorScheme.primary
-                        )
+                        if (isEnabled) {
+                            listOf(
+                                MaterialTheme.colorScheme.secondary,
+                                MaterialTheme.colorScheme.primary
+                            )
+                        } else {
+                            listOf(
+                                MaterialTheme.colorScheme.onSurfaceVariant,
+                                MaterialTheme.colorScheme.outline
+                            )
+                        }
                     ),
                     shape = RoundedCornerShape(50.dp)
                 ),

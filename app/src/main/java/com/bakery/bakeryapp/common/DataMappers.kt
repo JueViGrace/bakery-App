@@ -23,11 +23,13 @@ import com.bakery.bakeryapp.data.remote.model.pedido.PedidoResponseItem as Serve
 import com.bakery.bakeryapp.data.remote.model.product.ProductResponseItem as ServerProduct
 
 fun ServerLogin.toDomainLogin() = Login(
-    email, password
+    email,
+    password
 )
 
 fun Login.toServerLogin() = ServerLogin(
-    email, password
+    email,
+    password
 )
 
 fun ServerRegister.toDomainRegister() = Register(
@@ -39,11 +41,13 @@ fun Register.toServerRegister() = ServerRegister(
 )
 
 fun ServerAuth.toDomainAuth() = Auth(
-    access_token, user.toDomainUser()
+    access_token,
+    user.toDomainUser()
 )
 
 fun Auth.toServerAuth() = ServerAuth(
-    access_token, user.toServerUser()
+    access_token,
+    user.toServerUser()
 )
 
 fun ServerUser.toDomainUser() = User(
@@ -63,15 +67,24 @@ fun User.toServerUser() = ServerUser(
 )
 
 fun ServerCategory.toDomainCategory() = Category(
-    _id, categoryImage, createdAt, name
+    _id,
+    categoryImage,
+    createdAt,
+    name
 )
 
 fun Category.toRoomCategory() = RoomCategory(
-    _id, categoryImage, createdAt, name
+    _id,
+    categoryImage,
+    createdAt,
+    name
 )
 
 fun RoomCategory.toDomainCategory() = Category(
-    _id, categoryImage, createdAt, name
+    _id,
+    categoryImage,
+    createdAt,
+    name
 )
 
 fun ServerProduct.toDomainProduct() = Product(
@@ -87,26 +100,46 @@ fun RoomProduct.toDomainProduct() = Product(
 )
 
 fun ServerCart.toDomainCart() = Cart(
-    _id, createdAt, products, status
+    _id,
+    createdAt,
+    products,
+    status
 )
 
 fun Cart.toRoomCart() = RoomCart(
-    _id, createdAt, products, status
+    _id,
+    createdAt,
+    products,
+    status
 )
 
 fun RoomCart.toDomainCart() = Cart(
-    _id, createdAt, products, status
+    _id,
+    createdAt,
+    products,
+    status
 )
 
 fun ServerPedido.toDomainPedido() = Pedido(
-    _id, cart._id, createdAt, status, user._id
+    _id,
+    cart._id,
+    createdAt,
+    status,
+    user._id
 )
 
-
 fun Pedido.toRoomPedido() = RoomPedido(
-    _id, cart, createdAt, status, user
+    _id,
+    cart,
+    createdAt,
+    status,
+    user
 )
 
 fun RoomPedido.toDomainPedido() = Pedido(
-    _id, cart, createdAt, status, user
+    _id,
+    cart,
+    createdAt,
+    status,
+    user
 )

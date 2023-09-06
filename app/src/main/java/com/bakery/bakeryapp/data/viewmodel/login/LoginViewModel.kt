@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bakery.bakeryapp.common.Resource
-import com.bakery.bakeryapp.constantes.Constantes.formattedDate
+import com.bakery.bakeryapp.constantes.Constantes.formatter
 import com.bakery.bakeryapp.data.repository.MainRepository
 import com.bakery.bakeryapp.data.rules.Validator
 import com.bakery.bakeryapp.data.viewmodel.login.event.UIEvent
@@ -16,6 +16,7 @@ import com.bakery.bakeryapp.ui.presentation.app.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,6 +30,8 @@ class LoginViewModel @Inject constructor(
 
     val allValidationsPassed = mutableStateOf(false)
 
+    private val date = mutableStateOf(Date())
+
     fun onEvent(event: UIEvent) {
         when (event) {
             is UIEvent.FirstNameChanged -> {
@@ -40,7 +43,8 @@ class LoginViewModel @Inject constructor(
 
             is UIEvent.LastNameChanged -> {
                 state.value = state.value.copy(
-                    lastName = event.lastName
+                    lastName = event.lastName,
+                    fullName = "${state.value.firstName} ${event.lastName}"
                 )
                 printState()
             }
@@ -60,6 +64,9 @@ class LoginViewModel @Inject constructor(
             }
 
             is UIEvent.RegisterButtonClicked -> {
+                state.value = state.value.copy(
+                    createdAt = formatter.format(date.value)
+                )
                 singUp()
             }
 
@@ -92,7 +99,7 @@ class LoginViewModel @Inject constructor(
 
         val register = Register(
             birthDate = state.value.birthDay,
-            createdAt = formattedDate,
+            createdAt = state.value.createdAt,
             email = state.value.email,
             fullName = state.value.fullName,
             lastName = state.value.lastName,
@@ -122,9 +129,6 @@ class LoginViewModel @Inject constructor(
 
         val phoneResult = Validator.validatePhone(phone = state.value.phone)
 
-        val fullNameResult =
-            Validator.validateFullName(fName = "${state.value.firstName} ${state.value.lastName}")
-
         Log.d(TAG, "Inside_validateDataWithRules")
         Log.d(TAG, "fNameResult: $fNameResult")
         Log.d(TAG, "lNameResult: $lNameResult")
@@ -133,7 +137,6 @@ class LoginViewModel @Inject constructor(
         Log.d(TAG, "privacyPolicyResult: $privacyPolicyResult")
         Log.d(TAG, "bDayResult: $bDayResult")
         Log.d(TAG, "phoneResult: $phoneResult")
-        Log.d(TAG, "fullNameResult: $fullNameResult")
 
         state.value = state.value.copy(
             firstNameError = fNameResult.status,
@@ -142,12 +145,12 @@ class LoginViewModel @Inject constructor(
             passwordError = passwordResult.status,
             privacyPolicyError = privacyPolicyResult.status,
             phoneError = phoneResult.status,
-            fullNameError = fullNameResult.status
+            birthDayError = bDayResult.status
         )
 
         allValidationsPassed.value =
             fNameResult.status && lNameResult.status && emailResult.status &&
-            passwordResult.status && privacyPolicyResult.status && phoneResult.status && fullNameResult.status
+            passwordResult.status && privacyPolicyResult.status && phoneResult.status
     }
 
     private fun printState() {
@@ -163,6 +166,10 @@ class LoginViewModel @Inject constructor(
             result.collect {
                 when (it) {
                     is Resource.Success -> {
+                        if (it.data != null) {
+                            repository.saveUser(listOf(it.data.user))
+                        }
+
                         AppRouter.navigateTo(Screen.HomeScreen)
                     }
 

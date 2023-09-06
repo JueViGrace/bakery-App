@@ -1,6 +1,7 @@
 package com.bakery.bakeryapp.ui.presentation.app.screens.signup
 
 import android.content.res.Configuration.UI_MODE_NIGHT_UNDEFINED
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,6 +31,7 @@ import com.bakery.bakeryapp.ui.presentation.app.components.HeadingTextComponent
 import com.bakery.bakeryapp.ui.presentation.app.components.NormalTextComponent
 import com.bakery.bakeryapp.ui.presentation.app.components.OutlinedTextFieldComponent
 import com.bakery.bakeryapp.ui.presentation.app.components.PasswordTextFieldComponent
+import com.bakery.bakeryapp.ui.presentation.app.components.PhoneTextFieldComponent
 import com.bakery.bakeryapp.ui.presentation.app.navigation.AppRouter
 import com.bakery.bakeryapp.ui.presentation.app.navigation.Screen
 
@@ -75,6 +78,15 @@ fun SingUpScreen(loginViewModel: LoginViewModel = viewModel()) {
                     loginViewModel.onEvent(UIEvent.BirthDayChanged(it))
                 },
                 errorStatus = loginViewModel.state.value.birthDayError
+            )
+
+            PhoneTextFieldComponent(
+                labelValue = stringResource(id = R.string.phone_number),
+                painterResource(id = R.drawable.ic_call),
+                onTextSelected = {
+                    loginViewModel.onEvent(UIEvent.PhoneChanged(it))
+                },
+                errorStatus = loginViewModel.state.value.phoneError
             )
 
             EmailTextFieldComponent(
@@ -125,6 +137,14 @@ fun SingUpScreen(loginViewModel: LoginViewModel = viewModel()) {
                     AppRouter.navigateTo(Screen.LoginScreen)
                 }
             )
+
+            if (loginViewModel.state.value.singUpError) {
+                Toast.makeText(
+                    LocalContext.current,
+                    loginViewModel.state.value.singUpMessage,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 }
