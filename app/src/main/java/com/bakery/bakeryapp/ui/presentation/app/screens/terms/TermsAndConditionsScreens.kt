@@ -11,9 +11,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.bakery.bakeryapp.R
 import com.bakery.bakeryapp.ui.presentation.app.components.HeadingTextComponent
-import com.bakery.bakeryapp.ui.presentation.app.navigation.AppRouter
-import com.bakery.bakeryapp.ui.presentation.app.navigation.Screen
-import com.bakery.bakeryapp.ui.presentation.app.navigation.SystemBackButtonHandler
+import com.bakery.bakeryapp.data.navigation.AppRouter
+import com.bakery.bakeryapp.data.navigation.Screen
+import com.bakery.bakeryapp.data.navigation.SystemBackButtonHandler
 
 @Composable
 fun TermsAndConditionsScreen() {

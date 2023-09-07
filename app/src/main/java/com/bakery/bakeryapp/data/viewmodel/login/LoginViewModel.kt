@@ -1,22 +1,19 @@
 package com.bakery.bakeryapp.data.viewmodel.login
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bakery.bakeryapp.common.Resource
-import com.bakery.bakeryapp.constantes.Constantes.formatter
+import com.bakery.bakeryapp.data.navigation.AppRouter
+import com.bakery.bakeryapp.data.navigation.Screen
 import com.bakery.bakeryapp.data.repository.MainRepository
 import com.bakery.bakeryapp.data.rules.Validator
-import com.bakery.bakeryapp.data.viewmodel.login.event.UIEvent
-import com.bakery.bakeryapp.data.viewmodel.login.state.RegistrationUIState
-import com.bakery.bakeryapp.domain.model.user.Register
-import com.bakery.bakeryapp.ui.presentation.app.navigation.AppRouter
-import com.bakery.bakeryapp.ui.presentation.app.navigation.Screen
+import com.bakery.bakeryapp.data.viewmodel.login.event.LoginUIEvent
+import com.bakery.bakeryapp.data.viewmodel.login.state.LoginUIState
+import com.bakery.bakeryapp.domain.model.user.Login
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,162 +23,107 @@ class LoginViewModel @Inject constructor(
 
     private val TAG = LoginViewModel::class.simpleName
 
-    val state = mutableStateOf(RegistrationUIState())
+    val state = mutableStateOf(LoginUIState())
 
     val allValidationsPassed = mutableStateOf(false)
 
-    private val date = mutableStateOf(Date())
+    var loginInProgress = mutableStateOf(false)
 
-    fun onEvent(event: UIEvent) {
+    fun onEvent(event: LoginUIEvent) {
         when (event) {
-            is UIEvent.FirstNameChanged -> {
-                state.value = state.value.copy(
-                    firstName = event.firstName
-                )
-                printState()
-            }
-
-            is UIEvent.LastNameChanged -> {
-                state.value = state.value.copy(
-                    lastName = event.lastName,
-                    fullName = "${state.value.firstName} ${event.lastName}"
-                )
-                printState()
-            }
-
-            is UIEvent.EmailChanged -> {
+            is LoginUIEvent.EmailChanged -> {
                 state.value = state.value.copy(
                     email = event.email
                 )
-                printState()
             }
 
-            is UIEvent.PasswordChanged -> {
+            is LoginUIEvent.PasswordChanged -> {
                 state.value = state.value.copy(
                     password = event.password
                 )
-                printState()
             }
 
-            is UIEvent.RegisterButtonClicked -> {
-                state.value = state.value.copy(
-                    createdAt = formatter.format(date.value)
-                )
-                singUp()
-            }
-
-            is UIEvent.PrivacyPolicyCheckBoxClicked -> {
-                state.value = state.value.copy(
-                    privacyPolicyAccepted = event.status
-                )
-                printState()
-            }
-
-            is UIEvent.BirthDayChanged -> {
-                state.value = state.value.copy(
-                    birthDay = event.birthDay
-                )
-                printState()
-            }
-
-            is UIEvent.PhoneChanged -> {
-                state.value = state.value.copy(
-                    phone = event.phone
-                )
-                printState()
+            is LoginUIEvent.LogingButtonClicked -> {
+                login()
             }
         }
-        validateDataWithRules()
+        validateLoginUIDataWithRules()
     }
 
-    private fun singUp() {
-        validateDataWithRules()
+    private fun login() {
+        validateLoginUIDataWithRules()
 
-        val register = Register(
-            birthDate = state.value.birthDay,
-            createdAt = state.value.createdAt,
+        val login = Login(
             email = state.value.email,
-            fullName = state.value.fullName,
-            lastName = state.value.lastName,
-            name = state.value.firstName,
-            password = state.value.password,
-            phone = state.value.phone,
-            role = state.value.role
+            password = state.value.password
         )
 
-        createUserInCloud(register)
+        loginApi(login)
     }
 
-    private fun validateDataWithRules() {
-        val fNameResult = Validator.validateFirstName(fName = state.value.firstName)
-
-        val lNameResult = Validator.validateLastName(lName = state.value.lastName)
-
-        val bDayResult = Validator.validateBirthDay(bDay = state.value.birthDay)
-
-        val emailResult = Validator.validateEmail(email = state.value.email)
-
-        val passwordResult = Validator.validatePassword(password = state.value.password)
-
-        val privacyPolicyResult = Validator.validatePrivacyPolicyAcceptance(
-            statusValue = state.value.privacyPolicyAccepted
-        )
-
-        val phoneResult = Validator.validatePhone(phone = state.value.phone)
-
-        Log.d(TAG, "Inside_validateDataWithRules")
-        Log.d(TAG, "fNameResult: $fNameResult")
-        Log.d(TAG, "lNameResult: $lNameResult")
-        Log.d(TAG, "emailResult: $emailResult")
-        Log.d(TAG, "passwordResult: $passwordResult")
-        Log.d(TAG, "privacyPolicyResult: $privacyPolicyResult")
-        Log.d(TAG, "bDayResult: $bDayResult")
-        Log.d(TAG, "phoneResult: $phoneResult")
-
-        state.value = state.value.copy(
-            firstNameError = fNameResult.status,
-            lastNameError = lNameResult.status,
-            emailError = emailResult.status,
-            passwordError = passwordResult.status,
-            privacyPolicyError = privacyPolicyResult.status,
-            phoneError = phoneResult.status,
-            birthDayError = bDayResult.status
-        )
-
-        allValidationsPassed.value =
-            fNameResult.status && lNameResult.status && emailResult.status &&
-            passwordResult.status && privacyPolicyResult.status && phoneResult.status
-    }
-
-    private fun printState() {
-        Log.d(TAG, "printState: ${state.value}")
-    }
-
-    private fun createUserInCloud(register: Register) {
+    private fun loginApi(login: Login) {
         viewModelScope.launch {
             val result = async {
-                repository.register(register)
+                repository.login(login)
             }.await()
 
             result.collect {
                 when (it) {
                     is Resource.Success -> {
                         if (it.data != null) {
+                            state.value = state.value.copy(
+                                accessToken = it.data.access_token
+                            )
                             repository.saveUser(listOf(it.data.user))
-                        }
+                            AppRouter.navigateTo(Screen.HomeScreen)
+                            loginInProgress.value = false
 
-                        AppRouter.navigateTo(Screen.HomeScreen)
+                            reset()
+                        } else {
+                            state.value.loginError = true
+                        }
                     }
 
                     is Resource.Error -> {
-                        state.value.singUpError = true
-                        state.value = state.value.copy(singUpMessage = it.message)
+                        loginInProgress.value = false
+                        state.value.loginError = true
+                        state.value = state.value.copy(
+                            loginMessage = it.message
+                        )
                     }
 
                     is Resource.Loading -> {
+                        loginInProgress.value = true
                     }
                 }
             }
         }
+    }
+
+    private fun reset() {
+        state.value = state.value.copy(
+            email = "",
+            password = "",
+            accessToken = "",
+            loginMessage = "",
+            emailError = false,
+            passwordError = false,
+            loginError = false
+        )
+        allValidationsPassed.value = false
+        loginInProgress.value = false
+    }
+
+    private fun validateLoginUIDataWithRules() {
+        val emailResult = Validator.validateEmail(email = state.value.email)
+
+        val passwordResult = Validator.validatePassword(password = state.value.password)
+
+        state.value = state.value.copy(
+            emailError = emailResult.status,
+            passwordError = passwordResult.status
+        )
+
+        allValidationsPassed.value = emailResult.status && passwordResult.status
     }
 }

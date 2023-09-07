@@ -8,7 +8,7 @@ import java.util.Locale
 object Constantes {
     const val version: String = BuildConfig.VERSION_NAME
     const val build: String = BuildConfig.BUILD_TYPE
-    const val BASE_URL = "https://bdc9-45-186-203-166.ngrok-free.app/api/"
+    const val BASE_URL = "https://cd31-45-186-203-166.ngrok-free.app/api/"
     const val UPDATE_APP_REQUEST_CODE: Int = 200
     const val DATABASE_VERSION_OLD: Int = 0
     const val DATABASE_VERSION_NEW: Int = 1
@@ -19,6 +19,7 @@ object Constantes {
     // variables para dar formato a los numeros
     val formato = DecimalFormat("#,##0.00")
     val formato2 = DecimalFormat("#,##0")
+    val ACCESS_TOKEN = "ACCESS_TOKEN_KEY"
     val COD_USUARIO = "COD_USUARIO_KEY"
     val NICK_USUARIO = "NICK_USUARIO_KEY"
     val NOMBRE_USUARIO = "NOMBRE_USUARIO_KEY"

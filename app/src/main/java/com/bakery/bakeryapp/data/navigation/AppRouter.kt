@@ -1,4 +1,4 @@
-package com.bakery.bakeryapp.ui.presentation.app.navigation
+package com.bakery.bakeryapp.data.navigation
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -12,7 +12,7 @@ sealed class Screen {
 }
 
 object AppRouter {
-    val currentScreen: MutableState<Screen> = mutableStateOf(Screen.SingUpScreen)
+    val currentScreen: MutableState<Screen> = mutableStateOf(Screen.LoginScreen)
 
     fun navigateTo(destination: Screen) {
         currentScreen.value = destination

@@ -1,4 +1,4 @@
-package com.bakery.bakeryapp.ui.presentation.app.navigation
+package com.bakery.bakeryapp.data.navigation
 
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback

@@ -6,8 +6,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.bakery.bakeryapp.ui.presentation.app.navigation.AppRouter
-import com.bakery.bakeryapp.ui.presentation.app.navigation.Screen
+import com.bakery.bakeryapp.data.navigation.AppRouter
+import com.bakery.bakeryapp.data.navigation.Screen
 import com.bakery.bakeryapp.ui.presentation.app.screens.home.HomeScreen
 import com.bakery.bakeryapp.ui.presentation.app.screens.login.LoginScreen
 import com.bakery.bakeryapp.ui.presentation.app.screens.signup.SingUpScreen
@@ -16,7 +16,7 @@ import com.bakery.bakeryapp.ui.presentation.app.screens.terms.TermsAndConditions
 @Composable
 fun BakeryAppComposable() {
     Surface(
-        color = MaterialTheme.colorScheme.background,
+        color = MaterialTheme.colorScheme.surface,
         modifier = Modifier.fillMaxSize()
     ) {
         Crossfade(targetState = AppRouter.currentScreen, label = "") { currentState ->

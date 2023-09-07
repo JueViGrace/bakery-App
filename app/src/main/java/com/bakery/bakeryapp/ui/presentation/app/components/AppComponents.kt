@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.bakery.bakeryapp.ui.presentation.app.components
 
 import android.util.Log
@@ -6,14 +8,21 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
@@ -21,8 +30,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -59,10 +68,12 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bakery.bakeryapp.R
 import com.bakery.bakeryapp.constantes.Constantes.formatter
+import com.bakery.bakeryapp.data.navigation.NavigationItem
 import java.time.LocalDate.now
 import java.time.ZoneId
 import java.util.Date
@@ -73,9 +84,9 @@ fun NormalTextComponent(value: String) {
         text = value,
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(min = 40.dp),
+            .heightIn(min = 20.dp),
         style = TextStyle(
-            fontSize = 24.sp,
+            fontSize = 20.sp,
             fontWeight = MaterialTheme.typography.bodyLarge.fontWeight,
             fontStyle = FontStyle.Normal
         ),
@@ -89,10 +100,9 @@ fun HeadingTextComponent(value: String) {
     Text(
         text = value,
         modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(),
+            .fillMaxWidth(),
         style = TextStyle(
-            fontSize = 30.sp,
+            fontSize = 26.sp,
             fontWeight = FontWeight.Bold,
             fontStyle = FontStyle.Normal
         ),
@@ -116,7 +126,6 @@ fun OutlinedTextFieldComponent(
         modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.background),
-        // .clip(MaterialTheme.shapes.small),
         label = { Text(text = labelValue) },
         value = textValue.value,
         colors = OutlinedTextFieldDefaults.colors(
@@ -309,36 +318,34 @@ fun DatePickerComponent(
     val confirmEnabled = remember { derivedStateOf { datePickerState.selectedDateMillis != null } }
 
     var selectedDate by remember {
-        mutableLongStateOf(date.value.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli())
+        mutableLongStateOf(
+            date.value.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        )
     }
 
     if (openDialog) {
-        DatePickerDialog(
-            onDismissRequest = {
-                // Dismiss the dialog when the user clicks outside the dialog or on the back
-                // button. If you want to disable that functionality, simply use an empty
-                // onDismissRequest.
-                openDialog = false
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        openDialog = false
-                        selectedDate = datePickerState.selectedDateMillis!!
-                    },
-                    enabled = confirmEnabled.value
-                ) {
-                    Text("OK")
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = {
+        DatePickerDialog(onDismissRequest = {
+            // Dismiss the dialog when the user clicks outside the dialog or on the back
+            // button. If you want to disable that functionality, simply use an empty
+            // onDismissRequest.
+            openDialog = false
+        }, confirmButton = {
+            TextButton(
+                onClick = {
                     openDialog = false
-                }) {
-                    Text("Cancel")
-                }
+                    selectedDate = datePickerState.selectedDateMillis!!
+                },
+                enabled = confirmEnabled.value
+            ) {
+                Text("OK")
             }
-        ) {
+        }, dismissButton = {
+            TextButton(onClick = {
+                openDialog = false
+            }) {
+                Text("Cancel")
+            }
+        }) {
             DatePicker(
                 state = datePickerState,
             )
@@ -361,8 +368,7 @@ fun DatePickerComponent(
                         openDialog = true
                     },
                 ),
-            value = dateSelected,
-            onValueChange = {
+            value = dateSelected, onValueChange = {
                 dateSelected = it
                 onTextSelected.invoke(it)
             },
@@ -425,34 +431,44 @@ fun ClickableTextComponent(value: String, onTextSelected: (String) -> Unit) {
     val termsAndConditionsText = "Terms of Use"
 
     val annotatedString = buildAnnotatedString {
-        append(initialText)
+        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onBackground)) { append(initialText) }
         withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
             pushStringAnnotation(tag = privacyPolicyText, annotation = privacyPolicyText)
             append(privacyPolicyText)
         }
-        append(andText)
+        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onBackground)) { append(andText) }
         withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
             pushStringAnnotation(tag = termsAndConditionsText, annotation = termsAndConditionsText)
             append(termsAndConditionsText)
         }
     }
 
-    ClickableText(text = annotatedString, onClick = { offset ->
+    ClickableText(
+        text = annotatedString,
+        onClick = { offset ->
+            annotatedString.getStringAnnotations(offset, offset).firstOrNull()?.also { span ->
+                Log.d("ClickableTextComponent", "{${span.item}}")
 
-        annotatedString.getStringAnnotations(offset, offset).firstOrNull()?.also { span ->
-            Log.d("ClickableTextComponent", "{${span.item}}")
-
-            if ((span.item == termsAndConditionsText) || (span.item == privacyPolicyText)) {
-                onTextSelected(span.item)
+                if ((span.item == termsAndConditionsText) || (span.item == privacyPolicyText)) {
+                    onTextSelected(span.item)
+                }
             }
-        }
-    })
+        },
+        style = TextStyle(
+            color = MaterialTheme.colorScheme.onBackground
+        )
+    )
 }
 
 @Composable
 fun ButtonComponent(value: String, onButtonClicked: () -> Unit, isEnabled: Boolean = false) {
+    val localFocus = LocalFocusManager.current
+
     Button(
-        onClick = { onButtonClicked.invoke() },
+        onClick = {
+            localFocus.clearFocus()
+            onButtonClicked.invoke()
+        },
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(48.dp),
@@ -499,12 +515,12 @@ fun DividerTextComponent() {
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Divider(
+        HorizontalDivider(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
-            color = MaterialTheme.colorScheme.onBackground,
-            thickness = 1.dp
+            thickness = 1.dp,
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         Text(
@@ -514,7 +530,7 @@ fun DividerTextComponent() {
             color = MaterialTheme.colorScheme.onBackground
         )
 
-        Divider(
+        HorizontalDivider(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
@@ -531,7 +547,7 @@ fun ClickableLoginTextComponent(tryingToLogin: Boolean = true, onTextSelected: (
     val loginText = if (tryingToLogin) "Login" else "Register"
 
     val annotatedString = buildAnnotatedString {
-        append(initialText)
+        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onBackground)) { append(initialText) }
         withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
             pushStringAnnotation(tag = loginText, annotation = loginText)
             append(loginText)
@@ -578,4 +594,104 @@ fun UnderlinedTextComponent(value: String) {
         textAlign = TextAlign.Center,
         textDecoration = TextDecoration.Underline
     )
+}
+
+@Composable
+fun AppToolbar(
+    toolbarTitle: String,
+    logoutButtonClicked: () -> Unit,
+    navigationIconClicked: () -> Unit
+) {
+    TopAppBar(
+        title = {
+            Text(text = toolbarTitle, color = MaterialTheme.colorScheme.onPrimary)
+        },
+        backgroundColor = MaterialTheme.colorScheme.primary,
+        navigationIcon = {
+            IconButton(onClick = {
+                navigationIconClicked.invoke()
+            }) {
+                Icon(
+                    imageVector = Icons.Filled.Menu,
+                    contentDescription = stringResource(id = R.string.menu),
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+        },
+        actions = {
+            IconButton(onClick = {
+                logoutButtonClicked.invoke()
+            }) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.Logout,
+                    contentDescription = stringResource(R.string.logout),
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+        }
+    )
+}
+
+@Composable
+fun NavigationDrawerHeader() {
+    Box(
+        modifier = Modifier
+            .background(
+                Brush.horizontalGradient(
+                    listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.secondary)
+                )
+            )
+            .fillMaxWidth()
+            .padding(32.dp)
+    ) {
+        NavigationDrawerText(title = stringResource(id = R.string.navigation_header), textSize = 24.sp)
+    }
+}
+
+@Composable
+fun NavigationDrawerText(title: String, textSize: TextUnit) {
+    Text(
+        text = title,
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(),
+        style = TextStyle(
+            fontSize = textSize,
+            fontStyle = FontStyle.Normal
+        ),
+        color = MaterialTheme.colorScheme.onBackground,
+        textAlign = TextAlign.Center
+    )
+}
+
+@Composable
+fun NavigationDrawerBody(
+    navigationDrawerItem: List<NavigationItem>,
+    onNavigationItemClicked: (NavigationItem) -> Unit
+) {
+    LazyColumn(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        items(navigationDrawerItem) {
+            NavigationItemRow(item = it, onNavigationItemClicked = onNavigationItemClicked)
+        }
+    }
+}
+
+@Composable
+fun NavigationItemRow(item: NavigationItem, onNavigationItemClicked: (NavigationItem) -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                onNavigationItemClicked.invoke(item)
+            }
+            .padding(all = 16.dp)
+    ) {
+        Icon(imageVector = item.icon, contentDescription = item.description)
+
+        Spacer(modifier = Modifier.width(18.dp))
+
+        NavigationDrawerText(title = item.title, textSize = 18.sp)
+    }
 }

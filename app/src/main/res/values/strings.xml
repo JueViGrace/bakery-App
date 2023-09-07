@@ -2,7 +2,7 @@
     <string name="app_name">BakeryApp</string>
     <string name="hello">Hello,</string>
     <string name="create_account">Create an Account</string>
-    <string name="welcome">Welcome back</string>
+    <string name="welcome">Welcome back,</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="email">Email</string>
@@ -20,4 +20,8 @@
     <string name="cancel">Cancel</string>
     <string name="pick_date">Pick a date</string>
     <string name="phone_number">Phone Number</string>
+    <string name="home">Home</string>
+    <string name="logout">Log Out</string>
+    <string name="menu">Menu</string>
+    <string name="navigation_header">nav_header</string>
 </resources>

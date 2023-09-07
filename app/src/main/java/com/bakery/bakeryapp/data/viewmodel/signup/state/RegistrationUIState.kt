@@ -1,4 +1,4 @@
-package com.bakery.bakeryapp.data.viewmodel.login.state
+package com.bakery.bakeryapp.data.viewmodel.signup.state
 
 data class RegistrationUIState(
     var firstName: String = "",
@@ -12,6 +12,7 @@ data class RegistrationUIState(
     var role: String = "user",
     var privacyPolicyAccepted: Boolean = false,
     var singUpMessage: String? = "",
+    var accessToken: String = "",
 
     var firstNameError: Boolean = false,
     var lastNameError: Boolean = false,
