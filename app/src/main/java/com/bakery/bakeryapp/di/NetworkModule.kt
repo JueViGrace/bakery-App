@@ -1,7 +1,7 @@
 package com.bakery.bakeryapp.di
 
 import com.bakery.bakeryapp.constantes.Constantes.BASE_URL
-import com.bakery.bakeryapp.data.remote.Api
+import com.bakery.bakeryapp.data.remote.api.Api
 import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import dagger.Module
 import dagger.Provides

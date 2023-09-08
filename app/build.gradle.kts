@@ -58,81 +58,83 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.10.1")
-    implementation("androidx.activity:activity-compose:1.7.2")
-    implementation(platform("androidx.compose:compose-bom:2023.08.00"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("com.google.android.material:material:1.9.0")
-    implementation("androidx.compose.material:material-android:1.5.1")
-    implementation("androidx.compose.material3:material3-android:1.2.0-alpha07")
+    implementation(libs.core.ktx)
+    implementation(libs.activity.compose)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.ui.graphics)
+    implementation(libs.ui.tooling.preview)
+    implementation(libs.material)
+    implementation(libs.material.android)
+    implementation(libs.material3.android)
     // implementation("androidx.compose.material3:material3:1.1.1")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.5.0")
-    implementation("androidx.compose.material:material-icons-extended:1.5.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.ext.junit)
+    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.ui.test.junit4)
+    debugImplementation(libs.ui.tooling)
+    debugImplementation(libs.ui.test.manifest)
+    implementation(libs.androidx.material.icons.extended)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.lifecycle.livedata.ktx)
+    implementation(libs.lifecycle.viewmodel.ktx)
 
     // Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.github.haroldadmin:NetworkResponseAdapter:5.0.0")
+    implementation(libs.retrofit)
+    implementation(libs.retrofit2.converter.gson)
+    implementation(libs.networkResponseAdapter)
 
     // Play core
-    implementation("com.google.android.play:core-ktx:1.8.1")
+    implementation(libs.play.core.ktx)
 
     // define a BOM and its version
-    implementation(platform("com.squareup.okhttp3:okhttp-bom:5.0.0-alpha.11"))
+    implementation(platform(libs.okhttp.bom))
 
     // define any required OkHttp artifacts without version
-    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
-    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
+    implementation(libs.okhttp)
+    implementation(libs.okhttp3.logging.interceptor)
 
     // Dependency Injection
-    implementation("com.google.dagger:hilt-android:2.48")
-    kapt("com.google.dagger:hilt-android-compiler:2.48")
-    kapt("androidx.hilt:hilt-compiler:1.0.0")
-    implementation("androidx.hilt:hilt-navigation-compose:1.1.0-alpha01")
+    implementation(libs.hilt.android)
+    kapt(libs.dagger.hilt.android.compiler)
+    kapt(libs.androidx.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.jetbrains.kotlinx.coroutines.android)
 
     // Room
-    implementation("androidx.room:room-ktx:2.5.2")
-    implementation("androidx.room:room-runtime:2.5.2")
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.room.runtime)
 
     // To use Kotlin annotation processing tool (kapt)
-    ksp("androidx.room:room-compiler:2.5.2")
+    ksp(libs.room.compiler)
 
     // optional - Test helpers
-    testImplementation("androidx.room:room-testing:2.5.2")
+    testImplementation(libs.room.testing)
 
     // optional - Paging 3 Integration
-    implementation("androidx.room:room-paging:2.5.2")
+    implementation(libs.room.paging)
 
     // Detekt
-    detekt("io.gitlab.arturbosch.detekt:detekt-cli:1.23.1")
+    detekt(libs.detekt.cli)
 
     // Preferences DataStore
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation(libs.androidx.datastore.preferences)
 
+    /*
     // DatePicker
     implementation("io.github.vanpra.compose-material-dialogs:datetime:0.9.0")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
+     */
 
     // Acompanist
-    implementation("com.google.accompanist:accompanist-navigation-animation:0.33.1-alpha")
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
+    implementation(libs.accompanist.navigation.animation)
+    implementation(libs.accompanist.systemuicontroller)
 }
 
 detekt {

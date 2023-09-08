@@ -8,8 +8,8 @@ import com.bakery.bakeryapp.constantes.Constantes.COD_USUARIO
 import com.bakery.bakeryapp.constantes.Constantes.NOMBRE_USUARIO
 import com.bakery.bakeryapp.data.repository.datastore.repository.DataStoreRepository
 import com.bakery.bakeryapp.data.repository.datastore.state.DataStoreState
-import com.bakery.bakeryapp.data.navigation.AppRouter
-import com.bakery.bakeryapp.data.navigation.Screen
+import com.bakery.bakeryapp.navigation.AppRouter
+import com.bakery.bakeryapp.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

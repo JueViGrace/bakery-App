@@ -1,7 +1,7 @@
 package com.bakery.bakeryapp.data.repository
 
-import com.bakery.bakeryapp.data.local.LocalDataSource
-import com.bakery.bakeryapp.data.remote.RemoteDataSource
+import com.bakery.bakeryapp.data.sources.LocalDataSource
+import com.bakery.bakeryapp.data.sources.RemoteDataSource
 import com.bakery.bakeryapp.domain.model.cart.Cart
 import com.bakery.bakeryapp.domain.model.category.Category
 import com.bakery.bakeryapp.domain.model.pedido.Pedido

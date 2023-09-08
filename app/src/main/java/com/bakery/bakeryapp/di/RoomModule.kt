@@ -3,9 +3,9 @@ package com.bakery.bakeryapp.di
 import android.content.Context
 import androidx.room.Room
 import com.bakery.bakeryapp.constantes.Constantes.DATABASE_NAME
-import com.bakery.bakeryapp.data.local.LocalDataSource
-import com.bakery.bakeryapp.data.local.RoomDataBase
-import com.bakery.bakeryapp.data.local.RoomDataSource
+import com.bakery.bakeryapp.data.sources.LocalDataSource
+import com.bakery.bakeryapp.data.local.db.RoomDataBase
+import com.bakery.bakeryapp.data.sources.RoomDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

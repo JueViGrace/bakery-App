@@ -8,8 +8,8 @@ import com.bakery.bakeryapp.common.toDomainPedido
 import com.bakery.bakeryapp.common.toDomainProduct
 import com.bakery.bakeryapp.common.toServerLogin
 import com.bakery.bakeryapp.common.toServerRegister
-import com.bakery.bakeryapp.data.remote.Api
-import com.bakery.bakeryapp.data.remote.RemoteDataSource
+import com.bakery.bakeryapp.data.remote.api.Api
+import com.bakery.bakeryapp.data.sources.RemoteDataSource
 import com.bakery.bakeryapp.di.IoDispatcher
 import com.bakery.bakeryapp.domain.model.cart.Cart
 import com.bakery.bakeryapp.domain.model.category.Category
