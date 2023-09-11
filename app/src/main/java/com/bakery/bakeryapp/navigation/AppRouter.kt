@@ -8,6 +8,8 @@ sealed class Screen {
     data object TermsAndConditionsScreen : Screen()
     data object LoginScreen : Screen()
 
+    data object LoadingScreen : Screen()
+
     data object HomeScreen : Screen()
 }
 

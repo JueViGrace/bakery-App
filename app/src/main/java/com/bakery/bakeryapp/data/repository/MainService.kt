@@ -83,10 +83,10 @@ class MainService @Inject constructor(
         when(val response = api.getUser())
     }.flowOn(ioDispatcher)*/
 
-    override suspend fun getCategories(accessToken: String): Flow<Resource<List<Category>>> = flow {
+    override suspend fun getCategories(): Flow<Resource<List<Category>>> = flow {
         emit(Resource.Loading())
 
-        when (val response = api.getCategories(accessToken)) {
+        when (val response = api.getCategories()) {
             is NetworkResponse.Success -> {
                 val categoryResponse = response.body
                 emit(
@@ -110,10 +110,10 @@ class MainService @Inject constructor(
         }
     }.flowOn(ioDispatcher)
 
-    override suspend fun getProducts(accessToken: String): Flow<Resource<List<Product>>> = flow {
+    override suspend fun getProducts(): Flow<Resource<List<Product>>> = flow {
         emit(Resource.Loading())
 
-        when (val response = api.getProducts(accessToken)) {
+        when (val response = api.getProducts()) {
             is NetworkResponse.Success -> {
                 val productResponse = response.body
                 emit(
@@ -137,10 +137,14 @@ class MainService @Inject constructor(
         }
     }.flowOn(ioDispatcher)
 
-    override suspend fun getCart(accessToken: String): Flow<Resource<List<Cart>>> = flow {
+    override suspend fun getCart(
+        accessToken: String,
+        userId: String,
+        products: List<Product>
+    ): Flow<Resource<List<Cart>>> = flow {
         emit(Resource.Loading())
 
-        when (val response = api.getCart(accessToken)) {
+        when (val response = api.getCart(accessToken, userId, products)) {
             is NetworkResponse.Success -> {
                 val cartResponse = response.body
                 emit(

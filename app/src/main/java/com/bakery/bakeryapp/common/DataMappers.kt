@@ -92,11 +92,15 @@ fun ServerProduct.toDomainProduct() = Product(
 )
 
 fun Product.toRoomProduct() = RoomProduct(
-    _id, categories, createdAt, haveStock, name, price, productImage, stock, truePrice
+    _id, categories[0], createdAt, haveStock, name, price, productImage, stock, truePrice
+)
+
+fun Product.toServerProduct() = ServerProduct(
+    null, _id, categories, createdAt, haveStock, name, price, productImage, stock, truePrice
 )
 
 fun RoomProduct.toDomainProduct() = Product(
-    _id, categories, createdAt, haveStock, name, price, productImage, stock, truePrice
+    _id, listOf(categories), createdAt, haveStock, name, price, productImage, stock, truePrice
 )
 
 fun ServerCart.toDomainCart() = Cart(

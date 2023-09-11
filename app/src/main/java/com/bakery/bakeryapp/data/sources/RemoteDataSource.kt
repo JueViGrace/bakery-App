@@ -24,16 +24,14 @@ interface RemoteDataSource {
         user: User
     ): Flow<Resource<List<Auth>>>*/
 
-    suspend fun getCategories(
-        accessToken: String
-    ): Flow<Resource<List<Category>>>
+    suspend fun getCategories(): Flow<Resource<List<Category>>>
 
-    suspend fun getProducts(
-        accessToken: String
-    ): Flow<Resource<List<Product>>>
+    suspend fun getProducts(): Flow<Resource<List<Product>>>
 
     suspend fun getCart(
-        accessToken: String
+        accessToken: String,
+        userId: String,
+        products: List<Product>
     ): Flow<Resource<List<Cart>>>
 
     suspend fun getPedidos(

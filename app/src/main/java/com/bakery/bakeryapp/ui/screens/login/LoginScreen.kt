@@ -23,8 +23,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bakery.bakeryapp.R
 import com.bakery.bakeryapp.constantes.Constantes
 import com.bakery.bakeryapp.data.repository.datastore.DataStoreViewModel
-import com.bakery.bakeryapp.ui.viewmodel.login.LoginViewModel
-import com.bakery.bakeryapp.ui.uievents.login.LoginUIEvent
+import com.bakery.bakeryapp.navigation.AppRouter
+import com.bakery.bakeryapp.navigation.Screen
 import com.bakery.bakeryapp.ui.components.ButtonComponent
 import com.bakery.bakeryapp.ui.components.ClickableLoginTextComponent
 import com.bakery.bakeryapp.ui.components.DividerTextComponent
@@ -33,8 +33,8 @@ import com.bakery.bakeryapp.ui.components.HeadingTextComponent
 import com.bakery.bakeryapp.ui.components.NormalTextComponent
 import com.bakery.bakeryapp.ui.components.PasswordTextFieldComponent
 import com.bakery.bakeryapp.ui.components.UnderlinedTextComponent
-import com.bakery.bakeryapp.navigation.AppRouter
-import com.bakery.bakeryapp.navigation.Screen
+import com.bakery.bakeryapp.ui.uievents.login.LoginUIEvent
+import com.bakery.bakeryapp.ui.viewmodel.login.LoginViewModel
 
 @Composable
 fun LoginScreen(loginViewModel: LoginViewModel = viewModel(), dataStoreViewModel: DataStoreViewModel = viewModel()) {
@@ -117,6 +117,7 @@ fun LoginScreen(loginViewModel: LoginViewModel = viewModel(), dataStoreViewModel
                 contentAlignment = Alignment.Center
             ) {
                 dataStoreViewModel.storePreference(Constantes.ACCESS_TOKEN, loginViewModel.state.value.accessToken)
+                dataStoreViewModel.storePreference(Constantes.COD_USUARIO, loginViewModel.state.value.userId)
                 CircularProgressIndicator(
                     color = MaterialTheme.colorScheme.onPrimary
                 )

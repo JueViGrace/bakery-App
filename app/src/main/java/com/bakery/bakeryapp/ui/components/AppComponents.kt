@@ -22,7 +22,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
@@ -599,14 +598,14 @@ fun UnderlinedTextComponent(value: String) {
 fun AppToolbar(
     toolbarTitle: String,
     logoutButtonClicked: () -> Unit,
-    navigationIconClicked: () -> Unit
+    // navigationIconClicked: () -> Unit
 ) {
     TopAppBar(
         title = {
             Text(text = toolbarTitle, color = MaterialTheme.colorScheme.onPrimary)
         },
         backgroundColor = MaterialTheme.colorScheme.primary,
-        navigationIcon = {
+        /*navigationIcon = {
             IconButton(onClick = {
                 navigationIconClicked.invoke()
             }) {
@@ -616,7 +615,7 @@ fun AppToolbar(
                     tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
-        },
+        },*/
         actions = {
             IconButton(onClick = {
                 logoutButtonClicked.invoke()
@@ -629,6 +628,11 @@ fun AppToolbar(
             }
         }
     )
+}
+
+@Composable
+fun BottomBar() {
+
 }
 
 @Composable

@@ -10,6 +10,7 @@ data class RegistrationUIState(
     var fullName: String = "",
     var password: String = "",
     var role: String = "user",
+    var userId: String = "",
     var privacyPolicyAccepted: Boolean = false,
     var singUpMessage: String? = "",
     var accessToken: String = "",

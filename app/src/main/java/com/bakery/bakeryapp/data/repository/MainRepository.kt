@@ -24,11 +24,12 @@ class MainRepository @Inject constructor(
         accessToken: String, user: User
     ) = remoteDataSource.getUser(accessToken, user)*/
 
-    suspend fun getCategories(accessToken: String) = remoteDataSource.getCategories(accessToken)
+    suspend fun getCategories() = remoteDataSource.getCategories()
 
-    suspend fun getProducts(accessToken: String) = remoteDataSource.getProducts(accessToken)
+    suspend fun getProducts() = remoteDataSource.getProducts()
 
-    suspend fun getCart(accessToken: String) = remoteDataSource.getCart(accessToken)
+    suspend fun getCart(accessToken: String, userId: String, products: List<Product>) =
+        remoteDataSource.getCart(accessToken, userId, products)
 
     suspend fun getPedidos(accessToken: String) = remoteDataSource.getPedidos(accessToken)
 
@@ -45,13 +46,13 @@ class MainRepository @Inject constructor(
     suspend fun saveCategories(categories: List<Category>) =
         localDataSource.saveCategories(categories)
 
-    fun getCategories() = localDataSource.getCategories()
+    fun getCategoriesFromDB() = localDataSource.getCategories()
 
     suspend fun deleteCategories() = localDataSource.deleteCategories()
 
     suspend fun saveProducts(products: List<Product>) = localDataSource.saveProducts(products)
 
-    fun getProducts() = localDataSource.getProducts()
+    fun getProductsFromDB() = localDataSource.getProducts()
 
     suspend fun deleteProducts() = localDataSource.deleteProducts()
 

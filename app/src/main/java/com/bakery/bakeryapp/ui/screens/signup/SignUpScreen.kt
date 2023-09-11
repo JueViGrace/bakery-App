@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bakery.bakeryapp.R
 import com.bakery.bakeryapp.constantes.Constantes.ACCESS_TOKEN
+import com.bakery.bakeryapp.constantes.Constantes.COD_USUARIO
 import com.bakery.bakeryapp.data.repository.datastore.DataStoreViewModel
 import com.bakery.bakeryapp.navigation.AppRouter
 import com.bakery.bakeryapp.navigation.Screen
@@ -169,6 +170,7 @@ fun SingUpScreen(
                 contentAlignment = Alignment.Center
             ) {
                 dataStoreViewModel.storePreference(ACCESS_TOKEN, singUpViewModel.state.value.accessToken)
+                dataStoreViewModel.storePreference(COD_USUARIO, singUpViewModel.state.value.userId)
                 CircularProgressIndicator(
                     color = MaterialTheme.colorScheme.onPrimary
                 )

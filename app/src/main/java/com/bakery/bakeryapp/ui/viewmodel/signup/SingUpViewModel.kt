@@ -163,10 +163,11 @@ class SingUpViewModel @Inject constructor(
                     is Resource.Success -> {
                         if (it.data != null) {
                             state.value = state.value.copy(
-                                accessToken = it.data.access_token
+                                accessToken = it.data.access_token,
+                                userId = it.data.user._id
                             )
                             repository.saveUser(listOf(it.data.user))
-                            AppRouter.navigateTo(Screen.HomeScreen)
+                            AppRouter.navigateTo(Screen.LoadingScreen)
                             singUpInProgress.value = false
                             reset()
                         } else {
