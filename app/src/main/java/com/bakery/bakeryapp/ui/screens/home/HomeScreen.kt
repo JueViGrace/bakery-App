@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,11 +18,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bakery.bakeryapp.R
 import com.bakery.bakeryapp.ui.components.AppToolbar
+import com.bakery.bakeryapp.ui.viewmodel.download.DownloadViewModel
 import com.bakery.bakeryapp.ui.viewmodel.home.HomeViewModel
 
 @Composable
 fun HomeScreen(
-    homeViewModel: HomeViewModel = viewModel()
+    homeViewModel: HomeViewModel = viewModel(),
+    downloadViewModel: DownloadViewModel = viewModel()
 ) {
     // val scaffoldState = rememberScaffoldState()
     // val coroutineScope = rememberCoroutineScope()
@@ -79,6 +83,12 @@ fun HomeScreen(
                 Column(
                     modifier = Modifier.fillMaxSize()
                 ) {
+                    Button(onClick = { downloadViewModel.onDownload() }) {
+                        Text(text = "getAPi")
+                    }
+                    Button(onClick = { homeViewModel.showData() }) {
+                        Text(text = "getDB")
+                    }
                 }
             }
         }

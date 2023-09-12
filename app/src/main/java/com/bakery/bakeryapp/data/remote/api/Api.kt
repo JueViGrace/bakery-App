@@ -10,13 +10,12 @@ import com.bakery.bakeryapp.data.remote.model.pedido.PedidoResponse
 import com.bakery.bakeryapp.data.remote.model.product.ProductResponse
 import com.bakery.bakeryapp.domain.model.cart.Cart
 import com.bakery.bakeryapp.domain.model.pedido.Pedido
-import com.bakery.bakeryapp.domain.model.product.Product
 import com.haroldadmin.cnradapter.NetworkResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface Api {
@@ -37,16 +36,17 @@ interface Api {
     @GET("category")
     suspend fun getCategories(): NetworkResponse<CategoryResponse, ErrorResponse>
 
-    @GET("cart")
+    @GET("cart/{id}")
     suspend fun getCart(
-        @Header("Bearer") apiKey: String,
-        @Query("_id") userId: String,
-        @Query("products") products: List<Product>
+        // @Header("jwt") apiKey: String,
+        @Path("id") userId: String,
+        // @Query("products") products: Array<String>
+        // @Query("cartDto") cart: GetCart
     ): NetworkResponse<CartResponse, ErrorResponse>
 
     @GET("pedido")
     suspend fun getPedidos(
-        @Query("access_token") apiKey: String,
+        // @Query("access_token") apiKey: String,
     ): NetworkResponse<PedidoResponse, ErrorResponse>
 
     @PUT("cart/update")

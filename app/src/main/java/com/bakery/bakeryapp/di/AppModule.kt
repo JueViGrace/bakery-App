@@ -2,12 +2,12 @@ package com.bakery.bakeryapp.di
 
 import android.content.Context
 import com.angel.clocordinadores.data.remote.connectivity.NetworkConnectivityObserver
-import com.bakery.bakeryapp.data.sources.LocalDataSource
 import com.bakery.bakeryapp.data.remote.api.Api
-import com.bakery.bakeryapp.data.sources.RemoteDataSource
 import com.bakery.bakeryapp.data.remote.connectivity.ConnectivityObserver
 import com.bakery.bakeryapp.data.repository.MainRepository
 import com.bakery.bakeryapp.data.repository.MainService
+import com.bakery.bakeryapp.data.sources.LocalDataSource
+import com.bakery.bakeryapp.data.sources.RemoteDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

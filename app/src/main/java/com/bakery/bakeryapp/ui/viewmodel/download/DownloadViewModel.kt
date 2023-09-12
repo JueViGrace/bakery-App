@@ -1,11 +1,11 @@
 package com.bakery.bakeryapp.ui.viewmodel.download
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bakery.bakeryapp.common.Resource
 import com.bakery.bakeryapp.data.repository.MainRepository
+import com.bakery.bakeryapp.di.NetworkModule
 import com.bakery.bakeryapp.ui.states.download.DownloadState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
@@ -23,6 +23,7 @@ class DownloadViewModel @Inject constructor(
 
     fun onDownload() {
         viewModelScope.launch {
+            addToken(state.value.accessToken)
             when (state.value.down) {
                 0 -> {
                     getCategories()
@@ -31,10 +32,10 @@ class DownloadViewModel @Inject constructor(
                     getProducts()
                 }
                 2 -> {
-                    getCart(state.value.accessToken)
+                    getCart()
                 }
                 3 -> {
-                    getPedidos(state.value.accessToken)
+                    getPedidos()
                 }
                 else -> {
                     loadingInProgress.value = false
@@ -108,12 +109,9 @@ class DownloadViewModel @Inject constructor(
         }
     }
 
-    private fun getCart(accessToken: String) {
+    private fun getCart() {
         viewModelScope.launch {
-            repository.getCart(accessToken, state.value.userId, state.value.products).collect {
-                Log.d("downCArt", "getCart: $accessToken")
-                Log.d("downCArt", "getCart: ${state.value.userId}")
-                Log.d("downCArt", "getCart: ${state.value.products}")
+            repository.getCart(state.value.userId).collect {
                 when (it) {
                     is Resource.Success -> {
                         if (it.data != null) {
@@ -142,14 +140,18 @@ class DownloadViewModel @Inject constructor(
         }
     }
 
-    private fun getPedidos(accessToken: String) {
+    private fun addToken(accessToken: String?) {
+        NetworkModule.accessToken = accessToken
+    }
+
+    private fun getPedidos() {
         viewModelScope.launch {
-            repository.getPedidos(accessToken).collect {
+            repository.getPedidos().collect {
                 when (it) {
                     is Resource.Success -> {
                         if (it.data != null) {
                             repository.savePedidos(it.data)
-                            state.value.down++
+                            state.value.down = 0
                             onDownload()
                         } else {
                             loadingInProgress.value = false

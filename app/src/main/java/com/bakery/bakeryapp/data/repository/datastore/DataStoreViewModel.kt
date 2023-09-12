@@ -37,7 +37,10 @@ class DataStoreViewModel @Inject constructor(
     }
 
     fun getCodigoUsuario() = viewModelScope.launch {
-        val codUser = dataStoreRepository.getPreference(COD_USUARIO)!!
+        var codUser = dataStoreRepository.getPreference(COD_USUARIO)
+        if (codUser == null) {
+            codUser = ""
+        }
         state.value = state.value.copy(
             codigo = codUser
         )

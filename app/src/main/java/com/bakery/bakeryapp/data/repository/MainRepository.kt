@@ -28,10 +28,9 @@ class MainRepository @Inject constructor(
 
     suspend fun getProducts() = remoteDataSource.getProducts()
 
-    suspend fun getCart(accessToken: String, userId: String, products: List<Product>) =
-        remoteDataSource.getCart(accessToken, userId, products)
+    suspend fun getCart(userId: String) = remoteDataSource.getCart(userId)
 
-    suspend fun getPedidos(accessToken: String) = remoteDataSource.getPedidos(accessToken)
+    suspend fun getPedidos() = remoteDataSource.getPedidos()
 
     suspend fun updateCart(cart: Cart, accessToken: String) = remoteDataSource.updateCart(cart, accessToken)
 

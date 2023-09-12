@@ -26,6 +26,7 @@ import com.bakery.bakeryapp.R
 import com.bakery.bakeryapp.constantes.Constantes.ACCESS_TOKEN
 import com.bakery.bakeryapp.constantes.Constantes.COD_USUARIO
 import com.bakery.bakeryapp.data.repository.datastore.DataStoreViewModel
+import com.bakery.bakeryapp.di.NetworkModule
 import com.bakery.bakeryapp.navigation.AppRouter
 import com.bakery.bakeryapp.navigation.Screen
 import com.bakery.bakeryapp.navigation.SystemBackButtonHandler

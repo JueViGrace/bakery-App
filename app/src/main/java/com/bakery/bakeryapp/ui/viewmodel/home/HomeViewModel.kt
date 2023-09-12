@@ -18,6 +18,7 @@ import com.bakery.bakeryapp.navigation.NavigationItem
 import com.bakery.bakeryapp.navigation.Screen
 import com.bakery.bakeryapp.ui.states.home.HomeState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -143,7 +144,7 @@ class HomeViewModel @Inject constructor(
 */
 
     fun showData() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.getUser().collectLatest { list ->
                 if (list.isNotEmpty()) {
                     list.forEach { user ->
@@ -168,6 +169,10 @@ class HomeViewModel @Inject constructor(
                     )
                 }
             }
+
+            Log.d(TAG, "user: ${state.value.user}")
+            Log.d(TAG, "categories: ${state.value.categories}")
+            Log.d(TAG, "user: ${state.value.products}")
 
             loadingDataInProgress.value = false
         }

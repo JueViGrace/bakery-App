@@ -8,10 +8,10 @@ import java.util.Locale
 object Constantes {
     const val version: String = BuildConfig.VERSION_NAME
     const val build: String = BuildConfig.BUILD_TYPE
-    const val BASE_URL = "https://cdfc-45-186-203-166.ngrok-free.app/api/"
+    const val BASE_URL = "https://5360-45-186-203-166.ngrok-free.app/api/"
     const val UPDATE_APP_REQUEST_CODE: Int = 200
     const val DATABASE_VERSION_OLD: Int = 0
-    const val DATABASE_VERSION_NEW: Int = 1
+    const val DATABASE_VERSION_NEW: Int = 2
     const val DATABASE_NAME: String = "bakery_db"
     const val DATASTORE_NAME = "PREFERECES"
     val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.ROOT)

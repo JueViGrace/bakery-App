@@ -17,12 +17,26 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
+    private val okHttpClient: OkHttpClient.Builder = OkHttpClient.Builder()
+
+    private val loggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+
+    var accessToken: String? = ""
+
     private fun loggingInterceptor(): OkHttpClient {
-        val loggingInterceptor = HttpLoggingInterceptor()
+        return okHttpClient.addInterceptor(loggingInterceptor).build()
+    }
 
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+    private fun sendToken(): OkHttpClient {
+        okHttpClient.interceptors().clear()
+        return okHttpClient.addInterceptor { chain ->
+            val original = chain.request()
+            val builder = original.newBuilder()
+                .header("Authorization", "Bearer $accessToken")
 
-        return OkHttpClient.Builder().addInterceptor(loggingInterceptor).build()
+            val request = builder.build()
+            return@addInterceptor chain.proceed(request)
+        }.build()
     }
 
     @Singleton
@@ -31,6 +45,7 @@ object NetworkModule {
         return Retrofit.Builder().baseUrl(BASE_URL)
             .addCallAdapterFactory(NetworkResponseAdapterFactory())
             .addConverterFactory(GsonConverterFactory.create())
+            .client(sendToken())
             .client(loggingInterceptor())
             .build()
     }
