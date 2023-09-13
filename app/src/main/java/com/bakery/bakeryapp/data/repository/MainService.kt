@@ -166,10 +166,10 @@ class MainService @Inject constructor(
         }
     }.flowOn(ioDispatcher)
 
-    override suspend fun getPedidos(): Flow<Resource<List<Pedido>>> = flow {
+    override suspend fun getPedidos(userId: String): Flow<Resource<List<Pedido>>> = flow {
         emit(Resource.Loading())
 
-        when (val response = api.getPedidos()) {
+        when (val response = api.getPedidos(userId)) {
             is NetworkResponse.Success -> {
                 val pedidosResponse = response.body
                 emit(

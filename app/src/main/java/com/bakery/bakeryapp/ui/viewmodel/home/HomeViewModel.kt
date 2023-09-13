@@ -18,7 +18,6 @@ import com.bakery.bakeryapp.navigation.NavigationItem
 import com.bakery.bakeryapp.navigation.Screen
 import com.bakery.bakeryapp.ui.states.home.HomeState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,15 +30,7 @@ class HomeViewModel @Inject constructor(
 
     private val TAG = HomeViewModel::class.simpleName
 
-    val isUserLoggedIn: MutableLiveData<Boolean> = MutableLiveData()
-
     val state = mutableStateOf(HomeState())
-
-    var loginInProgress = mutableStateOf(true)
-
-    private var loadingCategories = mutableStateOf(true)
-
-    private var loadingProducts = mutableStateOf(true)
 
     var loadingDataInProgress = mutableStateOf(true)
 
@@ -92,22 +83,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun checkForActiveSession() {
-        viewModelScope.launch {
-            val result = repository.getUser()
-
-            result.collectLatest {
-                if (it.isNotEmpty()) {
-                    Log.d(TAG, "Valid Session")
-                    isUserLoggedIn.value = true
-                } else {
-                    Log.d(TAG, "User is not logged in")
-                    isUserLoggedIn.value = false
-                }
-            }
-        }
-    }
-
     /*fun getUserData(accessToken: String) {
         viewModelScope.launch {
             if (loadingDataInProgress.value) {
@@ -144,7 +119,7 @@ class HomeViewModel @Inject constructor(
 */
 
     fun showData() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             repository.getUser().collectLatest { list ->
                 if (list.isNotEmpty()) {
                     list.forEach { user ->

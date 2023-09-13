@@ -29,8 +29,6 @@ fun HomeScreen(
     // val scaffoldState = rememberScaffoldState()
     // val coroutineScope = rememberCoroutineScope()
 
-    homeViewModel.showData()
-
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center

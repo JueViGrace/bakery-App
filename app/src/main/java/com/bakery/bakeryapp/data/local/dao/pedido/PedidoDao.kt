@@ -7,14 +7,14 @@ import com.bakery.bakeryapp.data.local.entities.pedido.PedidoEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
- interface PedidoDao {
+interface PedidoDao {
 
-     @Upsert
-     suspend fun upsertPedido(pedido: List<PedidoEntity>)
+    @Upsert
+    suspend fun upsertPedido(pedido: List<PedidoEntity>)
 
-     @Query("DELETE FROM pedidos")
-     suspend fun deletePedidos()
+    @Query("DELETE FROM pedidos")
+    suspend fun deletePedidos()
 
-     @Query("SELECT * FROM pedidos")
-     fun getPedidos(): Flow<List<PedidoEntity>>
- }
+    @Query("SELECT * FROM pedidos")
+    fun getPedidos(): Flow<List<PedidoEntity>>
+}

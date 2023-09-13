@@ -16,19 +16,14 @@ import com.bakery.bakeryapp.ui.screens.loading.LoadingScreen
 import com.bakery.bakeryapp.ui.screens.login.LoginScreen
 import com.bakery.bakeryapp.ui.screens.signup.SingUpScreen
 import com.bakery.bakeryapp.ui.screens.terms.TermsAndConditionsScreen
-import com.bakery.bakeryapp.ui.viewmodel.home.HomeViewModel
+import com.bakery.bakeryapp.ui.viewmodel.download.DownloadViewModel
 
 @Composable
-fun BakeryAppComposable(homeViewModel: HomeViewModel = viewModel()) {
-    homeViewModel.checkForActiveSession()
+fun BakeryAppComposable(downloadViewModel: DownloadViewModel = viewModel()) {
+    downloadViewModel.checkForActiveSession()
 
-    homeViewModel.isUserLoggedIn.observeForever { value ->
-        if (value == true) {
-            AppRouter.navigateTo(Screen.LoadingScreen)
-            homeViewModel.loginInProgress.value = false
-        } else {
-            homeViewModel.loginInProgress.value = false
-        }
+    downloadViewModel.isUserLoggedIn.observeForever { value ->
+        downloadViewModel.loginInProgress.value = value == true
     }
 
     Box(
@@ -63,8 +58,10 @@ fun BakeryAppComposable(homeViewModel: HomeViewModel = viewModel()) {
                 }
             }
         }
-        if (homeViewModel.loginInProgress.value) {
+        if (downloadViewModel.loginInProgress.value) {
             AppRouter.navigateTo(Screen.LoadingScreen)
+        } else {
+            AppRouter.navigateTo(Screen.LoginScreen)
         }
     }
 }

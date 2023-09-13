@@ -30,7 +30,7 @@ class MainRepository @Inject constructor(
 
     suspend fun getCart(userId: String) = remoteDataSource.getCart(userId)
 
-    suspend fun getPedidos() = remoteDataSource.getPedidos()
+    suspend fun getPedidos(userId: String) = remoteDataSource.getPedidos(userId)
 
     suspend fun updateCart(cart: Cart, accessToken: String) = remoteDataSource.updateCart(cart, accessToken)
 

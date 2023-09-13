@@ -2,7 +2,9 @@ package com.bakery.bakeryapp.data.local.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.bakery.bakeryapp.constantes.Constantes.DATABASE_VERSION_NEW
+import com.bakery.bakeryapp.data.local.converters.Converters
 import com.bakery.bakeryapp.data.local.dao.cart.CartDao
 import com.bakery.bakeryapp.data.local.dao.categories.CategoriesDao
 import com.bakery.bakeryapp.data.local.dao.pedido.PedidoDao
@@ -20,11 +22,12 @@ import com.bakery.bakeryapp.data.local.entities.users.UserEntity
         CategoryEntity::class,
         PedidoEntity::class,
         ProductEntity::class,
-        UserEntity::class
+        UserEntity::class,
     ],
     version = DATABASE_VERSION_NEW,
     exportSchema = true
 )
+@TypeConverters(Converters::class)
 abstract class RoomDataBase : RoomDatabase() {
 
     abstract fun userDao(): UserDao

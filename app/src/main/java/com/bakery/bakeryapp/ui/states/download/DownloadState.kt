@@ -10,7 +10,7 @@ data class DownloadState(
     var accessToken: String? = "",
     val categories: List<Category> = emptyList(),
     val products: List<Product> = emptyList(),
-    val cart: Cart = Cart("", "", "", null),
+    val cart: Cart = Cart("", "", emptyList(), null),
     val pedidos: List<Pedido> = emptyList(),
     var down: Int = 0,
 

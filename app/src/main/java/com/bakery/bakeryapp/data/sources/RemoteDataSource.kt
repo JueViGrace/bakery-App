@@ -32,7 +32,9 @@ interface RemoteDataSource {
         userId: String,
     ): Flow<Resource<List<Cart>>>
 
-    suspend fun getPedidos(): Flow<Resource<List<Pedido>>>
+    suspend fun getPedidos(
+        userId: String
+    ): Flow<Resource<List<Pedido>>>
 
     suspend fun updateCart(
         cart: Cart,

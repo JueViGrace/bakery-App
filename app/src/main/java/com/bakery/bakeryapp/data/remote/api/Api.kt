@@ -44,9 +44,9 @@ interface Api {
         // @Query("cartDto") cart: GetCart
     ): NetworkResponse<CartResponse, ErrorResponse>
 
-    @GET("pedido")
+    @GET("pedido/{id}")
     suspend fun getPedidos(
-        // @Query("access_token") apiKey: String,
+        @Path("id") userId: String
     ): NetworkResponse<PedidoResponse, ErrorResponse>
 
     @PUT("cart/update")

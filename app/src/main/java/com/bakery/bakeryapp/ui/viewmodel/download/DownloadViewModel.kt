@@ -1,25 +1,34 @@
 package com.bakery.bakeryapp.ui.viewmodel.download
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bakery.bakeryapp.common.Resource
 import com.bakery.bakeryapp.data.repository.MainRepository
 import com.bakery.bakeryapp.di.NetworkModule
+import com.bakery.bakeryapp.domain.usecase.DeleteDataBaseUseCase
 import com.bakery.bakeryapp.ui.states.download.DownloadState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class DownloadViewModel @Inject constructor(
-    private val repository: MainRepository
+    private val repository: MainRepository,
+    private val deleteDataBaseUseCase: DeleteDataBaseUseCase,
 ) : ViewModel() {
 
     val state = mutableStateOf(DownloadState())
 
     val loadingInProgress = mutableStateOf(true)
+
+    val isUserLoggedIn: MutableLiveData<Boolean> = MutableLiveData()
+
+    var loginInProgress = mutableStateOf(true)
 
     fun onDownload() {
         viewModelScope.launch {
@@ -39,9 +48,7 @@ class DownloadViewModel @Inject constructor(
                 }
                 else -> {
                     loadingInProgress.value = false
-                    state.value = state.value.copy(
-                        down = 0
-                    )
+                    state.value.down = 0
                 }
             }
         }
@@ -146,12 +153,12 @@ class DownloadViewModel @Inject constructor(
 
     private fun getPedidos() {
         viewModelScope.launch {
-            repository.getPedidos().collect {
+            repository.getPedidos(state.value.userId).collect {
                 when (it) {
                     is Resource.Success -> {
                         if (it.data != null) {
                             repository.savePedidos(it.data)
-                            state.value.down = 0
+                            state.value.down++
                             onDownload()
                         } else {
                             loadingInProgress.value = false
@@ -169,6 +176,23 @@ class DownloadViewModel @Inject constructor(
                     is Resource.Loading -> {
                         loadingInProgress.value = true
                     }
+                }
+            }
+        }
+    }
+
+    fun checkForActiveSession() {
+        viewModelScope.launch {
+            val result = repository.getUser()
+
+            result.collectLatest {
+                if (it.isNotEmpty()) {
+                    Log.d("downloadViewmodel", "Valid Session")
+                    isUserLoggedIn.value = true
+                } else {
+                    Log.d("downloadViewmodel", "User is not logged in")
+                    isUserLoggedIn.value = false
+                    deleteDataBaseUseCase.invoke()
                 }
             }
         }
