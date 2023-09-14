@@ -8,9 +8,10 @@ import com.bakery.bakeryapp.data.local.converters.Converters
 
 @Entity(tableName = "cart")
 data class CartEntity(
-    @PrimaryKey val _idCart: String,
+    @PrimaryKey val _id: String,
     @ColumnInfo(name = "createdAt") val createdAt: String?,
     @ColumnInfo(name = "products")
-    @TypeConverters(Converters::class) val products: List<String>?,
+    @TypeConverters(Converters::class)
+    val products: List<String>?,
     @ColumnInfo(name = "status") val status: Int?
 )

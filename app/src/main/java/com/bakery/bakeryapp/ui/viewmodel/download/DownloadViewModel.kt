@@ -31,25 +31,23 @@ class DownloadViewModel @Inject constructor(
     var loginInProgress = mutableStateOf(true)
 
     fun onDownload() {
-        viewModelScope.launch {
-            addToken(state.value.accessToken)
-            when (state.value.down) {
-                0 -> {
-                    getCategories()
-                }
-                1 -> {
-                    getProducts()
-                }
-                2 -> {
-                    getCart()
-                }
-                3 -> {
-                    getPedidos()
-                }
-                else -> {
-                    loadingInProgress.value = false
-                    state.value.down = 0
-                }
+        addToken(state.value.accessToken)
+        when (state.value.down) {
+            0 -> {
+                getCategories()
+            }
+            1 -> {
+                getProducts()
+            }
+            2 -> {
+                getCart()
+            }
+            3 -> {
+                getPedidos()
+            }
+            else -> {
+                loadingInProgress.value = false
+                state.value.down = 0
             }
         }
     }

@@ -34,7 +34,8 @@ object RoomModule {
             productDao = db.productDao(),
             pedidoDao = db.pedidoDao(),
             categoriesDao = db.categoriesDao(),
-            cartDao = db.cartDao()
+            cartDao = db.cartDao(),
+            relationsDao = db.relationsDao()
         )
     }
 }

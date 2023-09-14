@@ -3,7 +3,6 @@ package com.bakery.bakeryapp.data.sources
 import com.bakery.bakeryapp.common.toDomainCart
 import com.bakery.bakeryapp.common.toDomainCategory
 import com.bakery.bakeryapp.common.toDomainPedido
-import com.bakery.bakeryapp.common.toDomainProduct
 import com.bakery.bakeryapp.common.toDomainUser
 import com.bakery.bakeryapp.common.toRoomCart
 import com.bakery.bakeryapp.common.toRoomCategory
@@ -14,7 +13,9 @@ import com.bakery.bakeryapp.data.local.dao.cart.CartDao
 import com.bakery.bakeryapp.data.local.dao.categories.CategoriesDao
 import com.bakery.bakeryapp.data.local.dao.pedido.PedidoDao
 import com.bakery.bakeryapp.data.local.dao.product.ProductDao
+import com.bakery.bakeryapp.data.local.dao.relations.RelationsDao
 import com.bakery.bakeryapp.data.local.dao.users.UserDao
+import com.bakery.bakeryapp.data.local.relations.ProductsWithCategories
 import com.bakery.bakeryapp.domain.model.cart.Cart
 import com.bakery.bakeryapp.domain.model.category.Category
 import com.bakery.bakeryapp.domain.model.pedido.Pedido
@@ -29,7 +30,8 @@ class RoomDataSource @Inject constructor(
     private val productDao: ProductDao,
     private val pedidoDao: PedidoDao,
     private val categoriesDao: CategoriesDao,
-    private val cartDao: CartDao
+    private val cartDao: CartDao,
+    private val relationsDao: RelationsDao
 ) : LocalDataSource {
 
     override suspend fun saveUser(user: List<User>) =
@@ -51,8 +53,11 @@ class RoomDataSource @Inject constructor(
     override suspend fun saveProducts(products: List<Product>) =
         productDao.upsertProduct(products.map { product: Product -> product.toRoomProduct() })
 
-    override fun getProducts(): Flow<List<Product>> = productDao.getProducts()
-        .map { value -> value.map { productEntity -> productEntity.toDomainProduct() } }
+    /*override fun getProducts(): Flow<List<Product>> = productDao.getProducts()
+        .map { value -> value.map { productEntity -> productEntity.toDomainProduct() } }*/
+
+    override fun getProducts(): Flow<List<ProductsWithCategories>> = relationsDao.getProductWithCategories()
+        .map { value -> value.map { productsWithCategories -> productsWithCategories } }
 
     override suspend fun deleteProducts() = productDao.deleteProducts()
 

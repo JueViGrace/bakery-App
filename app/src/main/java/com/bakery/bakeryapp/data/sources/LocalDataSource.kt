@@ -1,5 +1,6 @@
 package com.bakery.bakeryapp.data.sources
 
+import com.bakery.bakeryapp.data.local.relations.ProductsWithCategories
 import com.bakery.bakeryapp.domain.model.cart.Cart
 import com.bakery.bakeryapp.domain.model.category.Category
 import com.bakery.bakeryapp.domain.model.pedido.Pedido
@@ -18,7 +19,7 @@ interface LocalDataSource {
     suspend fun deleteCategories()
 
     suspend fun saveProducts(products: List<Product>)
-    fun getProducts(): Flow<List<Product>>
+    fun getProducts(): Flow<List<ProductsWithCategories>>
     suspend fun deleteProducts()
 
     suspend fun saveCart(cart: List<Cart>)

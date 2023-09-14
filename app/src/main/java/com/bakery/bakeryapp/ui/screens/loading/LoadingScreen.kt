@@ -26,7 +26,9 @@ fun LoadingScreen(
     downloadViewModel.state.value.accessToken = dataStoreViewModel.state.value.accessToken
 
     if (downloadViewModel.loadingInProgress.value) {
-        downloadViewModel.onDownload()
+        if(downloadViewModel.isUserLoggedIn.value == true) {
+            downloadViewModel.onDownload()
+        }
         Box(
             modifier = Modifier
                 .fillMaxSize()

@@ -9,6 +9,7 @@ import com.bakery.bakeryapp.data.local.dao.cart.CartDao
 import com.bakery.bakeryapp.data.local.dao.categories.CategoriesDao
 import com.bakery.bakeryapp.data.local.dao.pedido.PedidoDao
 import com.bakery.bakeryapp.data.local.dao.product.ProductDao
+import com.bakery.bakeryapp.data.local.dao.relations.RelationsDao
 import com.bakery.bakeryapp.data.local.dao.users.UserDao
 import com.bakery.bakeryapp.data.local.entities.cart.CartEntity
 import com.bakery.bakeryapp.data.local.entities.categories.CategoryEntity
@@ -39,4 +40,6 @@ abstract class RoomDataBase : RoomDatabase() {
     abstract fun categoriesDao(): CategoriesDao
 
     abstract fun cartDao(): CartDao
+
+    abstract fun relationsDao(): RelationsDao
 }

@@ -120,7 +120,7 @@ class HomeViewModel @Inject constructor(
 
     fun showData() {
         viewModelScope.launch {
-            repository.getUser().collectLatest { list ->
+            repository.getUser().collect { list ->
                 if (list.isNotEmpty()) {
                     list.forEach { user ->
                         state.value = state.value.copy(
@@ -129,27 +129,35 @@ class HomeViewModel @Inject constructor(
                     }
                 }
             }
-            repository.getCategoriesFromDB().collectLatest { list ->
+        }
+        Log.d(TAG, "user: ${state.value.user}")
+
+        loadingDataInProgress.value = false
+    }
+
+    fun showCategories() {
+        viewModelScope.launch {
+            repository.getCategoriesFromDB().collect { list ->
                 if (list.isNotEmpty()) {
                     state.value = state.value.copy(
                         categories = list
                     )
                 }
             }
+        }
+        state.value.categories.forEach { Log.d(TAG, "categories: $it") }
+    }
 
-            repository.getProductsFromDB().collectLatest { list ->
+    fun showProducts() {
+        viewModelScope.launch {
+            repository.getProductsFromDB().collect { list ->
                 if (list.isNotEmpty()) {
                     state.value = state.value.copy(
                         products = list
                     )
                 }
             }
-
-            Log.d(TAG, "user: ${state.value.user}")
-            Log.d(TAG, "categories: ${state.value.categories}")
-            Log.d(TAG, "user: ${state.value.products}")
-
-            loadingDataInProgress.value = false
         }
+        state.value.products.forEach { Log.d(TAG, "prodcucts: $it") }
     }
 }

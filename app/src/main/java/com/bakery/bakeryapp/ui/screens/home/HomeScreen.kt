@@ -87,6 +87,12 @@ fun HomeScreen(
                     Button(onClick = { homeViewModel.showData() }) {
                         Text(text = "getDB")
                     }
+                    Button(onClick = { homeViewModel.showCategories() }) {
+                        Text(text = "getCategory")
+                    }
+                    Button(onClick = { homeViewModel.showProducts() }) {
+                        Text(text = "getProducts")
+                    }
                 }
             }
         }
