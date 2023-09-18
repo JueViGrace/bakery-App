@@ -17,14 +17,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bakery.bakeryapp.R
+import com.bakery.bakeryapp.constantes.Constantes.ACCESS_TOKEN
+import com.bakery.bakeryapp.constantes.Constantes.navigationList
+import com.bakery.bakeryapp.data.repository.datastore.DataStoreViewModel
+import com.bakery.bakeryapp.navigation.AppRouter
 import com.bakery.bakeryapp.ui.components.AppToolbar
+import com.bakery.bakeryapp.ui.components.BottomBar
 import com.bakery.bakeryapp.ui.viewmodel.download.DownloadViewModel
 import com.bakery.bakeryapp.ui.viewmodel.home.HomeViewModel
 
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel = viewModel(),
-    downloadViewModel: DownloadViewModel = viewModel()
+    downloadViewModel: DownloadViewModel = viewModel(),
+    dataStoreViewModel: DataStoreViewModel = viewModel()
 ) {
     // val scaffoldState = rememberScaffoldState()
     // val coroutineScope = rememberCoroutineScope()
@@ -53,6 +59,7 @@ fun HomeScreen(
                     toolbarTitle = stringResource(id = R.string.home),
                     logoutButtonClicked = {
                         homeViewModel.logOut()
+                        dataStoreViewModel.clearPreferences(ACCESS_TOKEN)
                     },
                     /*navigationIconClicked = {
                     coroutineScope.launch {
@@ -62,6 +69,12 @@ fun HomeScreen(
                 )
             },
             bottomBar = {
+                BottomBar(
+                    bottomDrawerItem = navigationList,
+                    onNavigationItemClicked = {
+                        AppRouter.navigateTo(it.itemId)
+                    }
+                )
             }
             /*drawerContent = {
             NavigationDrawerHeader(value = homeViewModel.emailId.value)

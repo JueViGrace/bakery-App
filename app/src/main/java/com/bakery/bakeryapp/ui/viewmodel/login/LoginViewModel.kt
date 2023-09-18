@@ -4,13 +4,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bakery.bakeryapp.common.Resource
+import com.bakery.bakeryapp.data.repository.MainRepository
+import com.bakery.bakeryapp.domain.model.user.Login
 import com.bakery.bakeryapp.navigation.AppRouter
 import com.bakery.bakeryapp.navigation.Screen
-import com.bakery.bakeryapp.data.repository.MainRepository
 import com.bakery.bakeryapp.ui.rules.Validator
-import com.bakery.bakeryapp.ui.uievents.login.LoginUIEvent
 import com.bakery.bakeryapp.ui.states.login.LoginUIState
-import com.bakery.bakeryapp.domain.model.user.Login
+import com.bakery.bakeryapp.ui.uievents.login.LoginUIEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch

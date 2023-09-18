@@ -8,17 +8,15 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
@@ -67,11 +65,11 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bakery.bakeryapp.R
 import com.bakery.bakeryapp.constantes.Constantes.formatter
+import com.bakery.bakeryapp.navigation.AppRouter
 import com.bakery.bakeryapp.navigation.NavigationItem
 import java.time.LocalDate.now
 import java.time.ZoneId
@@ -631,11 +629,45 @@ fun AppToolbar(
 }
 
 @Composable
-fun BottomBar() {
+fun BottomBar(
+    bottomDrawerItem: List<NavigationItem>,
+    onNavigationItemClicked: (NavigationItem) -> Unit
+) {
+    val currentRoute = AppRouter.currentScreen.value
 
+    BottomNavigation(
+        backgroundColor = MaterialTheme.colorScheme.primary
+    ) {
+        bottomDrawerItem.forEach { navItem ->
+            BottomNavigationItem(
+                selected = currentRoute == navItem.itemId,
+                onClick = { onNavigationItemClicked.invoke(navItem) },
+                icon = { navItem.icon },
+                label = {
+                    Text(text = navItem.title, color = MaterialTheme.colorScheme.onPrimary)
+                },
+                alwaysShowLabel = false
+            )
+        }
+    }
 }
 
 @Composable
+fun ProductComponent() {
+    Text(text = "product")
+}
+
+@Composable
+fun CartComponent() {
+    Text(text = "cart")
+}
+
+@Composable
+fun OrderComponent() {
+    Text(text = "order")
+}
+
+/*@Composable
 fun NavigationDrawerHeader(value: String?) {
     Box(
         modifier = Modifier
@@ -697,4 +729,4 @@ fun NavigationItemRow(item: NavigationItem, onNavigationItemClicked: (Navigation
 
         NavigationDrawerText(title = item.title, textSize = 18.sp)
     }
-}
+}*/

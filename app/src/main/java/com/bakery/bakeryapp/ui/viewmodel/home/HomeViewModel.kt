@@ -1,12 +1,6 @@
 package com.bakery.bakeryapp.ui.viewmodel.home
 
 import android.util.Log
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddShoppingCart
-import androidx.compose.material.icons.filled.Category
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.ShoppingBag
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.bakery.bakeryapp.data.repository.MainRepository
 import com.bakery.bakeryapp.domain.usecase.DeleteDataBaseUseCase
 import com.bakery.bakeryapp.navigation.AppRouter
-import com.bakery.bakeryapp.navigation.NavigationItem
 import com.bakery.bakeryapp.navigation.Screen
 import com.bakery.bakeryapp.ui.states.home.HomeState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,39 +28,6 @@ class HomeViewModel @Inject constructor(
     var loadingDataInProgress = mutableStateOf(true)
 
     val emailId: MutableLiveData<String> = MutableLiveData()
-
-    val navigationList = listOf(
-        NavigationItem(
-            title = "Home",
-            icon = Icons.Filled.Home,
-            description = "Home Screen",
-            itemId = "homeScreen"
-        ),
-        NavigationItem(
-            title = "Categories",
-            icon = Icons.Filled.Category,
-            description = "Home Screen",
-            itemId = "homeScreen"
-        ),
-        NavigationItem(
-            title = "Products",
-            icon = Icons.Default.ShoppingBag,
-            description = "Home Screen",
-            itemId = "homeScreen"
-        ),
-        NavigationItem(
-            title = "Cart",
-            icon = Icons.Default.ShoppingCart,
-            description = "Home Screen",
-            itemId = "homeScreen"
-        ),
-        NavigationItem(
-            title = "Orders",
-            icon = Icons.Default.AddShoppingCart,
-            description = "Home Screen",
-            itemId = "homeScreen"
-        ),
-    )
 
     fun logOut() {
         viewModelScope.launch {

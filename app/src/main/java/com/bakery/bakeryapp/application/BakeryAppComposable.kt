@@ -11,9 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bakery.bakeryapp.navigation.AppRouter
 import com.bakery.bakeryapp.navigation.Screen
+import com.bakery.bakeryapp.ui.screens.cart.CartScreen
 import com.bakery.bakeryapp.ui.screens.home.HomeScreen
 import com.bakery.bakeryapp.ui.screens.loading.LoadingScreen
 import com.bakery.bakeryapp.ui.screens.login.LoginScreen
+import com.bakery.bakeryapp.ui.screens.orders.OrderScreen
+import com.bakery.bakeryapp.ui.screens.product.ProductScreen
 import com.bakery.bakeryapp.ui.screens.signup.SingUpScreen
 import com.bakery.bakeryapp.ui.screens.terms.TermsAndConditionsScreen
 import com.bakery.bakeryapp.ui.viewmodel.download.DownloadViewModel
@@ -54,6 +57,18 @@ fun BakeryAppComposable(downloadViewModel: DownloadViewModel = viewModel()) {
 
                     is Screen.LoadingScreen -> {
                         LoadingScreen()
+                    }
+
+                    is Screen.ProductScreen -> {
+                        ProductScreen()
+                    }
+
+                    is Screen.CartScreen -> {
+                        CartScreen()
+                    }
+
+                    is Screen.OrderScreen -> {
+                        OrderScreen()
                     }
                 }
             }
