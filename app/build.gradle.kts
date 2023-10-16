@@ -64,10 +64,8 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
-    implementation(libs.material)
-    implementation(libs.material.android)
-    implementation(libs.material3.android)
-    // implementation("androidx.compose.material3:material3:1.1.1")
+    implementation(libs.androidx.material.icons.extended.android)
+    implementation(libs.androidx.material3)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -75,8 +73,10 @@ dependencies {
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
-    implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+    // Navigation compose
+    implementation(libs.androidx.navigation.compose)
 
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.livedata.ktx)
@@ -126,14 +126,7 @@ dependencies {
     // Preferences DataStore
     implementation(libs.androidx.datastore.preferences)
 
-    /*
-    // DatePicker
-    implementation("io.github.vanpra.compose-material-dialogs:datetime:0.9.0")
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
-     */
-
     // Acompanist
-    implementation(libs.accompanist.navigation.animation)
     implementation(libs.accompanist.systemuicontroller)
 }
 

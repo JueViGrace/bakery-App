@@ -1,6 +1,6 @@
 package com.bakery.bakeryapp.domain.model.user
 
 data class Auth(
-    val access_token: String,
+    val accessToken: String,
     val user: User
 )

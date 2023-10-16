@@ -46,7 +46,7 @@ fun ServerAuth.toDomainAuth() = Auth(
 )
 
 fun Auth.toServerAuth() = ServerAuth(
-    access_token,
+    accessToken,
     user.toServerUser()
 )
 

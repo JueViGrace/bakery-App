@@ -1,15 +1,16 @@
 [versions]
-accompanistNavigationAnimationVersion = "0.33.1-alpha"
 accompanistSystemuicontrollerVersion = "0.27.0"
-activityComposeVersion = "1.7.2"
-agpVersion = "8.1.1"
+activityComposeVersion = "1.8.0"
+agpVersion = "8.1.2"
+material3Version = "1.1.2"
+navigationComposeVersion = "2.7.4"
 playCoreKtx = "1.8.1"
 datastorePreferencesVersion = "1.0.0"
 detektCliVersion = "1.23.1"
 espressoCoreVersion = "3.5.1"
-hiltAndroidVersion = "2.48"
+hiltAndroidVersion = "2.48.1"
 hiltCompilerVersion = "1.0.0"
-hiltNavigationComposeVersion = "1.1.0-alpha01"
+hiltNavigationComposeVersion = "1.1.0-beta01"
 junit = "1.1.5"
 junitVersion = "4.13.2"
 kotlinVersion = "1.9.0"
@@ -19,20 +20,16 @@ detektVersion = "1.23.1"
 androidLibraryVersion = "8.1.1"
 coreKtxVersion = "1.12.0"
 lifecycleLivedataKtxVersion = "2.6.2"
-material3AndroidVersion = "1.2.0-alpha07"
-materialAndroidVersion = "1.6.0-alpha05"
-materialIconsExtendedVersion = "1.5.1"
-materialVersion = "1.9.0"
+materialIconsExtendedVersion = "1.5.3"
 networkResponseAdapterVersion = "5.0.0"
 okhttpVersion = "5.0.0-alpha.11"
 retrofitVersion = "2.9.0"
 roomKtxVersion = "2.5.2"
-uiTestManifestVersion = "1.6.0-alpha05"
-uiVersion = "1.5.1"
-composeBomVersion = "2023.09.00"
+uiTestManifestVersion = "1.6.0-alpha07"
+uiVersion = "1.5.3"
+composeBomVersion = "2023.10.00"
 
 [libraries]
-accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanistNavigationAnimationVersion" }
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontrollerVersion" }
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferencesVersion" }
@@ -40,6 +37,9 @@ androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref =
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationComposeVersion" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleLivedataKtxVersion" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtendedVersion" }
+androidx-material-icons-extended-android = { module = "androidx.compose.material:material-icons-extended-android", version.ref = "materialIconsExtendedVersion" }
+androidx-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3Version" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationComposeVersion" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtxVersion" }
 androidx-ui = { module = "androidx.compose.ui:ui", version.ref = "uiVersion" }
 core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtxVersion" }
@@ -54,9 +54,6 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtxVersion" }
 lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleLivedataKtxVersion" }
 lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleLivedataKtxVersion" }
-material = { module = "com.google.android.material:material", version.ref = "materialVersion" }
-material-android = { module = "androidx.compose.material:material-android", version.ref = "materialAndroidVersion" }
-material3-android = { module = "androidx.compose.material3:material3-android", version.ref = "material3AndroidVersion" }
 networkResponseAdapter = { module = "com.github.haroldadmin:NetworkResponseAdapter", version.ref = "networkResponseAdapterVersion" }
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttpVersion" }
 okhttp-bom = { group = "com.squareup.okhttp3", name = "okhttp-bom", version.ref = "okhttpVersion" }
