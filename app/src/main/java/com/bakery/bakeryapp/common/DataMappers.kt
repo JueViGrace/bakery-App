@@ -1,5 +1,6 @@
 package com.bakery.bakeryapp.common
 
+import androidx.compose.ui.Modifier
 import com.bakery.bakeryapp.domain.model.cart.Cart
 import com.bakery.bakeryapp.domain.model.category.Category
 import com.bakery.bakeryapp.domain.model.pedido.Pedido
@@ -21,6 +22,10 @@ import com.bakery.bakeryapp.data.remote.model.cart.CartResponseItem as ServerCar
 import com.bakery.bakeryapp.data.remote.model.categories.CategoryResponseItem as ServerCategory
 import com.bakery.bakeryapp.data.remote.model.pedido.PedidoResponseItem as ServerPedido
 import com.bakery.bakeryapp.data.remote.model.product.ProductResponseItem as ServerProduct
+
+inline fun Modifier.thenIf(predicate: Boolean, modify: () -> Modifier): Modifier {
+    return this.then(if (predicate) modify() else Modifier)
+}
 
 fun ServerLogin.toDomainLogin() = Login(
     email,

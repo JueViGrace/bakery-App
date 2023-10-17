@@ -10,6 +10,10 @@ import kotlinx.coroutines.flow.Flow
 
 interface LocalDataSource {
 
+    suspend fun saveToken(token: String)
+    fun getToken(): Flow<String>
+    suspend fun deleteToken()
+
     suspend fun saveUser(user: List<User>)
     fun getUser(): Flow<List<User>>
     suspend fun deleteUser()

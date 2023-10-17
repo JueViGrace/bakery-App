@@ -5,12 +5,14 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.bakery.bakeryapp.constantes.Constantes.DATABASE_VERSION_NEW
 import com.bakery.bakeryapp.data.local.converters.Converters
+import com.bakery.bakeryapp.data.local.dao.auth.AuthDao
 import com.bakery.bakeryapp.data.local.dao.cart.CartDao
 import com.bakery.bakeryapp.data.local.dao.categories.CategoriesDao
 import com.bakery.bakeryapp.data.local.dao.pedido.PedidoDao
 import com.bakery.bakeryapp.data.local.dao.product.ProductDao
 import com.bakery.bakeryapp.data.local.dao.relations.RelationsDao
 import com.bakery.bakeryapp.data.local.dao.users.UserDao
+import com.bakery.bakeryapp.data.local.entities.auth.AuthEntity
 import com.bakery.bakeryapp.data.local.entities.cart.CartEntity
 import com.bakery.bakeryapp.data.local.entities.categories.CategoryEntity
 import com.bakery.bakeryapp.data.local.entities.pedido.PedidoEntity
@@ -24,6 +26,7 @@ import com.bakery.bakeryapp.data.local.entities.users.UserEntity
         PedidoEntity::class,
         ProductEntity::class,
         UserEntity::class,
+        AuthEntity::class
     ],
     version = DATABASE_VERSION_NEW,
     exportSchema = true
@@ -42,4 +45,6 @@ abstract class RoomDataBase : RoomDatabase() {
     abstract fun cartDao(): CartDao
 
     abstract fun relationsDao(): RelationsDao
+
+    abstract fun authDao(): AuthDao
 }

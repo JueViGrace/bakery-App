@@ -1,4 +1,4 @@
-package com.bakery.bakeryapp.presentation.ui.states.login
+package com.bakery.bakeryapp.presentation.login.state
 
 data class LoginUIState(
     val email: String = "",
@@ -9,5 +9,8 @@ data class LoginUIState(
 
     val emailError: Boolean = false,
     val passwordError: Boolean = false,
-    var loginError: Boolean = false
+    var loginError: Boolean = false,
+    val allValidationsPassed: Boolean = false,
+    val loginInProgress: Boolean = false,
+    val loggedIn: Boolean = false
 )

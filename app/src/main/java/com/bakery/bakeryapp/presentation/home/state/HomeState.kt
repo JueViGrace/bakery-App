@@ -1,4 +1,4 @@
-package com.bakery.bakeryapp.presentation.ui.states.home
+package com.bakery.bakeryapp.presentation.home.state
 
 import com.bakery.bakeryapp.data.local.relations.ProductsWithCategories
 import com.bakery.bakeryapp.domain.model.category.Category

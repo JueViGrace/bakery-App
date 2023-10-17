@@ -1,4 +1,4 @@
-package com.bakery.bakeryapp.presentation.ui.states.download
+package com.bakery.bakeryapp.presentation.download
 
 import com.bakery.bakeryapp.domain.model.cart.Cart
 import com.bakery.bakeryapp.domain.model.category.Category

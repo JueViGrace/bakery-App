@@ -1,4 +1,4 @@
-package com.bakery.bakeryapp.presentation.ui.viewmodel.home
+package com.bakery.bakeryapp.presentation.home.viewmodel
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
@@ -9,7 +9,7 @@ import com.bakery.bakeryapp.data.repository.MainRepository
 import com.bakery.bakeryapp.domain.usecase.DeleteDataBaseUseCase
 import com.bakery.bakeryapp.navigation.AppRouter
 import com.bakery.bakeryapp.navigation.Screen
-import com.bakery.bakeryapp.presentation.ui.states.home.HomeState
+import com.bakery.bakeryapp.presentation.home.state.HomeState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

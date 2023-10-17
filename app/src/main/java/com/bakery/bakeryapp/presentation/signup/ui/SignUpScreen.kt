@@ -1,6 +1,5 @@
 package com.bakery.bakeryapp.presentation.signup.ui
 
-import android.content.res.Configuration.UI_MODE_NIGHT_UNDEFINED
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -19,16 +18,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bakery.bakeryapp.R
-import com.bakery.bakeryapp.constantes.Constantes.ACCESS_TOKEN
-import com.bakery.bakeryapp.constantes.Constantes.COD_USUARIO
-import com.bakery.bakeryapp.data.repository.datastore.DataStoreViewModel
 import com.bakery.bakeryapp.navigation.AppRouter
 import com.bakery.bakeryapp.navigation.Screen
-import com.bakery.bakeryapp.navigation.SystemBackButtonHandler
 import com.bakery.bakeryapp.presentation.components.ButtonComponent
 import com.bakery.bakeryapp.presentation.components.CheckBoxComponent
 import com.bakery.bakeryapp.presentation.components.ClickableLoginTextComponent
@@ -41,12 +34,14 @@ import com.bakery.bakeryapp.presentation.components.OutlinedTextFieldComponent
 import com.bakery.bakeryapp.presentation.components.PasswordTextFieldComponent
 import com.bakery.bakeryapp.presentation.components.PhoneTextFieldComponent
 import com.bakery.bakeryapp.presentation.signup.events.SingUpUIEvent
-import com.bakery.bakeryapp.presentation.signup.viewmodel.SingUpViewModel
+import com.bakery.bakeryapp.presentation.signup.state.SignUpUIState
 
 @Composable
 fun SingUpScreen(
-    singUpViewModel: SingUpViewModel = viewModel(),
-    dataStoreViewModel: DataStoreViewModel = viewModel()
+    state: SignUpUIState,
+    events: (SingUpUIEvent) -> Unit,
+    navigateToHome: (Boolean) -> Unit,
+    navigateToLogin: () -> Unit
 ) {
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -72,54 +67,54 @@ fun SingUpScreen(
                     labelValue = stringResource(id = R.string.first_name),
                     painterResource(id = R.drawable.ic_profile),
                     onTextSelected = {
-                        singUpViewModel.onEvent(SingUpUIEvent.FirstNameChanged(it))
+                        events(SingUpUIEvent.FirstNameChanged(it))
                     },
-                    errorStatus = singUpViewModel.state.value.firstNameError
+                    errorStatus = state.firstNameError
                 )
 
                 OutlinedTextFieldComponent(
                     labelValue = stringResource(id = R.string.last_name),
                     painterResource(id = R.drawable.ic_profile),
                     onTextSelected = {
-                        singUpViewModel.onEvent(SingUpUIEvent.LastNameChanged(it))
+                        events(SingUpUIEvent.LastNameChanged(it))
                     },
-                    errorStatus = singUpViewModel.state.value.lastNameError
+                    errorStatus = state.lastNameError
                 )
 
                 DatePickerComponent(
                     value = stringResource(id = R.string.date_pick),
                     painterResource(id = R.drawable.ic_calendar),
                     onTextSelected = {
-                        singUpViewModel.onEvent(SingUpUIEvent.BirthDayChanged(it))
+                        events(SingUpUIEvent.BirthDayChanged(it))
                     },
-                    errorStatus = singUpViewModel.state.value.birthDayError
+                    errorStatus = state.birthDayError
                 )
 
                 PhoneTextFieldComponent(
                     labelValue = stringResource(id = R.string.phone_number),
                     painterResource(id = R.drawable.ic_call),
                     onTextSelected = {
-                        singUpViewModel.onEvent(SingUpUIEvent.PhoneChanged(it))
+                        events(SingUpUIEvent.PhoneChanged(it))
                     },
-                    errorStatus = singUpViewModel.state.value.phoneError
+                    errorStatus = state.phoneError
                 )
 
                 EmailTextFieldComponent(
                     labelValue = stringResource(id = R.string.email),
                     painterResource(id = R.drawable.ic_email),
                     onTextSelected = {
-                        singUpViewModel.onEvent(SingUpUIEvent.EmailChanged(it))
+                        events(SingUpUIEvent.EmailChanged(it))
                     },
-                    errorStatus = singUpViewModel.state.value.emailError
+                    errorStatus = state.emailError
                 )
 
                 PasswordTextFieldComponent(
                     labelValue = stringResource(id = R.string.password),
                     painterResource(id = R.drawable.ic_lock),
                     onTextSelected = {
-                        singUpViewModel.onEvent(SingUpUIEvent.PasswordChanged(it))
+                        events(SingUpUIEvent.PasswordChanged(it))
                     },
-                    errorStatus = singUpViewModel.state.value.passwordError
+                    errorStatus = state.passwordError
                 )
 
                 CheckBoxComponent(
@@ -127,7 +122,7 @@ fun SingUpScreen(
                         AppRouter.navigateTo(Screen.TermsAndConditionsScreen)
                     },
                     onCheckedChanged = {
-                        singUpViewModel.onEvent(SingUpUIEvent.PrivacyPolicyCheckBoxClicked(it))
+                        events(SingUpUIEvent.PrivacyPolicyCheckBoxClicked(it))
                     }
                 )
 
@@ -136,9 +131,10 @@ fun SingUpScreen(
                 ButtonComponent(
                     value = stringResource(id = R.string.register),
                     onButtonClicked = {
-                        singUpViewModel.onEvent(SingUpUIEvent.RegisterButtonClicked)
+                        events(SingUpUIEvent.RegisterButtonClicked)
+                        navigateToHome(state.singedUp)
                     },
-                    isEnabled = singUpViewModel.allValidationsPassed.value
+                    isEnabled = state.allValidationsPassed
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -148,47 +144,39 @@ fun SingUpScreen(
                 ClickableLoginTextComponent(
                     tryingToLogin = true,
                     onTextSelected = {
-                        AppRouter.navigateTo(Screen.LoginScreen)
+                        navigateToLogin()
                     }
                 )
 
-                if (singUpViewModel.state.value.singUpError) {
+                if (state.singUpError) {
                     Toast.makeText(
                         LocalContext.current,
-                        singUpViewModel.state.value.singUpMessage,
+                        state.singUpMessage,
                         Toast.LENGTH_LONG
                     ).show()
                 }
             }
         }
 
-        if (singUpViewModel.singUpInProgress.value) {
+        if (state.singUpInProgress) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.primary),
                 contentAlignment = Alignment.Center
             ) {
-                dataStoreViewModel.storePreference(
+                /*dataStoreViewModel.storePreference(
                     ACCESS_TOKEN,
                     singUpViewModel.state.value.accessToken
                 )
-                dataStoreViewModel.storePreference(COD_USUARIO, singUpViewModel.state.value.userId)
+                dataStoreViewModel.storePreference(COD_USUARIO, singUpViewModel.state.value.userId)*/
                 CircularProgressIndicator(
                     color = MaterialTheme.colorScheme.onPrimary
                 )
             }
         }
     }
-    SystemBackButtonHandler {
-        AppRouter.navigateTo(Screen.LoginScreen)
-    }
-}
-
-@Preview(name = "Light Mode")
-@Preview(name = "Dark Mode", uiMode = UI_MODE_NIGHT_UNDEFINED, showBackground = true)
-// @Preview(name = "Full Preview", showSystemUi = true)
-@Composable
-fun DefaultPreviewOfSingUpScreen() {
-    SingUpScreen()
+//    SystemBackButtonHandler {
+//        AppRouter.navigateTo(Screen.LoginScreen)
+//    }
 }

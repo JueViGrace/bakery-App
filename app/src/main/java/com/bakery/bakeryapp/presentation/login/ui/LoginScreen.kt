@@ -19,12 +19,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bakery.bakeryapp.R
-import com.bakery.bakeryapp.constantes.Constantes
-import com.bakery.bakeryapp.data.repository.datastore.DataStoreViewModel
-import com.bakery.bakeryapp.navigation.AppRouter
-import com.bakery.bakeryapp.navigation.Screen
 import com.bakery.bakeryapp.presentation.components.ButtonComponent
 import com.bakery.bakeryapp.presentation.components.ClickableLoginTextComponent
 import com.bakery.bakeryapp.presentation.components.DividerTextComponent
@@ -38,9 +34,12 @@ import com.bakery.bakeryapp.presentation.login.viewmodel.LoginViewModel
 
 @Composable
 fun LoginScreen(
-    loginViewModel: LoginViewModel = viewModel(),
-    dataStoreViewModel: DataStoreViewModel = viewModel()
+    loginViewModel: LoginViewModel,
+    navigateToRegister: () -> Unit
 ) {
+    val events = loginViewModel::onEvent
+    val state = loginViewModel.state.collectAsStateWithLifecycle()
+
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -65,18 +64,18 @@ fun LoginScreen(
                     labelValue = stringResource(id = R.string.email),
                     painterResource(id = R.drawable.ic_email),
                     onTextSelected = {
-                        loginViewModel.onEvent(LoginUIEvent.EmailChanged(it))
+                        events(LoginUIEvent.EmailChanged(it))
                     },
-                    errorStatus = loginViewModel.state.value.emailError
+                    errorStatus = state.value.emailError
                 )
 
                 PasswordTextFieldComponent(
                     labelValue = stringResource(id = R.string.password),
                     painterResource(id = R.drawable.ic_lock),
                     onTextSelected = {
-                        loginViewModel.onEvent(LoginUIEvent.PasswordChanged(it))
+                        events(LoginUIEvent.PasswordChanged(it))
                     },
-                    errorStatus = loginViewModel.state.value.passwordError
+                    errorStatus = state.value.passwordError
                 )
 
                 Spacer(modifier = Modifier.height(40.dp))
@@ -88,9 +87,9 @@ fun LoginScreen(
                 ButtonComponent(
                     value = stringResource(id = R.string.login),
                     onButtonClicked = {
-                        loginViewModel.onEvent(LoginUIEvent.LogingButtonClicked)
+                        events(LoginUIEvent.LogingButtonClicked)
                     },
-                    loginViewModel.allValidationsPassed.value
+                    isEnabled = state.value.allValidationsPassed
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -98,34 +97,34 @@ fun LoginScreen(
                 DividerTextComponent()
 
                 ClickableLoginTextComponent(tryingToLogin = false, onTextSelected = {
-                    AppRouter.navigateTo(Screen.SingUpScreen)
+                    navigateToRegister()
                 })
 
-                if (loginViewModel.state.value.loginError) {
+                if (state.value.loginError) {
                     Toast.makeText(
                         LocalContext.current,
-                        loginViewModel.state.value.loginMessage,
+                        state.value.loginMessage,
                         Toast.LENGTH_LONG
                     ).show()
                 }
             }
         }
 
-        if (loginViewModel.loginInProgress.value) {
+        if (state.value.loginInProgress) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.primary),
                 contentAlignment = Alignment.Center
             ) {
-                dataStoreViewModel.storePreference(
+                /*dataStoreViewModel.storePreference(
                     Constantes.ACCESS_TOKEN,
                     loginViewModel.state.value.accessToken
                 )
                 dataStoreViewModel.storePreference(
                     Constantes.COD_USUARIO,
                     loginViewModel.state.value.userId
-                )
+                )*/
                 CircularProgressIndicator(
                     color = MaterialTheme.colorScheme.onPrimary
                 )

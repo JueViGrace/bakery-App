@@ -1,6 +1,6 @@
-package com.bakery.bakeryapp.presentation.ui.states.signup
+package com.bakery.bakeryapp.presentation.signup.state
 
-data class RegistrationUIState(
+data class SignUpUIState(
     var firstName: String = "",
     var lastName: String = "",
     var email: String = "",
@@ -22,5 +22,8 @@ data class RegistrationUIState(
     val phoneError: Boolean = false,
     var passwordError: Boolean = false,
     var privacyPolicyError: Boolean = false,
-    var singUpError: Boolean = false
+    var singUpError: Boolean = false,
+    val allValidationsPassed: Boolean = false,
+    val singUpInProgress: Boolean = false,
+    val singedUp: Boolean = false
 )

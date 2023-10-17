@@ -8,12 +8,12 @@ import com.bakery.bakeryapp.common.Resource
 import com.bakery.bakeryapp.constantes.Constantes.formatter
 import com.bakery.bakeryapp.data.repository.MainRepository
 import com.bakery.bakeryapp.domain.model.user.Register
+import com.bakery.bakeryapp.domain.rules.Validator
 import com.bakery.bakeryapp.domain.usecase.DeleteDataBaseUseCase
 import com.bakery.bakeryapp.navigation.AppRouter
 import com.bakery.bakeryapp.navigation.Screen
-import com.bakery.bakeryapp.presentation.rules.Validator
 import com.bakery.bakeryapp.presentation.signup.events.SingUpUIEvent
-import com.bakery.bakeryapp.presentation.ui.states.signup.RegistrationUIState
+import com.bakery.bakeryapp.presentation.signup.state.SignUpUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collectLatest
@@ -29,11 +29,7 @@ class SingUpViewModel @Inject constructor(
 
     private val TAG = SingUpViewModel::class.simpleName
 
-    val state = mutableStateOf(RegistrationUIState())
-
-    val allValidationsPassed = mutableStateOf(false)
-
-    val singUpInProgress = mutableStateOf(false)
+    val state = mutableStateOf(SignUpUIState())
 
     private val date = mutableStateOf(Date())
 
@@ -140,11 +136,9 @@ class SingUpViewModel @Inject constructor(
             passwordError = passwordResult.status,
             privacyPolicyError = privacyPolicyResult.status,
             phoneError = phoneResult.status,
-            birthDayError = bDayResult.status
+            birthDayError = bDayResult.status,
+            allValidationsPassed = fNameResult.status && lNameResult.status && emailResult.status && passwordResult.status && privacyPolicyResult.status && phoneResult.status
         )
-
-        allValidationsPassed.value =
-            fNameResult.status && lNameResult.status && emailResult.status && passwordResult.status && privacyPolicyResult.status && phoneResult.status
     }
 
     private fun printState() {
@@ -162,25 +156,23 @@ class SingUpViewModel @Inject constructor(
                     is Resource.Success -> {
                         if (it.data != null) {
                             state.value = state.value.copy(
-                                accessToken = it.data.accessToken, userId = it.data.user._id
+                                accessToken = it.data.accessToken, userId = it.data.user._id, singUpInProgress = false, singedUp = true
                             )
                             repository.saveUser(listOf(it.data.user))
-                            AppRouter.navigateTo(Screen.LoadingScreen)
-                            singUpInProgress.value = false
                             reset()
-                        } else {
-                            state.value.singUpError = true
                         }
                     }
 
                     is Resource.Error -> {
-                        state.value.singUpError = true
-                        singUpInProgress.value = false
-                        state.value = state.value.copy(singUpMessage = it.message)
+                        state.value = state.value.copy(
+                            singUpMessage = it.message,
+                            singUpInProgress = false,
+                            singUpError = true
+                        )
                     }
 
                     is Resource.Loading -> {
-                        singUpInProgress.value = true
+                        state.value = state.value.copy(singUpInProgress = true)
                     }
                 }
             }
@@ -209,10 +201,10 @@ class SingUpViewModel @Inject constructor(
             phoneError = false,
             passwordError = false,
             privacyPolicyError = false,
-            singUpError = false
+            singUpError = false,
+            allValidationsPassed = false,
+            singUpInProgress = false
         )
-        allValidationsPassed.value = false
-        singUpInProgress.value = false
     }
 
     fun logOut() {

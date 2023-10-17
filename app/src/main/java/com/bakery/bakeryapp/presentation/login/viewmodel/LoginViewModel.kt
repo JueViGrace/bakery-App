@@ -1,18 +1,18 @@
 package com.bakery.bakeryapp.presentation.login.viewmodel
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bakery.bakeryapp.common.Resource
 import com.bakery.bakeryapp.data.repository.MainRepository
 import com.bakery.bakeryapp.domain.model.user.Login
-import com.bakery.bakeryapp.navigation.AppRouter
-import com.bakery.bakeryapp.navigation.Screen
+import com.bakery.bakeryapp.domain.rules.Validator
 import com.bakery.bakeryapp.presentation.login.events.LoginUIEvent
-import com.bakery.bakeryapp.presentation.rules.Validator
-import com.bakery.bakeryapp.presentation.ui.states.login.LoginUIState
+import com.bakery.bakeryapp.presentation.login.state.LoginUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,24 +23,28 @@ class LoginViewModel @Inject constructor(
 
     private val TAG = LoginViewModel::class.simpleName
 
-    val state = mutableStateOf(LoginUIState())
+    // val state: MutableState<LoginUIState> = mutableStateOf(LoginUIState())
 
-    val allValidationsPassed = mutableStateOf(false)
-
-    var loginInProgress = mutableStateOf(false)
+    private val _state = MutableStateFlow(LoginUIState())
+    val state: StateFlow<LoginUIState> = _state.asStateFlow()
+    /*.asStateFlow().stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000L),
+        LoginUIState()
+    )*/
 
     fun onEvent(event: LoginUIEvent) {
         when (event) {
             is LoginUIEvent.EmailChanged -> {
-                state.value = state.value.copy(
-                    email = event.email
-                )
+                _state.update {
+                    return@update it.copy(email = event.email)
+                }
             }
 
             is LoginUIEvent.PasswordChanged -> {
-                state.value = state.value.copy(
-                    password = event.password
-                )
+                _state.update {
+                    return@update it.copy(password = event.password)
+                }
             }
 
             is LoginUIEvent.LogingButtonClicked -> {
@@ -54,8 +58,8 @@ class LoginViewModel @Inject constructor(
         validateLoginUIDataWithRules()
 
         val login = Login(
-            email = state.value.email,
-            password = state.value.password
+            email = _state.value.email,
+            password = _state.value.password
         )
 
         loginApi(login)
@@ -63,37 +67,39 @@ class LoginViewModel @Inject constructor(
 
     private fun loginApi(login: Login) {
         viewModelScope.launch {
-            val result = async {
-                repository.login(login)
-            }.await()
-
-            result.collect {
+            repository.login(login).collect {
                 when (it) {
                     is Resource.Success -> {
                         if (it.data != null) {
-                            state.value = state.value.copy(
-                                accessToken = it.data.accessToken, userId = it.data.user._id
-                            )
                             repository.saveUser(listOf(it.data.user))
-                            AppRouter.navigateTo(Screen.LoadingScreen)
-                            loginInProgress.value = false
-
+                            repository.upsertToken(it.data.accessToken)
+                            _state.update { state ->
+                                return@update state.copy(
+                                    accessToken = it.data.accessToken,
+                                    userId = it.data.user._id,
+                                    loggedIn = true,
+                                    loginInProgress = false
+                                )
+                            }
                             reset()
-                        } else {
-                            state.value.loginError = true
                         }
                     }
 
                     is Resource.Error -> {
-                        loginInProgress.value = false
-                        state.value.loginError = true
-                        state.value = state.value.copy(
-                            loginMessage = it.message
-                        )
+                        _state.update { state ->
+                            return@update state.copy(
+                                loginInProgress = false,
+                                loginError = true,
+                                loggedIn = false,
+                                loginMessage = it.message
+                            )
+                        }
                     }
 
                     is Resource.Loading -> {
-                        loginInProgress.value = true
+                        _state.update { state ->
+                            return@update state.copy(loginInProgress = true, loggedIn = false)
+                        }
                     }
                 }
             }
@@ -101,28 +107,33 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun reset() {
-        state.value = state.value.copy(
-            email = "",
-            password = "",
-            accessToken = "",
-            loginMessage = "",
-            emailError = false,
-            passwordError = false,
-            loginError = false
-        )
-        allValidationsPassed.value = false
-        loginInProgress.value = false
+        _state.update { state ->
+            return@update state.copy(
+                email = "",
+                password = "",
+                accessToken = "",
+                loginMessage = "",
+                emailError = false,
+                passwordError = false,
+                loginError = false,
+                allValidationsPassed = false,
+                loginInProgress = false,
+                loggedIn = false
+            )
+        }
     }
 
     private fun validateLoginUIDataWithRules() {
-        val emailResult = Validator.validateEmail(email = state.value.email)
+        val emailResult = Validator.validateEmail(email = _state.value.email)
 
-        val passwordResult = Validator.validatePassword(password = state.value.password)
+        val passwordResult = Validator.validatePassword(password = _state.value.password)
 
-        state.value = state.value.copy(
-            emailError = emailResult.status, passwordError = passwordResult.status
-        )
-
-        allValidationsPassed.value = emailResult.status && passwordResult.status
+        _state.update { state ->
+            return@update state.copy(
+                emailError = emailResult.status,
+                passwordError = passwordResult.status,
+                allValidationsPassed = emailResult.status && passwordResult.status
+            )
+        }
     }
 }

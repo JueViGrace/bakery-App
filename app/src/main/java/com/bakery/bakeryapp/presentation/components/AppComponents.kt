@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 
 package com.bakery.bakeryapp.presentation.components
 
@@ -572,18 +572,17 @@ fun ClickableLoginTextComponent(tryingToLogin: Boolean = true, onTextSelected: (
             fontStyle = FontStyle.Normal,
             textAlign = TextAlign.Center
         ),
-        text = annotatedString,
-        onClick = { offset ->
+        text = annotatedString
+    ) { offset ->
 
-            annotatedString.getStringAnnotations(offset, offset).firstOrNull()?.also { span ->
-                Log.d("ClickableTextComponent", "{${span.item}}")
+        annotatedString.getStringAnnotations(offset, offset).firstOrNull()?.also { span ->
+            Log.d("ClickableTextComponent", "{${span.item}}")
 
-                if (span.item == loginText) {
-                    onTextSelected(span.item)
-                }
+            if (span.item == loginText) {
+                onTextSelected(span.item)
             }
         }
-    )
+    }
 }
 
 @Composable
@@ -616,7 +615,8 @@ fun AppToolbar(
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary
-        ), /*navigationIcon = {
+        ),
+        /*navigationIcon = {
             IconButton(onClick = {
                 navigationIconClicked.invoke()
             }) {

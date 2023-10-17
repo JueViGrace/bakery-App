@@ -1,12 +1,10 @@
-package com.bakery.bakeryapp.presentation.ui.screens.home
+package com.bakery.bakeryapp.presentation.home.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -23,8 +21,8 @@ import com.bakery.bakeryapp.data.repository.datastore.DataStoreViewModel
 import com.bakery.bakeryapp.navigation.AppRouter
 import com.bakery.bakeryapp.presentation.components.AppToolbar
 import com.bakery.bakeryapp.presentation.components.BottomBar
-import com.bakery.bakeryapp.presentation.ui.viewmodel.download.DownloadViewModel
-import com.bakery.bakeryapp.presentation.ui.viewmodel.home.HomeViewModel
+import com.bakery.bakeryapp.presentation.download.DownloadViewModel
+import com.bakery.bakeryapp.presentation.home.viewmodel.HomeViewModel
 
 @Composable
 fun HomeScreen(
@@ -38,7 +36,7 @@ fun HomeScreen(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        if (homeViewModel.loadingDataInProgress.value) {
+        /*if (homeViewModel.loadingDataInProgress.value) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -49,7 +47,7 @@ fun HomeScreen(
                     color = MaterialTheme.colorScheme.onPrimary
                 )
             }
-        }
+        }*/
 
         Scaffold(
             // scaffoldState = scaffoldState,

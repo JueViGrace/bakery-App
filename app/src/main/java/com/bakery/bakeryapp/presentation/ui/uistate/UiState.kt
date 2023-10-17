@@ -1,4 +1,4 @@
-package com.bakery.bakeryapp.presentation.uistate
+package com.bakery.bakeryapp.presentation.ui.uistate
 
 sealed interface UiState {
     data object Loading : UiState

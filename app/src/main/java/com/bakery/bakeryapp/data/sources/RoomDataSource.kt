@@ -9,12 +9,14 @@ import com.bakery.bakeryapp.common.toRoomCategory
 import com.bakery.bakeryapp.common.toRoomPedido
 import com.bakery.bakeryapp.common.toRoomProduct
 import com.bakery.bakeryapp.common.toRoomUser
+import com.bakery.bakeryapp.data.local.dao.auth.AuthDao
 import com.bakery.bakeryapp.data.local.dao.cart.CartDao
 import com.bakery.bakeryapp.data.local.dao.categories.CategoriesDao
 import com.bakery.bakeryapp.data.local.dao.pedido.PedidoDao
 import com.bakery.bakeryapp.data.local.dao.product.ProductDao
 import com.bakery.bakeryapp.data.local.dao.relations.RelationsDao
 import com.bakery.bakeryapp.data.local.dao.users.UserDao
+import com.bakery.bakeryapp.data.local.entities.auth.AuthEntity
 import com.bakery.bakeryapp.data.local.relations.ProductsWithCategories
 import com.bakery.bakeryapp.domain.model.cart.Cart
 import com.bakery.bakeryapp.domain.model.category.Category
@@ -31,8 +33,15 @@ class RoomDataSource @Inject constructor(
     private val pedidoDao: PedidoDao,
     private val categoriesDao: CategoriesDao,
     private val cartDao: CartDao,
-    private val relationsDao: RelationsDao
+    private val relationsDao: RelationsDao,
+    private val authDao: AuthDao
 ) : LocalDataSource {
+
+    override suspend fun saveToken(token: String) = authDao.upsertAuth(AuthEntity(accessToken = token))
+
+    override fun getToken(): Flow<String> = authDao.getToken().map { value -> value.accessToken }
+
+    override suspend fun deleteToken() = authDao.deleteAuth()
 
     override suspend fun saveUser(user: List<User>) =
         userDao.upsertUser(user.map { value -> value.toRoomUser() })

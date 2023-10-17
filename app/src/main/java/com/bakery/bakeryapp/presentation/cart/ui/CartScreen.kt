@@ -1,4 +1,4 @@
-package com.bakery.bakeryapp.presentation.ui.screens.cart
+package com.bakery.bakeryapp.presentation.cart.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface

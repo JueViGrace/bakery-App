@@ -16,6 +16,10 @@ class MainRepository @Inject constructor(
     private val localDataSource: LocalDataSource
 ) {
 
+    suspend fun upsertToken(token: String) = localDataSource.saveToken(token)
+    fun getToken() = localDataSource.getToken()
+    suspend fun deleteToken() = localDataSource.deleteToken()
+
     suspend fun login(login: Login) = remoteDataSource.login(login)
 
     suspend fun register(register: Register) = remoteDataSource.register(register)

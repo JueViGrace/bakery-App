@@ -1,4 +1,4 @@
-package com.bakery.bakeryapp.presentation.ui.screens.terms
+package com.bakery.bakeryapp.presentation.terms
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,9 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.bakery.bakeryapp.R
-import com.bakery.bakeryapp.navigation.AppRouter
-import com.bakery.bakeryapp.navigation.Screen
-import com.bakery.bakeryapp.navigation.SystemBackButtonHandler
 import com.bakery.bakeryapp.presentation.components.HeadingTextComponent
 
 @Composable
@@ -26,7 +23,7 @@ fun TermsAndConditionsScreen() {
         HeadingTextComponent(value = stringResource(id = R.string.terms_and_conditions_header))
     }
 
-    SystemBackButtonHandler {
-        AppRouter.navigateTo(Screen.SingUpScreen)
-    }
+//    SystemBackButtonHandler {
+//        AppRouter.navigateTo(Screen.SingUpScreen)
+//    }
 }

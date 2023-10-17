@@ -1,4 +1,4 @@
-package com.bakery.bakeryapp.presentation.rules
+package com.bakery.bakeryapp.domain.rules
 
 object Validator {
 

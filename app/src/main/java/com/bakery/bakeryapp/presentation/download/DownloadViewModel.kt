@@ -1,10 +1,10 @@
-package com.bakery.bakeryapp.presentation.ui.viewmodel.download
+package com.bakery.bakeryapp.presentation.download
 
 import androidx.lifecycle.ViewModel
 import com.bakery.bakeryapp.data.repository.MainRepository
 import com.bakery.bakeryapp.di.NetworkModule
 import com.bakery.bakeryapp.domain.usecase.DeleteDataBaseUseCase
-import com.bakery.bakeryapp.presentation.uistate.UiState
+import com.bakery.bakeryapp.presentation.ui.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -34,6 +34,8 @@ class DownloadViewModel @Inject constructor(
     private fun addToken(accessToken: String?) {
         NetworkModule.accessToken = accessToken
     }
+
+
 
     /*private fun getCategories() {
         viewModelScope.launch {

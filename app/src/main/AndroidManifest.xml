@@ -23,7 +23,7 @@
         android:theme="@style/Theme.BakeryApp"
         tools:targetApi="34">
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".presentation.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.BakeryApp">
             <intent-filter>
