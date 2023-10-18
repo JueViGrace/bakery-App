@@ -16,10 +16,8 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
@@ -30,13 +28,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -69,9 +64,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bakery.bakeryapp.R
-import com.bakery.bakeryapp.constantes.Constantes.formatter
-import com.bakery.bakeryapp.navigation.AppRouter
-import com.bakery.bakeryapp.navigation.NavigationItem
+import com.bakery.bakeryapp.common.toCustomFormat
 import java.time.LocalDate.now
 import java.time.ZoneId
 import java.util.Date
@@ -349,7 +342,7 @@ fun DatePickerComponent(
         }
     }
 
-    var dateSelected = formatter.format(Date(selectedDate.plus(86400000)))
+    var dateSelected = Date(selectedDate.plus(86400000)).toCustomFormat()
 
     onTextSelected.invoke(dateSelected)
 
@@ -601,71 +594,6 @@ fun UnderlinedTextComponent(value: String) {
         textAlign = TextAlign.Center,
         textDecoration = TextDecoration.Underline
     )
-}
-
-@Composable
-fun AppToolbar(
-    toolbarTitle: String,
-    logoutButtonClicked: () -> Unit,
-    // navigationIconClicked: () -> Unit
-) {
-    TopAppBar(
-        title = {
-            Text(text = toolbarTitle, color = MaterialTheme.colorScheme.onPrimary)
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary
-        ),
-        /*navigationIcon = {
-            IconButton(onClick = {
-                navigationIconClicked.invoke()
-            }) {
-                Icon(
-                    imageVector = Icons.Filled.Menu,
-                    contentDescription = stringResource(id = R.string.menu),
-                    tint = MaterialTheme.colorScheme.onPrimary
-                )
-            }
-        },*/
-        actions = {
-            IconButton(onClick = {
-                logoutButtonClicked.invoke()
-            }) {
-                Icon(
-                    imageVector = Icons.Filled.ExitToApp,
-                    contentDescription = stringResource(R.string.logout),
-                    tint = MaterialTheme.colorScheme.onPrimary
-                )
-            }
-        }
-    )
-}
-
-@Composable
-fun BottomBar(
-    bottomDrawerItem: List<NavigationItem>,
-    onNavigationItemClicked: (NavigationItem) -> Unit
-) {
-    val currentRoute = AppRouter.currentScreen.value
-
-    BottomAppBar(actions = {
-        bottomDrawerItem.forEach { navItem ->
-            NavigationBarItem(
-                selected = currentRoute == navItem.itemId,
-                onClick = { onNavigationItemClicked.invoke(navItem) },
-                icon = {
-                    Icon(
-                        imageVector = navItem.icon,
-                        contentDescription = navItem.description
-                    )
-                },
-                label = {
-                    Text(text = navItem.title, color = MaterialTheme.colorScheme.onPrimary)
-                },
-                alwaysShowLabel = false
-            )
-        }
-    })
 }
 
 @Composable

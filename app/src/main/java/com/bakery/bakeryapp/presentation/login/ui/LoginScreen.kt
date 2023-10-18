@@ -13,12 +13,14 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bakery.bakeryapp.R
 import com.bakery.bakeryapp.presentation.components.ButtonComponent
@@ -34,8 +36,9 @@ import com.bakery.bakeryapp.presentation.login.viewmodel.LoginViewModel
 
 @Composable
 fun LoginScreen(
-    loginViewModel: LoginViewModel,
-    navigateToRegister: () -> Unit
+    loginViewModel: LoginViewModel = hiltViewModel(),
+    navigateToRegister: () -> Unit,
+    navigateToHome: () -> Unit
 ) {
     val events = loginViewModel::onEvent
     val state = loginViewModel.state.collectAsStateWithLifecycle()
@@ -129,6 +132,10 @@ fun LoginScreen(
                     color = MaterialTheme.colorScheme.onPrimary
                 )
             }
+        }
+
+        if (state.value.loggedIn) {
+            navigateToHome()
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.bakery.bakeryapp.presentation.login.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bakery.bakeryapp.common.Resource
@@ -23,8 +24,6 @@ class LoginViewModel @Inject constructor(
 
     private val TAG = LoginViewModel::class.simpleName
 
-    // val state: MutableState<LoginUIState> = mutableStateOf(LoginUIState())
-
     private val _state = MutableStateFlow(LoginUIState())
     val state: StateFlow<LoginUIState> = _state.asStateFlow()
     /*.asStateFlow().stateIn(
@@ -36,14 +35,14 @@ class LoginViewModel @Inject constructor(
     fun onEvent(event: LoginUIEvent) {
         when (event) {
             is LoginUIEvent.EmailChanged -> {
-                _state.update {
-                    return@update it.copy(email = event.email)
+                _state.update { state ->
+                    return@update state.copy(email = event.email)
                 }
             }
 
             is LoginUIEvent.PasswordChanged -> {
-                _state.update {
-                    return@update it.copy(password = event.password)
+                _state.update { state ->
+                    return@update state.copy(password = event.password)
                 }
             }
 
@@ -62,43 +61,46 @@ class LoginViewModel @Inject constructor(
             password = _state.value.password
         )
 
-        loginApi(login)
+        Log.d(TAG, "_state before login: ${_state.value}")
+
+        sendLogin(login)
     }
 
-    private fun loginApi(login: Login) {
+    private fun sendLogin(login: Login) {
         viewModelScope.launch {
-            repository.login(login).collect {
-                when (it) {
-                    is Resource.Success -> {
-                        if (it.data != null) {
-                            repository.saveUser(listOf(it.data.user))
-                            repository.upsertToken(it.data.accessToken)
-                            _state.update { state ->
-                                return@update state.copy(
-                                    accessToken = it.data.accessToken,
-                                    userId = it.data.user._id,
-                                    loggedIn = true,
-                                    loginInProgress = false
-                                )
-                            }
-                            reset()
-                        }
-                    }
-
+            repository.login(login).collect { value ->
+                when (value) {
                     is Resource.Error -> {
                         _state.update { state ->
                             return@update state.copy(
                                 loginInProgress = false,
                                 loginError = true,
                                 loggedIn = false,
-                                loginMessage = it.message
+                                loginMessage = value.message
                             )
                         }
+                        Log.d(TAG, "_state after login, error: ${_state.value}")
                     }
 
                     is Resource.Loading -> {
                         _state.update { state ->
                             return@update state.copy(loginInProgress = true, loggedIn = false)
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        if (value.data != null) {
+                            repository.saveUser(listOf(value.data.user))
+                            repository.deleteToken()
+                            repository.upsertToken(value.data.accessToken)
+                            _state.update { state ->
+                                return@update state.copy(
+                                    loginError = false,
+                                    loggedIn = true,
+                                    loginInProgress = false
+                                )
+                            }
+                            Log.d(TAG, "_state after login, success: ${_state.value}")
                         }
                     }
                 }
@@ -111,7 +113,6 @@ class LoginViewModel @Inject constructor(
             return@update state.copy(
                 email = "",
                 password = "",
-                accessToken = "",
                 loginMessage = "",
                 emailError = false,
                 passwordError = false,
@@ -135,5 +136,6 @@ class LoginViewModel @Inject constructor(
                 allValidationsPassed = emailResult.status && passwordResult.status
             )
         }
+        Log.d(TAG, "_state validation: ${_state.value}")
     }
 }

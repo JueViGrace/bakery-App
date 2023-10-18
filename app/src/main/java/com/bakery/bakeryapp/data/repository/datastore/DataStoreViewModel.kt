@@ -8,8 +8,6 @@ import com.bakery.bakeryapp.constantes.Constantes.COD_USUARIO
 import com.bakery.bakeryapp.constantes.Constantes.NOMBRE_USUARIO
 import com.bakery.bakeryapp.data.repository.datastore.repository.DataStoreRepository
 import com.bakery.bakeryapp.data.repository.datastore.state.DataStoreState
-import com.bakery.bakeryapp.navigation.AppRouter
-import com.bakery.bakeryapp.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -55,14 +53,5 @@ class DataStoreViewModel @Inject constructor(
 
     fun clearPreferences(key: String) = viewModelScope.launch(Dispatchers.IO) {
         dataStoreRepository.clearPreferences(key)
-    }
-
-    fun validateSession() {
-        if (state.value.accessToken.isNotEmpty()) {
-            AppRouter.navigateTo(Screen.HomeScreen)
-            loginInProgress.value = false
-        } else {
-            loginInProgress.value = false
-        }
     }
 }

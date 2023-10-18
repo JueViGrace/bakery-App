@@ -12,5 +12,6 @@ class DeleteDataBaseUseCase @Inject constructor(
         repository.deleteProducts()
         repository.deleteCart()
         repository.deletePedido()
+        repository.deleteToken()
     }
 }

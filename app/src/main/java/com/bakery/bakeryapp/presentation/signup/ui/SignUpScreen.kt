@@ -13,15 +13,16 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bakery.bakeryapp.R
-import com.bakery.bakeryapp.navigation.AppRouter
-import com.bakery.bakeryapp.navigation.Screen
 import com.bakery.bakeryapp.presentation.components.ButtonComponent
 import com.bakery.bakeryapp.presentation.components.CheckBoxComponent
 import com.bakery.bakeryapp.presentation.components.ClickableLoginTextComponent
@@ -33,16 +34,19 @@ import com.bakery.bakeryapp.presentation.components.NormalTextComponent
 import com.bakery.bakeryapp.presentation.components.OutlinedTextFieldComponent
 import com.bakery.bakeryapp.presentation.components.PasswordTextFieldComponent
 import com.bakery.bakeryapp.presentation.components.PhoneTextFieldComponent
-import com.bakery.bakeryapp.presentation.signup.events.SingUpUIEvent
-import com.bakery.bakeryapp.presentation.signup.state.SignUpUIState
+import com.bakery.bakeryapp.presentation.signup.events.SignUpUIEvent
+import com.bakery.bakeryapp.presentation.signup.viewmodel.SignUpViewModel
 
 @Composable
 fun SingUpScreen(
-    state: SignUpUIState,
-    events: (SingUpUIEvent) -> Unit,
-    navigateToHome: (Boolean) -> Unit,
-    navigateToLogin: () -> Unit
+    signUpViewModel: SignUpViewModel = hiltViewModel(),
+    navigateToHome: () -> Unit,
+    navigateToLogin: () -> Unit,
+    navigateToTerms: () -> Unit
 ) {
+    val events = signUpViewModel::onEvent
+    val state = signUpViewModel.state.collectAsStateWithLifecycle()
+
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -67,62 +71,62 @@ fun SingUpScreen(
                     labelValue = stringResource(id = R.string.first_name),
                     painterResource(id = R.drawable.ic_profile),
                     onTextSelected = {
-                        events(SingUpUIEvent.FirstNameChanged(it))
+                        events(SignUpUIEvent.FirstNameChanged(it))
                     },
-                    errorStatus = state.firstNameError
+                    errorStatus = state.value.firstNameError
                 )
 
                 OutlinedTextFieldComponent(
                     labelValue = stringResource(id = R.string.last_name),
                     painterResource(id = R.drawable.ic_profile),
                     onTextSelected = {
-                        events(SingUpUIEvent.LastNameChanged(it))
+                        events(SignUpUIEvent.LastNameChanged(it))
                     },
-                    errorStatus = state.lastNameError
+                    errorStatus = state.value.lastNameError
                 )
 
                 DatePickerComponent(
                     value = stringResource(id = R.string.date_pick),
                     painterResource(id = R.drawable.ic_calendar),
                     onTextSelected = {
-                        events(SingUpUIEvent.BirthDayChanged(it))
+                        events(SignUpUIEvent.BirthDayChanged(it))
                     },
-                    errorStatus = state.birthDayError
+                    errorStatus = state.value.birthDayError
                 )
 
                 PhoneTextFieldComponent(
                     labelValue = stringResource(id = R.string.phone_number),
                     painterResource(id = R.drawable.ic_call),
                     onTextSelected = {
-                        events(SingUpUIEvent.PhoneChanged(it))
+                        events(SignUpUIEvent.PhoneChanged(it))
                     },
-                    errorStatus = state.phoneError
+                    errorStatus = state.value.phoneError
                 )
 
                 EmailTextFieldComponent(
                     labelValue = stringResource(id = R.string.email),
                     painterResource(id = R.drawable.ic_email),
                     onTextSelected = {
-                        events(SingUpUIEvent.EmailChanged(it))
+                        events(SignUpUIEvent.EmailChanged(it))
                     },
-                    errorStatus = state.emailError
+                    errorStatus = state.value.emailError
                 )
 
                 PasswordTextFieldComponent(
                     labelValue = stringResource(id = R.string.password),
                     painterResource(id = R.drawable.ic_lock),
                     onTextSelected = {
-                        events(SingUpUIEvent.PasswordChanged(it))
+                        events(SignUpUIEvent.PasswordChanged(it))
                     },
-                    errorStatus = state.passwordError
+                    errorStatus = state.value.passwordError
                 )
 
                 CheckBoxComponent(
                     onTextSelected = {
-                        AppRouter.navigateTo(Screen.TermsAndConditionsScreen)
+                        navigateToTerms()
                     },
                     onCheckedChanged = {
-                        events(SingUpUIEvent.PrivacyPolicyCheckBoxClicked(it))
+                        events(SignUpUIEvent.PrivacyPolicyCheckBoxClicked(it))
                     }
                 )
 
@@ -131,10 +135,9 @@ fun SingUpScreen(
                 ButtonComponent(
                     value = stringResource(id = R.string.register),
                     onButtonClicked = {
-                        events(SingUpUIEvent.RegisterButtonClicked)
-                        navigateToHome(state.singedUp)
+                        events(SignUpUIEvent.RegisterButtonClicked)
                     },
-                    isEnabled = state.allValidationsPassed
+                    isEnabled = state.value.allValidationsPassed
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -148,35 +151,31 @@ fun SingUpScreen(
                     }
                 )
 
-                if (state.singUpError) {
+                if (state.value.signUpError) {
                     Toast.makeText(
                         LocalContext.current,
-                        state.singUpMessage,
+                        state.value.signUpMessage,
                         Toast.LENGTH_LONG
                     ).show()
                 }
             }
         }
 
-        if (state.singUpInProgress) {
+        if (state.value.signUpInProgress) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.primary),
                 contentAlignment = Alignment.Center
             ) {
-                /*dataStoreViewModel.storePreference(
-                    ACCESS_TOKEN,
-                    singUpViewModel.state.value.accessToken
-                )
-                dataStoreViewModel.storePreference(COD_USUARIO, singUpViewModel.state.value.userId)*/
                 CircularProgressIndicator(
                     color = MaterialTheme.colorScheme.onPrimary
                 )
             }
         }
+
+        if (state.value.signedUp) {
+            navigateToHome()
+        }
     }
-//    SystemBackButtonHandler {
-//        AppRouter.navigateTo(Screen.LoginScreen)
-//    }
 }

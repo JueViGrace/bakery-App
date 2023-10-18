@@ -24,4 +24,5 @@
     <string name="logout">Log Out</string>
     <string name="menu">Menu</string>
     <string name="navigation_header">nav_header</string>
+    <string name="products_not_found">Products not found</string>
 </resources>

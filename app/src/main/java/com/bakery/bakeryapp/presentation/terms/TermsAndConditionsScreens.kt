@@ -24,6 +24,6 @@ fun TermsAndConditionsScreen() {
     }
 
 //    SystemBackButtonHandler {
-//        AppRouter.navigateTo(Screen.SingUpScreen)
+//        AppRouter.navigateTo(DetailScreen.SignUpScreen)
 //    }
 }

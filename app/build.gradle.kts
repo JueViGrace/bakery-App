@@ -129,6 +129,12 @@ dependencies {
 
     // Acompanist
     implementation(libs.accompanist.systemuicontroller)
+
+    // Coil
+    implementation(libs.coil.compose)
+
+    // Constrain Layout
+    implementation(libs.androidx.constraintlayout.compose)
 }
 
 detekt {

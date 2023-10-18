@@ -7,8 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bakery.bakeryapp.data.repository.MainRepository
 import com.bakery.bakeryapp.domain.usecase.DeleteDataBaseUseCase
-import com.bakery.bakeryapp.navigation.AppRouter
-import com.bakery.bakeryapp.navigation.Screen
 import com.bakery.bakeryapp.presentation.home.state.HomeState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -37,7 +35,6 @@ class HomeViewModel @Inject constructor(
 
             user.collectLatest {
                 if (it.isEmpty()) {
-                    AppRouter.navigateTo(Screen.LoginScreen)
                 }
             }
         }

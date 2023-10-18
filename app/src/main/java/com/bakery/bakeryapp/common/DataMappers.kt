@@ -9,6 +9,9 @@ import com.bakery.bakeryapp.domain.model.user.Auth
 import com.bakery.bakeryapp.domain.model.user.Login
 import com.bakery.bakeryapp.domain.model.user.Register
 import com.bakery.bakeryapp.domain.model.user.User
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import com.bakery.bakeryapp.data.local.entities.cart.CartEntity as RoomCart
 import com.bakery.bakeryapp.data.local.entities.categories.CategoryEntity as RoomCategory
 import com.bakery.bakeryapp.data.local.entities.pedido.PedidoEntity as RoomPedido
@@ -25,6 +28,10 @@ import com.bakery.bakeryapp.data.remote.model.product.ProductResponseItem as Ser
 
 inline fun Modifier.thenIf(predicate: Boolean, modify: () -> Modifier): Modifier {
     return this.then(if (predicate) modify() else Modifier)
+}
+
+fun Date.toCustomFormat(): String {
+    return SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(this)
 }
 
 fun ServerLogin.toDomainLogin() = Login(
