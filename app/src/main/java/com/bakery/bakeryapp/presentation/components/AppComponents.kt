@@ -579,26 +579,25 @@ fun ClickableLoginTextComponent(tryingToLogin: Boolean = true, onTextSelected: (
 }
 
 @Composable
-fun UnderlinedTextComponent(value: String) {
-    Text(
-        text = value,
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(min = 40.dp),
-        style = TextStyle(
-            fontSize = 16.sp,
-            fontWeight = MaterialTheme.typography.bodyLarge.fontWeight,
-            fontStyle = FontStyle.Normal
-        ),
-        color = MaterialTheme.colorScheme.secondary,
-        textAlign = TextAlign.Center,
-        textDecoration = TextDecoration.Underline
-    )
-}
-
-@Composable
-fun ProductComponent() {
-    Text(text = "product")
+fun UnderlinedTextComponent(
+    value: String,
+    onButtonClicked: () -> Unit
+) {
+    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd){
+        Text(
+            text = value,
+            modifier = Modifier
+                .clickable { onButtonClicked() },
+            style = TextStyle(
+                fontSize = 16.sp,
+                fontWeight = MaterialTheme.typography.bodyLarge.fontWeight,
+                fontStyle = FontStyle.Normal
+            ),
+            color = MaterialTheme.colorScheme.secondary,
+            textAlign = TextAlign.Center,
+            textDecoration = TextDecoration.Underline
+        )
+    }
 }
 
 @Composable
