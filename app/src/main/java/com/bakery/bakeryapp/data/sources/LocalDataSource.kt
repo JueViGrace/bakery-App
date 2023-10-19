@@ -24,6 +24,7 @@ interface LocalDataSource {
 
     suspend fun saveProducts(products: List<Product>)
     fun getProducts(): Flow<List<ProductsWithCategories>>
+    fun getProductDetail(id: String): Flow<List<ProductsWithCategories>>
     suspend fun deleteProducts()
 
     suspend fun saveCart(cart: List<Cart>)

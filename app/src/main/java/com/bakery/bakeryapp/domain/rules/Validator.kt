@@ -1,5 +1,7 @@
 package com.bakery.bakeryapp.domain.rules
 
+import android.util.Patterns
+
 object Validator {
 
     fun validateFirstName(fName: String): ValidationResult {
@@ -16,7 +18,7 @@ object Validator {
 
     fun validateEmail(email: String): ValidationResult {
         return ValidationResult(
-            (email.isNotEmpty())
+            (Patterns.EMAIL_ADDRESS.matcher(email).matches())
         )
     }
 

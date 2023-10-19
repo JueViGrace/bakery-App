@@ -31,6 +31,7 @@ class MainRepository @Inject constructor(
     suspend fun getCategories() = remoteDataSource.getCategories()
 
     suspend fun getProducts() = remoteDataSource.getProducts()
+    fun getProductDetail(id: String) = localDataSource.getProductDetail(id)
 
     suspend fun getCart(userId: String) = remoteDataSource.getCart(userId)
 

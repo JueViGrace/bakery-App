@@ -7,7 +7,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -35,7 +34,7 @@ fun RootNavigationGraph(navController: NavHostController, width: Int) {
 }
 
 fun NavGraphBuilder.addHome(
-    navController: NavController,
+    navController: NavHostController,
     width: Int
 ) {
     composable(

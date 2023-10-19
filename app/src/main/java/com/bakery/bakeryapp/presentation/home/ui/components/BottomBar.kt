@@ -20,6 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.bakery.bakeryapp.constantes.Constantes.PRODUCT_ID_KEY
 import com.bakery.bakeryapp.navigation.detailgraph.DetailScreen
 import com.bakery.bakeryapp.navigation.homegraph.ShopHomeScreen
 import com.bakery.bakeryapp.presentation.home.ui.BottomNavItem
@@ -78,7 +79,7 @@ fun BottomBar(
             bottomNavVisibility = true
             isVisible(true)
         }
-        DetailScreen.ProductScreen.route -> {
+        DetailScreen.ProductDetailScreen.route + "/{$PRODUCT_ID_KEY}" -> {
             bottomNavVisibility = false
             isVisible(false)
         }

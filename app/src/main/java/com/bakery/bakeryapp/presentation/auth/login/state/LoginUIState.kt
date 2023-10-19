@@ -1,4 +1,4 @@
-package com.bakery.bakeryapp.presentation.login.state
+package com.bakery.bakeryapp.presentation.auth.login.state
 
 data class LoginUIState(
     val email: String = "",

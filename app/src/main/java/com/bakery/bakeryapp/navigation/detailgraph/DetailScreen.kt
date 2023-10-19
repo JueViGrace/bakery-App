@@ -1,10 +1,12 @@
 package com.bakery.bakeryapp.navigation.detailgraph
 
 import androidx.navigation.NamedNavArgument
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 
 sealed class DetailScreen(val route: String, val arguments: List<NamedNavArgument>) {
-    data object ProductScreen : DetailScreen(
-        route = "ProductScreen",
+    data object ProductDetailScreen : DetailScreen(
+        route = "ProductDetailScreen",
         arguments = emptyList()
     )
     data object CartScreen : DetailScreen(
@@ -13,6 +15,6 @@ sealed class DetailScreen(val route: String, val arguments: List<NamedNavArgumen
     )
     data object NotificationScreen : DetailScreen(
         route = "NotificationScreen",
-        arguments = emptyList()
+        arguments = listOf(navArgument("productId") { type = NavType.StringType })
     )
 }

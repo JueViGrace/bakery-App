@@ -3,6 +3,8 @@ package com.bakery.bakeryapp.presentation.dashboard.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +20,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
@@ -70,12 +73,22 @@ fun DashboardScreen(
 
     when (uiState) {
         is ProductState.Error -> {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
                 Text(text = (uiState as ProductState.Error).error, fontSize = 24.sp)
             }
         }
         ProductState.Loading -> {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){ CircularProgressIndicator() }
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                CircularProgressIndicator()
+            }
         }
         is ProductState.Success -> {
             DashBoardComponent((uiState as ProductState.Success).success) {
@@ -92,10 +105,12 @@ fun DashBoardComponent(
     suggestionProductState: LazyListState = rememberLazyListState(),
     onItemClick: (String) -> Unit
 ) {
+    val scroll = rememberScrollState()
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(start = 15.dp, end = 15.dp)
+            .scrollable(scroll, orientation = Orientation.Vertical)
     ) {
         Column(
             modifier = Modifier

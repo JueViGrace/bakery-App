@@ -15,4 +15,8 @@ sealed class AuthScreen(val route: String, val arguments: List<NamedNavArgument>
         route = "Login",
         arguments = emptyList()
     )
+    data object ForgetPasswordScreen : AuthScreen(
+        route = "ForgetPassword",
+        arguments = emptyList()
+    )
 }

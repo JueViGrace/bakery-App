@@ -56,9 +56,11 @@ class DashboardViewModel @Inject constructor(
             repository.getProductsFromDB().collect { list ->
                 if (list.isNotEmpty()) {
                     list.forEach { productsWithCategories ->
-                         if (productsWithCategories.products._id.isNotEmpty()){
-                             _state.value = ProductState.Success(listOf(productsWithCategories.products.toDomainProduct()))
-                         }
+                        if (productsWithCategories.products._id.isNotEmpty()) {
+                            _state.value = ProductState.Success(
+                                listOf(productsWithCategories.products.toDomainProduct())
+                            )
+                        }
                     }
                 } else {
                     _state.value = ProductState.Error(errorMessage)

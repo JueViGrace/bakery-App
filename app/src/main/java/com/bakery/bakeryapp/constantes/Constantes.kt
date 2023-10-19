@@ -6,7 +6,7 @@ import java.text.DecimalFormat
 object Constantes {
     const val version: String = BuildConfig.VERSION_NAME
     const val build: String = BuildConfig.BUILD_TYPE
-    const val BASE_URL = "https://5b89-45-186-203-254.ngrok-free.app/api/"
+    const val BASE_URL = "https://9ae3-45-186-203-254.ngrok-free.app/api/"
     const val UPDATE_APP_REQUEST_CODE: Int = 200
     const val DATABASE_VERSION_OLD: Int = 0
     const val DATABASE_VERSION_NEW: Int = 3
@@ -22,5 +22,6 @@ object Constantes {
     const val NICK_USUARIO = "NICK_USUARIO_KEY"
     const val NOMBRE_USUARIO = "NOMBRE_USUARIO_KEY"
     const val CLEAR_PREFERENCES = "CLEAR_PREFERENCES_KEY"
+    const val PRODUCT_ID_KEY = "productId"
     // fun LocalDateTime.toMillis() = this.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
 }

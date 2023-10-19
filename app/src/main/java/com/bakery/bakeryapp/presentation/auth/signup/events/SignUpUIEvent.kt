@@ -1,4 +1,4 @@
-package com.bakery.bakeryapp.presentation.signup.events
+package com.bakery.bakeryapp.presentation.auth.signup.events
 
 sealed class SignUpUIEvent {
 

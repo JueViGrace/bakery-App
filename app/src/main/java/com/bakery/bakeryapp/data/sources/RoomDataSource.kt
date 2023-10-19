@@ -66,7 +66,8 @@ class RoomDataSource @Inject constructor(
         .map { value -> value.map { productEntity -> productEntity.toDomainProduct() } }*/
 
     override fun getProducts(): Flow<List<ProductsWithCategories>> = relationsDao.getProductWithCategories()
-        .map { value -> value.map { productsWithCategories -> productsWithCategories } }
+    override fun getProductDetail(id: String): Flow<List<ProductsWithCategories>> =
+        relationsDao.getProductWithCategoriesById(id)
 
     override suspend fun deleteProducts() = productDao.deleteProducts()
 

@@ -1,4 +1,4 @@
-package com.bakery.bakeryapp.presentation.login.events
+package com.bakery.bakeryapp.presentation.auth.login.events
 
 sealed class LoginUIEvent {
 

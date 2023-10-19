@@ -25,4 +25,6 @@
     <string name="menu">Menu</string>
     <string name="navigation_header">nav_header</string>
     <string name="products_not_found">Products not found</string>
+    <string name="your_cart">Your cart</string>
+    <string name="data_not_found">Data not found</string>
 </resources>

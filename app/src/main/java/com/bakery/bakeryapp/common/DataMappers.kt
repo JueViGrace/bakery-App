@@ -1,6 +1,7 @@
 package com.bakery.bakeryapp.common
 
 import androidx.compose.ui.Modifier
+import com.bakery.bakeryapp.data.local.relations.ProductsWithCategories
 import com.bakery.bakeryapp.domain.model.cart.Cart
 import com.bakery.bakeryapp.domain.model.category.Category
 import com.bakery.bakeryapp.domain.model.pedido.Pedido

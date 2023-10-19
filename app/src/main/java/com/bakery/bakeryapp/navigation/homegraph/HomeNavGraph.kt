@@ -19,8 +19,8 @@ fun HomeNavGraph(navController: NavHostController) {
         startDestination = ShopHomeScreen.DashboardScreen.route
     ) {
         composable(route = ShopHomeScreen.DashboardScreen.route) {
-            DashboardScreen {
-                navController.navigate(DetailScreen.ProductScreen.route)
+            DashboardScreen { productId ->
+                navController.navigate(DetailScreen.ProductDetailScreen.route + "/$productId")
             }
         }
         composable(route = ShopHomeScreen.OrderScreen.route) {
@@ -28,7 +28,11 @@ fun HomeNavGraph(navController: NavHostController) {
         }
         composable(route = ShopHomeScreen.ProfileScreen.route) {
             ProfileScreen {
-                navController.popBackStack()
+                navController.navigate(ShopHomeScreen.DashboardScreen.route) {
+                    popUpTo(ShopHomeScreen.DashboardScreen.route) {
+                        inclusive = true
+                    }
+                }
             }
         }
         detailNavGraph(navController = navController)

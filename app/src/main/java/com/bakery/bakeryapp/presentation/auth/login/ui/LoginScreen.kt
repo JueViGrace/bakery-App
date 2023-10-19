@@ -1,4 +1,4 @@
-package com.bakery.bakeryapp.presentation.signup.ui
+package com.bakery.bakeryapp.presentation.auth.login.ui
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -23,29 +23,26 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bakery.bakeryapp.R
+import com.bakery.bakeryapp.presentation.auth.login.events.LoginUIEvent
+import com.bakery.bakeryapp.presentation.auth.login.viewmodel.LoginViewModel
 import com.bakery.bakeryapp.presentation.components.ButtonComponent
-import com.bakery.bakeryapp.presentation.components.CheckBoxComponent
 import com.bakery.bakeryapp.presentation.components.ClickableLoginTextComponent
-import com.bakery.bakeryapp.presentation.components.DatePickerComponent
 import com.bakery.bakeryapp.presentation.components.DividerTextComponent
 import com.bakery.bakeryapp.presentation.components.EmailTextFieldComponent
 import com.bakery.bakeryapp.presentation.components.HeadingTextComponent
 import com.bakery.bakeryapp.presentation.components.NormalTextComponent
-import com.bakery.bakeryapp.presentation.components.OutlinedTextFieldComponent
 import com.bakery.bakeryapp.presentation.components.PasswordTextFieldComponent
-import com.bakery.bakeryapp.presentation.components.PhoneTextFieldComponent
-import com.bakery.bakeryapp.presentation.signup.events.SignUpUIEvent
-import com.bakery.bakeryapp.presentation.signup.viewmodel.SignUpViewModel
+import com.bakery.bakeryapp.presentation.components.UnderlinedTextComponent
 
 @Composable
-fun SingUpScreen(
-    signUpViewModel: SignUpViewModel = hiltViewModel(),
+fun LoginScreen(
+    loginViewModel: LoginViewModel = hiltViewModel(),
+    navigateToRegister: () -> Unit,
     navigateToHome: () -> Unit,
-    navigateToLogin: () -> Unit,
-    navigateToTerms: () -> Unit
+    navigateToForgotPassword: () -> Unit
 ) {
-    val events = signUpViewModel::onEvent
-    val state = signUpViewModel.state.collectAsStateWithLifecycle()
+    val events = loginViewModel::onEvent
+    val state = loginViewModel.state.collectAsStateWithLifecycle()
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -61,53 +58,17 @@ fun SingUpScreen(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
-                NormalTextComponent(value = stringResource(id = R.string.hello))
+                NormalTextComponent(value = stringResource(id = R.string.welcome))
 
-                HeadingTextComponent(value = stringResource(id = R.string.create_account))
+                HeadingTextComponent(value = stringResource(id = R.string.login))
 
-                Spacer(modifier = Modifier.height(20.dp))
-
-                OutlinedTextFieldComponent(
-                    labelValue = stringResource(id = R.string.first_name),
-                    painterResource(id = R.drawable.ic_profile),
-                    onTextSelected = {
-                        events(SignUpUIEvent.FirstNameChanged(it))
-                    },
-                    errorStatus = state.value.firstNameError
-                )
-
-                OutlinedTextFieldComponent(
-                    labelValue = stringResource(id = R.string.last_name),
-                    painterResource(id = R.drawable.ic_profile),
-                    onTextSelected = {
-                        events(SignUpUIEvent.LastNameChanged(it))
-                    },
-                    errorStatus = state.value.lastNameError
-                )
-
-                DatePickerComponent(
-                    value = stringResource(id = R.string.date_pick),
-                    painterResource(id = R.drawable.ic_calendar),
-                    onTextSelected = {
-                        events(SignUpUIEvent.BirthDayChanged(it))
-                    },
-                    errorStatus = state.value.birthDayError
-                )
-
-                PhoneTextFieldComponent(
-                    labelValue = stringResource(id = R.string.phone_number),
-                    painterResource(id = R.drawable.ic_call),
-                    onTextSelected = {
-                        events(SignUpUIEvent.PhoneChanged(it))
-                    },
-                    errorStatus = state.value.phoneError
-                )
+                Spacer(modifier = Modifier.height(80.dp))
 
                 EmailTextFieldComponent(
                     labelValue = stringResource(id = R.string.email),
                     painterResource(id = R.drawable.ic_email),
                     onTextSelected = {
-                        events(SignUpUIEvent.EmailChanged(it))
+                        events(LoginUIEvent.EmailChanged(it))
                     },
                     errorStatus = state.value.emailError
                 )
@@ -116,26 +77,21 @@ fun SingUpScreen(
                     labelValue = stringResource(id = R.string.password),
                     painterResource(id = R.drawable.ic_lock),
                     onTextSelected = {
-                        events(SignUpUIEvent.PasswordChanged(it))
+                        events(LoginUIEvent.PasswordChanged(it))
                     },
                     errorStatus = state.value.passwordError
                 )
 
-                CheckBoxComponent(
-                    onTextSelected = {
-                        navigateToTerms()
-                    },
-                    onCheckedChanged = {
-                        events(SignUpUIEvent.PrivacyPolicyCheckBoxClicked(it))
-                    }
-                )
+                UnderlinedTextComponent(value = stringResource(R.string.forgot_password)) {
+                    navigateToForgotPassword()
+                }
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(40.dp))
 
                 ButtonComponent(
-                    value = stringResource(id = R.string.register),
+                    value = stringResource(id = R.string.login),
                     onButtonClicked = {
-                        events(SignUpUIEvent.RegisterButtonClicked)
+                        events(LoginUIEvent.LogingButtonClicked)
                     },
                     isEnabled = state.value.allValidationsPassed
                 )
@@ -144,37 +100,42 @@ fun SingUpScreen(
 
                 DividerTextComponent()
 
-                ClickableLoginTextComponent(
-                    tryingToLogin = true,
-                    onTextSelected = {
-                        navigateToLogin()
-                    }
-                )
+                ClickableLoginTextComponent(tryingToLogin = false, onTextSelected = {
+                    navigateToRegister()
+                })
 
-                if (state.value.signUpError) {
+                if (state.value.loginError) {
                     Toast.makeText(
                         LocalContext.current,
-                        state.value.signUpMessage,
+                        state.value.loginMessage,
                         Toast.LENGTH_LONG
                     ).show()
                 }
             }
         }
 
-        if (state.value.signUpInProgress) {
+        if (state.value.loginInProgress) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.primary),
                 contentAlignment = Alignment.Center
             ) {
+                /*dataStoreViewModel.storePreference(
+                    Constantes.ACCESS_TOKEN,
+                    loginViewModel.state.value.accessToken
+                )
+                dataStoreViewModel.storePreference(
+                    Constantes.COD_USUARIO,
+                    loginViewModel.state.value.userId
+                )*/
                 CircularProgressIndicator(
                     color = MaterialTheme.colorScheme.onPrimary
                 )
             }
         }
 
-        if (state.value.signedUp) {
+        if (state.value.loggedIn) {
             navigateToHome()
         }
     }

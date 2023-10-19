@@ -1,4 +1,4 @@
-package com.bakery.bakeryapp.presentation.signup.state
+package com.bakery.bakeryapp.presentation.auth.signup.state
 
 import com.bakery.bakeryapp.common.toCustomFormat
 import java.util.Date

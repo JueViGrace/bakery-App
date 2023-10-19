@@ -1,4 +1,4 @@
-package com.bakery.bakeryapp.presentation.components
+package com.bakery.bakeryapp.presentation.main
 
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize

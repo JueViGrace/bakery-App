@@ -1,4 +1,4 @@
-package com.bakery.bakeryapp.presentation.login.viewmodel
+package com.bakery.bakeryapp.presentation.auth.login.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -7,8 +7,8 @@ import com.bakery.bakeryapp.common.Resource
 import com.bakery.bakeryapp.data.repository.MainRepository
 import com.bakery.bakeryapp.domain.model.user.Login
 import com.bakery.bakeryapp.domain.rules.Validator
-import com.bakery.bakeryapp.presentation.login.events.LoginUIEvent
-import com.bakery.bakeryapp.presentation.login.state.LoginUIState
+import com.bakery.bakeryapp.presentation.auth.login.events.LoginUIEvent
+import com.bakery.bakeryapp.presentation.auth.login.state.LoginUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

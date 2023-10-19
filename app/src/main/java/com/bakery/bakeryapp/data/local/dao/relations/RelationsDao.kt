@@ -30,6 +30,10 @@ interface RelationsDao {
     fun getProductWithCategories(): Flow<List<ProductsWithCategories>>
 
     @Transaction
+    @Query("SELECT * FROM products WHERE _id = :id")
+    fun getProductWithCategoriesById(id: String): Flow<List<ProductsWithCategories>>
+
+    @Transaction
     @Query("SELECT * FROM user WHERE _id = :id")
     fun getUserWithPedido(id: String): Flow<List<UserWithPedido>>
 }

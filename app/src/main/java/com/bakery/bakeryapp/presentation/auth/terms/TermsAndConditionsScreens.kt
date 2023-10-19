@@ -1,4 +1,4 @@
-package com.bakery.bakeryapp.presentation.terms
+package com.bakery.bakeryapp.presentation.auth.terms
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize

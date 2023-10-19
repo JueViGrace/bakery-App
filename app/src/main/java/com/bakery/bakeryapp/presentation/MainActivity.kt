@@ -3,7 +3,7 @@ package com.bakery.bakeryapp.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.bakery.bakeryapp.presentation.components.BakeryAppComposable
+import com.bakery.bakeryapp.presentation.main.BakeryAppComposable
 import com.bakery.bakeryapp.presentation.ui.theme.BakeryAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
