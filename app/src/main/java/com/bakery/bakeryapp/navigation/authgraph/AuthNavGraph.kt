@@ -8,17 +8,18 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.bakery.bakeryapp.common.navigateSingleTopTo
 import com.bakery.bakeryapp.navigation.Graph
 import com.bakery.bakeryapp.presentation.auth.forgetpassword.ForgetPasswordScreen
 import com.bakery.bakeryapp.presentation.auth.login.ui.LoginScreen
 import com.bakery.bakeryapp.presentation.auth.signup.ui.SingUpScreen
 import com.bakery.bakeryapp.presentation.auth.terms.TermsAndConditionsScreen
 
-fun NavGraphBuilder.authNavGraph(navController: NavController, width: Int) {
+fun NavGraphBuilder.authNavGraph(navController: NavHostController, width: Int) {
     navigation(
         route = Graph.AUTHENTICATION,
         startDestination = AuthScreen.LoginScreen.route
@@ -31,7 +32,7 @@ fun NavGraphBuilder.authNavGraph(navController: NavController, width: Int) {
 }
 
 fun NavGraphBuilder.addLogin(
-    navController: NavController,
+    navController: NavHostController,
     width: Int
 ) {
     composable(
@@ -67,24 +68,20 @@ fun NavGraphBuilder.addLogin(
     ) {
         LoginScreen(
             navigateToRegister = {
-                navController.navigate(AuthScreen.SignUpScreen.route)
+                navController.navigateSingleTopTo(AuthScreen.SignUpScreen.route)
             },
             navigateToHome = {
-                navController.navigate(Graph.HOME) {
-                    popUpTo(AuthScreen.LoginScreen.route) {
-                        inclusive = true
-                    }
-                }
+                navController.navigateSingleTopTo(Graph.HOME)
             },
             navigateToForgotPassword = {
-                navController.navigate(AuthScreen.ForgetPasswordScreen.route)
+                navController.navigateSingleTopTo(AuthScreen.ForgetPasswordScreen.route)
             }
         )
     }
 }
 
 fun NavGraphBuilder.addSignUp(
-    navController: NavController,
+    navController: NavHostController,
     width: Int
 ) {
     composable(
@@ -121,24 +118,20 @@ fun NavGraphBuilder.addSignUp(
     ) {
         SingUpScreen(
             navigateToHome = {
-                navController.navigate(Graph.HOME)
+                navController.navigateSingleTopTo(Graph.HOME)
             },
             navigateToLogin = {
-                navController.navigate(AuthScreen.LoginScreen.route) {
-                    popUpTo(AuthScreen.LoginScreen.route) {
-                        inclusive = true
-                    }
-                }
+                navController.navigateSingleTopTo(AuthScreen.LoginScreen.route)
             },
             navigateToTerms = {
-                navController.navigate(AuthScreen.TermsAndConditionsScreen.route)
+                navController.navigateSingleTopTo(AuthScreen.TermsAndConditionsScreen.route)
             }
         )
     }
 }
 
 fun NavGraphBuilder.addTerms(
-    navController: NavController,
+    navController: NavHostController,
     width: Int
 ) {
     composable(
@@ -169,7 +162,7 @@ fun NavGraphBuilder.addTerms(
 }
 
 fun NavGraphBuilder.addForgetPassword(
-    navController: NavController,
+    navController: NavHostController,
     width: Int
 ) {
     composable(

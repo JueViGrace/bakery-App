@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class)
 
 package com.bakery.bakeryapp.presentation.components
 
@@ -583,7 +583,7 @@ fun UnderlinedTextComponent(
     value: String,
     onButtonClicked: () -> Unit
 ) {
-    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd){
+    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
         Text(
             text = value,
             modifier = Modifier

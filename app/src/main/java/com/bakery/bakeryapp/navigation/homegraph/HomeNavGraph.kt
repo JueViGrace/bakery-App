@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.bakery.bakeryapp.common.navigateSingleTopTo
 import com.bakery.bakeryapp.navigation.Graph
 import com.bakery.bakeryapp.navigation.detailgraph.DetailScreen
 import com.bakery.bakeryapp.navigation.detailgraph.detailNavGraph
@@ -20,7 +21,7 @@ fun HomeNavGraph(navController: NavHostController) {
     ) {
         composable(route = ShopHomeScreen.DashboardScreen.route) {
             DashboardScreen { productId ->
-                navController.navigate(DetailScreen.ProductDetailScreen.route + "/$productId")
+                navController.navigateSingleTopTo(DetailScreen.ProductDetailScreen.route + "/$productId")
             }
         }
         composable(route = ShopHomeScreen.OrderScreen.route) {
@@ -28,11 +29,7 @@ fun HomeNavGraph(navController: NavHostController) {
         }
         composable(route = ShopHomeScreen.ProfileScreen.route) {
             ProfileScreen {
-                navController.navigate(ShopHomeScreen.DashboardScreen.route) {
-                    popUpTo(ShopHomeScreen.DashboardScreen.route) {
-                        inclusive = true
-                    }
-                }
+                navController.navigateSingleTopTo(ShopHomeScreen.DashboardScreen.route)
             }
         }
         detailNavGraph(navController = navController)

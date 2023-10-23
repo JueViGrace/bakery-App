@@ -18,8 +18,9 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.bakery.bakeryapp.common.navigateSingleTopTo
 import com.bakery.bakeryapp.constantes.Constantes.PRODUCT_ID_KEY
 import com.bakery.bakeryapp.navigation.detailgraph.DetailScreen
 import com.bakery.bakeryapp.navigation.homegraph.ShopHomeScreen
@@ -27,7 +28,7 @@ import com.bakery.bakeryapp.presentation.home.ui.BottomNavItem
 
 @Composable
 fun BottomBar(
-    navController: NavController,
+    navController: NavHostController,
     isVisible: (Boolean) -> Unit,
 ) {
     val navItemList = listOf(
@@ -66,7 +67,7 @@ fun BottomBar(
                     },
                     //  label = { Text(text = screen.tittle) },
                     onClick = {
-                        navController.navigate(screen.route)
+                        navController.navigateSingleTopTo(screen.route)
                     }
                 )
             }

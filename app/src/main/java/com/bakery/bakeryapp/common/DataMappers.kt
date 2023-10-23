@@ -1,7 +1,8 @@
 package com.bakery.bakeryapp.common
 
 import androidx.compose.ui.Modifier
-import com.bakery.bakeryapp.data.local.relations.ProductsWithCategories
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import com.bakery.bakeryapp.domain.model.cart.Cart
 import com.bakery.bakeryapp.domain.model.category.Category
 import com.bakery.bakeryapp.domain.model.pedido.Pedido
@@ -10,6 +11,8 @@ import com.bakery.bakeryapp.domain.model.user.Auth
 import com.bakery.bakeryapp.domain.model.user.Login
 import com.bakery.bakeryapp.domain.model.user.Register
 import com.bakery.bakeryapp.domain.model.user.User
+import com.bakery.bakeryapp.navigation.Graph
+import com.bakery.bakeryapp.navigation.authgraph.AuthScreen
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -30,6 +33,18 @@ import com.bakery.bakeryapp.data.remote.model.product.ProductResponseItem as Ser
 inline fun Modifier.thenIf(predicate: Boolean, modify: () -> Modifier): Modifier {
     return this.then(if (predicate) modify() else Modifier)
 }
+
+fun NavHostController.navigateSingleTopTo(route: String) =
+    this.navigate(route) {
+        popUpTo(this@navigateSingleTopTo.graph.findStartDestination().id) {
+            if (route == AuthScreen.LoginScreen.route || route == Graph.HOME) {
+                inclusive = true
+            }
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
+    }
 
 fun Date.toCustomFormat(): String {
     return SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(this)
