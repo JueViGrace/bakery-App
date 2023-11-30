@@ -1,0 +1,56 @@
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><project version=\"4\">\r\n  <component name=\"ExternalStorageConfigurationManager\" enabled=\"true\" />\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_17\" default=\"true\" project-jdk-name=\"corretto-17\" project-jdk-type=\"JavaSDK\" />\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 07949defddcd6b7b04e88761b863b8cb7744be87)
++++ b/.idea/misc.xml	(date 1701348796304)
+@@ -1,4 +1,5 @@
++<?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="ExternalStorageConfigurationManager" enabled="true" />
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="corretto-17" project-jdk-type="JavaSDK" />
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="jbr-17" project-jdk-type="JavaSDK" />
+ </project>
+\ No newline at end of file
+Index: .idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"GradleMigrationSettings\" migrationVersion=\"1\" />\r\n  <component name=\"GradleSettings\">\r\n    <option name=\"linkedExternalProjectsSettings\">\r\n      <GradleProjectSettings>\r\n        <option name=\"testRunner\" value=\"GRADLE\" />\r\n        <option name=\"distributionType\" value=\"DEFAULT_WRAPPED\" />\r\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\r\n        <option name=\"gradleJvm\" value=\"#JAVA_HOME\" />\r\n        <option name=\"modules\">\r\n          <set>\r\n            <option value=\"$PROJECT_DIR$\" />\r\n            <option value=\"$PROJECT_DIR$/app\" />\r\n          </set>\r\n        </option>\r\n      </GradleProjectSettings>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/gradle.xml b/.idea/gradle.xml
+--- a/.idea/gradle.xml	(revision 07949defddcd6b7b04e88761b863b8cb7744be87)
++++ b/.idea/gradle.xml	(date 1701348677435)
+@@ -7,7 +7,7 @@
+         <option name="testRunner" value="GRADLE" />
+         <option name="distributionType" value="DEFAULT_WRAPPED" />
+         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+-        <option name="gradleJvm" value="#JAVA_HOME" />
++        <option name="gradleJvm" value="corretto-17" />
+         <option name="modules">
+           <set>
+             <option value="$PROJECT_DIR$" />
+Index: gradle/libs.versions.toml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>[versions]\r\naccompanistSystemuicontrollerVersion = \"0.27.0\"\r\nactivityComposeVersion = \"1.8.0\"\r\nagpVersion = \"8.1.2\"\r\ncoilComposeVersion = \"2.4.0\"\r\nconstraintlayoutComposeVersion = \"1.0.1\"\r\nmaterial3Version = \"1.1.2\"\r\nnavigationComposeVersion = \"2.7.4\"\r\nplayCoreKtx = \"1.8.1\"\r\ndatastorePreferencesVersion = \"1.0.0\"\r\ndetektCliVersion = \"1.23.1\"\r\nespressoCoreVersion = \"3.5.1\"\r\nhiltAndroidVersion = \"2.48.1\"\r\nhiltCompilerVersion = \"1.0.0\"\r\nhiltNavigationComposeVersion = \"1.1.0-beta01\"\r\njunit = \"1.1.5\"\r\njunitVersion = \"4.13.2\"\r\nkotlinVersion = \"1.9.0\"\r\nkotlinxCoroutinesAndroidVersion = \"1.7.3\"\r\nkspVersion = \"1.9.0-1.0.12\"\r\ndetektVersion = \"1.23.1\"\r\nandroidLibraryVersion = \"8.1.1\"\r\ncoreKtxVersion = \"1.12.0\"\r\nlifecycleLivedataKtxVersion = \"2.6.2\"\r\nmaterialIconsExtendedVersion = \"1.5.3\"\r\nnetworkResponseAdapterVersion = \"5.0.0\"\r\nokhttpVersion = \"5.0.0-alpha.11\"\r\nretrofitVersion = \"2.9.0\"\r\nroomKtxVersion = \"2.5.2\"\r\nuiTestManifestVersion = \"1.6.0-alpha07\"\r\nuiVersion = \"1.5.3\"\r\ncomposeBomVersion = \"2023.10.00\"\r\n\r\n[libraries]\r\naccompanist-systemuicontroller = { module = \"com.google.accompanist:accompanist-systemuicontroller\", version.ref = \"accompanistSystemuicontrollerVersion\" }\r\nactivity-compose = { module = \"androidx.activity:activity-compose\", version.ref = \"activityComposeVersion\" }\r\nandroidx-constraintlayout-compose = { module = \"androidx.constraintlayout:constraintlayout-compose\", version.ref = \"constraintlayoutComposeVersion\" }\r\nandroidx-datastore-preferences = { module = \"androidx.datastore:datastore-preferences\", version.ref = \"datastorePreferencesVersion\" }\r\nandroidx-hilt-compiler = { module = \"androidx.hilt:hilt-compiler\", version.ref = \"hiltCompilerVersion\" }\r\nandroidx-hilt-navigation-compose = { module = \"androidx.hilt:hilt-navigation-compose\", version.ref = \"hiltNavigationComposeVersion\" }\r\nandroidx-lifecycle-runtime-compose = { module = \"androidx.lifecycle:lifecycle-runtime-compose\", version.ref = \"lifecycleLivedataKtxVersion\" }\r\nandroidx-lifecycle-viewmodel-compose = { module = \"androidx.lifecycle:lifecycle-viewmodel-compose\", version.ref = \"lifecycleLivedataKtxVersion\" }\r\nandroidx-material-icons-extended = { module = \"androidx.compose.material:material-icons-extended\", version.ref = \"materialIconsExtendedVersion\" }\r\nandroidx-material-icons-extended-android = { module = \"androidx.compose.material:material-icons-extended-android\", version.ref = \"materialIconsExtendedVersion\" }\r\nandroidx-material3 = { module = \"androidx.compose.material3:material3\", version.ref = \"material3Version\" }\r\nandroidx-navigation-compose = { module = \"androidx.navigation:navigation-compose\", version.ref = \"navigationComposeVersion\" }\r\nandroidx-room-ktx = { module = \"androidx.room:room-ktx\", version.ref = \"roomKtxVersion\" }\r\nandroidx-ui = { module = \"androidx.compose.ui:ui\", version.ref = \"uiVersion\" }\r\ncoil-compose = { module = \"io.coil-kt:coil-compose\", version.ref = \"coilComposeVersion\" }\r\ncore-ktx = { module = \"androidx.core:core-ktx\", version.ref = \"coreKtxVersion\" }\r\ndagger-hilt-android-compiler = { module = \"com.google.dagger:hilt-android-compiler\", version.ref = \"hiltAndroidVersion\" }\r\ndetekt-cli = { module = \"io.gitlab.arturbosch.detekt:detekt-cli\", version.ref = \"detektCliVersion\" }\r\nespresso-core = { module = \"androidx.test.espresso:espresso-core\", version.ref = \"espressoCoreVersion\" }\r\next-junit = { module = \"androidx.test.ext:junit\", version.ref = \"junit\" }\r\nhilt-android = { module = \"com.google.dagger:hilt-android\", version.ref = \"hiltAndroidVersion\" }\r\njetbrains-kotlinx-coroutines-android = { module = \"org.jetbrains.kotlinx:kotlinx-coroutines-android\", version.ref = \"kotlinxCoroutinesAndroidVersion\" }\r\njunit = { module = \"junit:junit\", version.ref = \"junitVersion\" }\r\nkotlinx-coroutines-core = { module = \"org.jetbrains.kotlinx:kotlinx-coroutines-core\", version.ref = \"kotlinxCoroutinesAndroidVersion\" }\r\nlifecycle-livedata-ktx = { module = \"androidx.lifecycle:lifecycle-livedata-ktx\", version.ref = \"lifecycleLivedataKtxVersion\" }\r\nlifecycle-runtime-ktx = { module = \"androidx.lifecycle:lifecycle-runtime-ktx\", version.ref = \"lifecycleLivedataKtxVersion\" }\r\nlifecycle-viewmodel-ktx = { module = \"androidx.lifecycle:lifecycle-viewmodel-ktx\", version.ref = \"lifecycleLivedataKtxVersion\" }\r\nnetworkResponseAdapter = { module = \"com.github.haroldadmin:NetworkResponseAdapter\", version.ref = \"networkResponseAdapterVersion\" }\r\nokhttp = { module = \"com.squareup.okhttp3:okhttp\", version.ref = \"okhttpVersion\" }\r\nokhttp-bom = { group = \"com.squareup.okhttp3\", name = \"okhttp-bom\", version.ref = \"okhttpVersion\" }\r\nokhttp3-logging-interceptor = { module = \"com.squareup.okhttp3:logging-interceptor\", version.ref = \"okhttpVersion\" }\r\nplay-core-ktx = { module = \"com.google.android.play:core-ktx\", version.ref = \"playCoreKtx\" }\r\nretrofit = { module = \"com.squareup.retrofit2:retrofit\", version.ref = \"retrofitVersion\" }\r\nretrofit2-converter-gson = { module = \"com.squareup.retrofit2:converter-gson\", version.ref = \"retrofitVersion\" }\r\nroom-compiler = { module = \"androidx.room:room-compiler\", version.ref = \"roomKtxVersion\" }\r\nroom-paging = { module = \"androidx.room:room-paging\", version.ref = \"roomKtxVersion\" }\r\nroom-runtime = { module = \"androidx.room:room-runtime\", version.ref = \"roomKtxVersion\" }\r\nroom-testing = { module = \"androidx.room:room-testing\", version.ref = \"roomKtxVersion\" }\r\nui-graphics = { module = \"androidx.compose.ui:ui-graphics\", version.ref = \"uiVersion\" }\r\nui-test-junit4 = { module = \"androidx.compose.ui:ui-test-junit4\", version.ref = \"uiVersion\" }\r\nui-test-manifest = { module = \"androidx.compose.ui:ui-test-manifest\", version.ref = \"uiTestManifestVersion\" }\r\nui-tooling = { module = \"androidx.compose.ui:ui-tooling\", version.ref = \"uiVersion\" }\r\nui-tooling-preview = { module = \"androidx.compose.ui:ui-tooling-preview\", version.ref = \"uiVersion\" }\r\ncompose-bom = { module = \"androidx.compose:compose-bom\", version.ref = \"composeBomVersion\" }\r\n\r\n[plugins]\r\nandroidApplication = { id = \"com.android.application\", version.ref = \"agpVersion\" }\r\nandroidLibrary = { id = \"com.android.library\", version.ref = \"androidLibraryVersion\" }\r\nkotlinAndroid = { id = \"org.jetbrains.kotlin.android\", version.ref = \"kotlinVersion\" }\r\ndaggerHilt = { id = \"com.google.dagger.hilt.android\", version.ref = \"hiltAndroidVersion\" }\r\nksp = { id = \"com.google.devtools.ksp\", version.ref = \"kspVersion\" }\r\ndetekt = { id = \"io.gitlab.arturbosch.detekt\", version.ref = \"detektVersion\" }\r\n\r\n[bundles]\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/gradle/libs.versions.toml b/gradle/libs.versions.toml
+--- a/gradle/libs.versions.toml	(revision 07949defddcd6b7b04e88761b863b8cb7744be87)
++++ b/gradle/libs.versions.toml	(date 1701348785941)
+@@ -1,7 +1,7 @@
+ [versions]
+ accompanistSystemuicontrollerVersion = "0.27.0"
+ activityComposeVersion = "1.8.0"
+-agpVersion = "8.1.2"
++agpVersion = "8.1.4"
+ coilComposeVersion = "2.4.0"
+ constraintlayoutComposeVersion = "1.0.1"
+ material3Version = "1.1.2"
